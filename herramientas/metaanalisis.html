@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini-metaanálisis</title>
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<meta name="description" content="Metaanálisis online en español: efectos fijos y aleatorios (DerSimonian-Laird o REML), heterogeneidad (Q, I², τ²), intervalo de predicción, forest plot, funnel plot y prueba de Egger.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>:root{--bg:#f8fafb;--card:#ffffff;--ink:#1e2b34;--muted:#5e6d77;--line:#dfe6eb;--accent:#2b6c94;--accent-soft:#e7f0f6;--red:#b3412e;--red-soft:#f8e6e2;--tip:#fbf4e6;--tip-ink:#7a5214;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:28px 16px 60px}
+.navl{font-size:.88rem}.navl a{color:var(--accent);text-decoration:none}.navl span{color:var(--muted);margin:0 6px}
+h1{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:clamp(1.7rem,5vw,2.3rem);margin:8px 0 6px}
+.lead{margin:0 0 20px;color:var(--muted)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}
+.tabs button{font:inherit;font-size:.9rem;white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:99px;cursor:pointer}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px}
+h2{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.3rem;margin:0 0 6px}
+.desc{color:var(--muted);margin:0 0 16px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:6px}
+.grid .full{grid-column:1/-1}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:.84rem;color:var(--muted);font-weight:500}
+label.f small{font-weight:400;font-size:.76rem}
+input,select,textarea{font:inherit;font-size:.95rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+textarea{font-family:ui-monospace,Menlo,monospace;font-size:.85rem;min-height:150px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px}
+.res div{background:var(--bg);border-radius:8px;padding:9px 11px;font-size:.8rem;color:var(--muted)}
+.res b{display:block;color:var(--ink);font-size:1.08rem;font-weight:600}
+.res small{display:block;font-size:.74rem}
+.res .hl{background:var(--accent-soft)}.res .hl b{color:var(--accent)}
+.res .bad{background:var(--red-soft)}.res .bad b{color:var(--red)}
+table.t{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:12px}
+table.t th{text-align:left;font-weight:500;color:var(--muted);font-size:.8rem;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.t td{padding:8px;border-bottom:1px solid var(--line)}
+table.t tr.src td{background:var(--accent-soft)}
+.tw{overflow-x:auto}
+.say{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.04rem;line-height:1.65;background:var(--bg);border-left:3px solid var(--accent);padding:12px 14px;border-radius:0 8px 8px 0;margin-top:14px}
+.warn{background:var(--red-soft);color:var(--red);font-size:.88rem;border-radius:8px;padding:10px 12px;margin-top:12px}
+.tip{background:var(--tip);color:var(--tip-ink);border-radius:10px;padding:12px 14px;font-size:.88rem;margin-top:14px}
+.tip strong{display:block;margin-bottom:2px}
+canvas{width:100%;display:block;margin-top:12px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.top{display:flex;justify-content:flex-end;margin-bottom:10px}.top label{flex-direction:row;align-items:center;gap:8px}.top select{width:auto}
+.btn{font:inherit;font-size:.9rem;border:1px solid var(--accent);background:var(--accent);color:#fff;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:600}
+footer{margin-top:24px;font-size:.82rem;color:var(--muted)}
+
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+textarea{white-space:pre;overflow-x:auto}
+.fmt{font-size:.8rem;color:var(--muted);margin:4px 0 10px;font-family:ui-monospace,Menlo,monospace}
+
+.sh{background:#fff;border-bottom:1px solid #dfe6eb}.shw{max-width:1120px;margin:0 auto;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.sn{font:700 18px/1.2 "Bricolage Grotesque",system-ui,sans-serif;color:#1e2b34;text-decoration:none}.sn small{display:block;font:500 12px/1.3 "Public Sans",system-ui,sans-serif;color:#5e6d77}
+.snav{display:flex;flex-wrap:wrap;gap:4px}.snav a{padding:7px 12px;border-radius:6px;text-decoration:none;color:#1e2b34;font-size:15px}.snav a:hover{background:#f1f5f8}.snav a.cur{background:#e7f0f6;color:#2b6c94;font-weight:600}
+.tsub{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid #dfe6eb}.tsub a{font-size:13px;line-height:1.25;padding:7px 11px;border-radius:999px;background:#fff;border:1px solid #dfe6eb;color:#1e2b34;text-decoration:none}.tsub a:hover{border-color:#2b6c94;color:#2b6c94}.tsub a.cur{background:#2b6c94;border-color:#2b6c94;color:#fff;font-weight:600}
+.citebox{background:#fff;border:1px solid #dfe6eb;border-radius:8px;padding:12px 14px;font-size:13px;margin-top:10px;overflow-wrap:anywhere;color:#1e2b34}
+.sf{border-top:1px solid #dfe6eb;background:#fff;color:#5e6d77;font-size:13px;margin-top:20px}.sfw{max-width:1120px;margin:0 auto;padding:18px 16px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}.sf a{color:#2b6c94}
+</style>
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/herramientas/metaanalisis.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Mini-metaanálisis">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/herramientas/metaanalisis.html">
+<meta property="og:description" content="Metaanálisis online en español: efectos fijos y aleatorios (DerSimonian-Laird o REML), heterogeneidad (Q, I², τ²), intervalo de predicción, forest plot, funnel plot y prueba de Egger.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="sh"><div class="shw"><a class="sn" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a><nav class="snav" aria-label="Principal"><a href="../index.html">Inicio</a><a href="../index.html#publicaciones">Publicaciones</a><a href="../index.html#libros">Libros</a><a href="../calculadoras/index.html">Calculadoras</a><a href="../herramientas/index.html" class="cur">Herramientas</a></nav></div></header>
+<div class="wrap">
+  <nav class="tsub" aria-label="Herramientas"><a href="que-prueba-uso.html">¿Qué prueba uso?</a><a href="redactor-apa.html">Redactor APA</a><a href="simuladores.html">Simuladores</a><a href="tamanos-efecto.html">Tamaños del efecto</a><a href="potencia.html">Potencia</a><a href="psicometria.html">Psicometría</a><a href="bayes.html">Bayes</a><a href="metaanalisis.html" class="cur">Metaanálisis</a></nav>
+  <h1>Mini-metaanálisis</h1>
+  <p class="lead">Combina los resultados de varios estudios con un modelo de efectos aleatorios: obtén el efecto global, la heterogeneidad, el intervalo de predicción, el forest plot, el funnel plot y la prueba de Egger. Pensado para docencia, revisiones pequeñas o un metaanálisis interno de tus propios estudios.</p>
+
+  <div class="card">
+    <div class="top"><label class="f">Decimales <select id="dec"><option value=",">Coma</option><option value=".">Punto</option></select></label></div>
+    <div class="grid">
+      <label class="f full">Tipo de datos
+        <select id="tipo">
+          <option value="mds">Medias, DT y n de dos grupos → g de Hedges</option>
+          <option value="d">d de Cohen con n de cada grupo → g de Hedges</option>
+          <option value="r">Correlaciones y n → r (vía z de Fisher)</option>
+          <option value="gen">Efecto y error típico (genérico: log OR, β…)</option>
+        </select></label>
+      <label class="f">Modelo
+        <select id="model"><option value="REML">Aleatorios (REML)</option><option value="DL">Aleatorios (DerSimonian-Laird)</option><option value="FE">Efectos fijos</option></select></label>
+    </div>
+    <div class="fmt" id="fmthelp"></div>
+    <label class="f">Estudios (una línea por estudio; separa con tabuladores, punto y coma o espacios)<textarea id="data" style="min-height:190px"></textarea></label>
+    <div id="warn"></div>
+  </div>
+
+  <div class="card">
+    <h2>Resultados</h2>
+    <div class="res" id="res"></div>
+    <div class="say" id="say"></div>
+  </div>
+
+  <div class="card">
+    <h2>Forest plot</h2>
+    <canvas id="forest"></canvas>
+  </div>
+
+  <div class="card">
+    <h2>Funnel plot</h2>
+    <canvas id="funnel"></canvas>
+    <div class="legend"><span><i style="background:var(--accent)"></i>Estudios</span><span><i style="background:var(--muted)"></i>Región del 95 % alrededor del efecto global</span></div>
+    <div class="tip"><strong>Precauciones</strong>Con menos de 10 estudios, la prueba de Egger y el funnel plot tienen muy poca potencia, y la asimetría puede deberse a heterogeneidad real y no a sesgo de publicación. I² es una proporción, no una medida absoluta de la heterogeneidad: para eso, mira τ y el intervalo de predicción, que indica el rango de efectos esperable en un nuevo estudio. Para un metaanálisis publicable, utiliza software especializado (por ejemplo, metafor en R o JASP).</div>
+  </div>
+
+  <div class="card">
+    <h2>Estudios</h2>
+    <div class="tw" id="tab"></div>
+  </div>
+
+  <div class="citebox"><b>Cómo citar esta herramienta</b><br>Sánchez Álvarez, N. (2026). <i>Mini-metaanálisis</i> [Herramienta en línea]. Universidad de Málaga. https://nikotiniko.github.io/Myweb/herramientas/metaanalisis.html</div>
+  <footer>Nicolás Sánchez Álvarez · Universidad de Málaga. Métodos: estimadores de τ² REML (Viechtbauer, 2005) y DerSimonian-Laird (1986); IC del efecto global basado en z; intervalo de predicción con <i>t</i>(k − 2) (Higgins et al., 2009); prueba de regresión de Egger et al. (1997).</footer>
+</div>
+<script>
+/* ---------- Núcleo estadístico ---------- */
+const $=id=>document.getElementById(id);
+let DEC=",";
+const fmt=(x,d=2,lead=true)=>{if(!isFinite(x))return x===Infinity?"∞":x===-Infinity?"−∞":"—";let s=Math.abs(x).toFixed(d);if(!lead&&s[0]==="0")s=s.slice(1);const neg=x<0&&parseFloat(s)!==0;return(neg?"−":"")+s.replace(".",DEC)};
+const ci=(a,b,d=2,lead=true)=>`[${fmt(a,d,lead)}${DEC===","?";":","} ${fmt(b,d,lead)}]`;
+const N=x=>parseFloat(String(x??"").trim().replace(",","."));
+function lnG(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,.1208650973866179e-2,-.5395239384953e-5];let y=x,t=x+5.5;t-=(x+.5)*Math.log(t);let s=1.000000000190015;for(const ci of c)s+=ci/++y;return -t+Math.log(2.5066282746310005*s/x)}
+function betacf(a,b,x){const F=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<F)d=F;d=1/d;let h=d;for(let m=1;m<=500;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return h}
+function ibeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lnG(a+b)-lnG(a)-lnG(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b}
+function gser(a,x){let ap=a,sum=1/a,del=sum;for(let n=0;n<2000;n++){ap++;del*=x/ap;sum+=del;if(Math.abs(del)<Math.abs(sum)*3e-14)break}return sum*Math.exp(-x+a*Math.log(x)-lnG(a))}
+function gcf(a,x){const F=1e-300;let b=x+1-a,c=1/F,d=1/b,h=d;for(let i=1;i<2000;i++){const an=-i*(i-a);b+=2;d=an*d+b;if(Math.abs(d)<F)d=F;c=b+an/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return Math.exp(-x+a*Math.log(x)-lnG(a))*h}
+function gammaP(a,x){if(x<=0)return 0;return x<a+1?gser(a,x):1-gcf(a,x)}
+const gammaQ=(a,x)=>1-gammaP(a,x);
+const Phi=x=>x>=0?1-.5*gcfQ(x):.5*gcfQ(x);
+function gcfQ(x){const v=x*x/2;return v<1.5?1-gser(.5,v):gcf(.5,v)}
+function qnorm(p){let lo=-40,hi=40;for(let i=0;i<200;i++){const m=(lo+hi)/2;Phi(m)<p?lo=m:hi=m}return(lo+hi)/2}
+const pT2=(t,df)=>ibeta(df/(df+t*t),df/2,.5);
+const pF=(F,d1,d2)=>F<=0?1:ibeta(d2/(d2+d1*F),d2/2,d1/2);
+const pChi=(x,df)=>gammaQ(df/2,x/2);
+function tcrit(df,alpha=.05){let lo=0,hi=1e4;for(let i=0;i<200;i++){const m=(lo+hi)/2;pT2(m,df)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function fcrit(d1,d2,alpha=.05){let lo=0,hi=1e5;for(let i=0;i<200;i++){const m=(lo+hi)/2;pF(m,d1,d2)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function chicrit(df,alpha=.05){let lo=0,hi=1e5;for(let i=0;i<200;i++){const m=(lo+hi)/2;pChi(m,df)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function setup(cv,h){const w=cv.clientWidth||cv.parentNode.clientWidth,dpr=window.devicePixelRatio||1;cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+"px";const ctx=cv.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.font="12px Inter, sans-serif";return{ctx,w,h}}
+const C={accent:"#2b6c94",red:"#b3412e",ink:"#1e2b34",muted:"#5e6d77",line:"#dfe6eb",grey:"#d5dde3"};
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const mag=(x,c,fem)=>{const l=x<c[0]?"muy pequeño":x<c[1]?"pequeño":x<c[2]?"mediano":"grande";return fem?l.replace(/o$/,"a"):l};
+
+const EX={
+ mds:`Estudio A 2018	24.1	5.2	40	21.0	5.8	38
+Estudio B 2019	17.6	4.1	25	18.9	4.4	27
+Estudio C 2020	31.5	6.8	60	25.0	7.1	62
+Estudio D 2020	15.4	3.9	18	14.8	4.0	20
+Estudio E 2021	22.3	5.0	120	20.4	5.3	118
+Estudio F 2022	28.9	6.1	33	22.4	6.6	35
+Estudio G 2023	19.9	4.7	45	19.1	4.9	47
+Estudio H 2024	25.6	5.5	80	22.9	5.9	76`,
+ d:`Estudio A	0.56	40	38
+Estudio B	0.19	25	27
+Estudio C	0.59	60	62
+Estudio D	0.15	18	20
+Estudio E	0.37	120	118
+Estudio F	0.67	33	35`,
+ r:`Estudio A	0.32	120
+Estudio B	0.18	85
+Estudio C	0.41	210
+Estudio D	0.25	64
+Estudio E	0.12	300
+Estudio F	0.36	150`,
+ gen:`Estudio A	0.42	0.18
+Estudio B	0.15	0.22
+Estudio C	0.61	0.15
+Estudio D	0.30	0.25
+Estudio E	0.25	0.10`};
+const HELP={mds:"Nombre · M₁ · DT₁ · n₁ · M₂ · DT₂ · n₂",d:"Nombre · d · n₁ · n₂",r:"Nombre · r · n",gen:"Nombre · efecto · error típico"};
+const NV={mds:6,d:3,r:2,gen:2};
+function parseRows(txt,nv){const out=[],bad=[];txt.split(/\r?\n/).forEach((ln,i)=>{if(!ln.trim())return;
+ let parts=ln.includes("\t")?ln.split("\t"):ln.includes(";")?ln.split(";"):ln.trim().split(/\s+/);parts=parts.map(s=>s.trim()).filter(s=>s!=="");
+ const nums=[];while(parts.length&&nums.length<nv&&isFinite(N(parts[parts.length-1]))){nums.unshift(N(parts.pop()))}
+ if(nums.length<nv){bad.push(i+1);return}out.push({name:parts.join(" ")||`Estudio ${out.length+1}`,v:nums})});return{out,bad}}
+function toES(tipo,rows){return rows.map(({name,v})=>{
+ if(tipo==="mds"){const[m1,s1,n1,m2,s2,n2]=v;if(!(s1>0&&s2>0&&n1>1&&n2>1))return null;const sp=Math.sqrt(((n1-1)*s1*s1+(n2-1)*s2*s2)/(n1+n2-2)),d=(m1-m2)/sp,J=1-3/(4*(n1+n2)-9),g=J*d,vg=J*J*((n1+n2)/(n1*n2)+d*d/(2*(n1+n2)));return{name,y:g,v:vg,n:n1+n2}}
+ if(tipo==="d"){const[d,n1,n2]=v;if(!(n1>1&&n2>1))return null;const J=1-3/(4*(n1+n2)-9);return{name,y:J*d,v:J*J*((n1+n2)/(n1*n2)+d*d/(2*(n1+n2))),n:n1+n2}}
+ if(tipo==="r"){const[r,n]=v;if(!(Math.abs(r)<1&&n>3))return null;return{name,y:Math.atanh(r),v:1/(n-3),n}}
+ const[y,se]=v;if(!(se>0))return null;return{name,y,v:se*se,n:NaN}}).filter(Boolean)}
+function meta(S,model){const k=S.length,y=S.map(s=>s.y),v=S.map(s=>s.v),wF=v.map(x=>1/x),sw=wF.reduce((a,b)=>a+b,0),muF=wF.reduce((a,w,i)=>a+w*y[i],0)/sw;
+ const Q=wF.reduce((a,w,i)=>a+w*(y[i]-muF)**2,0),df=k-1,c=sw-wF.reduce((a,w)=>a+w*w,0)/sw;
+ let tau2=0;
+ if(model==="DL")tau2=Math.max(0,(Q-df)/c);
+ if(model==="REML"){tau2=Math.max(0,(Q-df)/c);for(let it=0;it<200;it++){const w=v.map(x=>1/(x+tau2)),W=w.reduce((a,b)=>a+b,0),mu=w.reduce((a,x,i)=>a+x*y[i],0)/W;
+  const num=w.reduce((a,x,i)=>a+x*x*((y[i]-mu)**2-v[i]),0),den=w.reduce((a,x)=>a+x*x,0),nt=Math.max(0,num/den+1/W);if(Math.abs(nt-tau2)<1e-10){tau2=nt;break}tau2=nt}}
+ const w=v.map(x=>1/(x+tau2)),W=w.reduce((a,b)=>a+b,0),mu=w.reduce((a,x,i)=>a+x*y[i],0)/W,se=Math.sqrt(1/W),z=mu/se,p=2*(1-Phi(Math.abs(z)));
+ const I2=Q>df?(Q-df)/Q:0,H2=Q/df,pQ=pChi(Q,df);
+ let pi=null;if(model!=="FE"&&k>=3){const tc=tcrit(k-2),sp=Math.sqrt(tau2+se*se);pi=[mu-tc*sp,mu+tc*sp]}
+ // Egger: y/se ~ 1/se
+ let egger=null;if(k>=3){const X=v.map(x=>1/Math.sqrt(x)),Y=y.map((yy,i)=>yy/Math.sqrt(v[i])),mx=X.reduce((a,b)=>a+b,0)/k,my=Y.reduce((a,b)=>a+b,0)/k,sxx=X.reduce((a,x)=>a+(x-mx)**2,0),b1=X.reduce((a,x,i)=>a+(x-mx)*(Y[i]-my),0)/sxx,b0=my-b1*mx,rss=Y.reduce((a,yy,i)=>a+(yy-b0-b1*X[i])**2,0),s2=rss/(k-2),seb0=Math.sqrt(s2*(1/k+mx*mx/sxx)),t=b0/seb0;egger={b0,t,df:k-2,p:pT2(t,k-2)}}
+ return{k,mu,se,lo:mu-1.96*se,hi:mu+1.96*se,z,p,Q,df,pQ,I2,H2,tau2,pi,egger,w:w.map(x=>x/W)}}
+let LAST=null;
+function run(){const tipo=$("tipo").value,model=$("model").value,{out,bad}=parseRows($("data").value,NV[tipo]),S=toES(tipo,out);
+ $("warn").innerHTML=bad.length?`<div class="warn">No se pudieron leer las líneas ${bad.join(", ")}. Revisa que tengan ${NV[tipo]} valores numéricos (${HELP[tipo]}).</div>`:"";
+ if(S.length<2){$("res").innerHTML="";$("say").textContent="Introduce al menos dos estudios válidos.";$("tab").innerHTML="";setup($("forest"),10);setup($("funnel"),10);LAST=null;return}
+ const M=meta(S,model),isR=tipo==="r",bt=x=>isR?Math.tanh(x):x,lab=tipo==="r"?"r":tipo==="gen"?"Efecto":"g";
+ const pfmt=p=>p<.001?("< "+fmt(.001,3,false)):fmt(p,3,false),labI=`<i>${lab}</i>`;
+ const items=[[`Efecto global (${lab})`,fmt(bt(M.mu),3,!isR),"hl",`IC 95 % ${ci(bt(M.lo),bt(M.hi),3,!isR)}`],["z / p",`${fmt(M.z,2)} / ${pfmt(M.p)}`],["Estudios (k)",M.k]];
+ if(model!=="FE")items.push(["τ² / τ",`${fmt(M.tau2,4)} / ${fmt(Math.sqrt(M.tau2),3)}`],["Intervalo de predicción",M.pi?ci(bt(M.pi[0]),bt(M.pi[1]),2,!isR):"—","","efecto esperado en un nuevo estudio"]);
+ items.push([`Q(${M.df})`,`${fmt(M.Q,2)}`,"",`p = ${pfmt(M.pQ).replace("< ","< ")}`],["I²",`${fmt(100*M.I2,1)} %`,M.I2>.5?"bad":""],["Egger (sesgo)",M.egger?`p = ${pfmt(M.egger.p)}`:"—","",M.egger?`intercepto = ${fmt(M.egger.b0,2)}`:""]);
+ $("res").innerHTML=items.map(([l,v,c,s])=>`<div class="${c||""}">${l}<b>${v}</b>${s?`<small>${s}</small>`:""}</div>`).join("");
+ const het=M.I2<.25?"baja":M.I2<.5?"moderada":M.I2<.75?"sustancial":"considerable";
+ const modelTxt=model==="FE"?"un modelo de efectos fijos (inversa de la varianza)":`un modelo de efectos aleatorios (estimador ${model==="REML"?"REML":"de DerSimonian-Laird"} de τ<sup>2</sup>)`;
+ $("say").innerHTML=`Se combinaron ${M.k} estudios mediante ${modelTxt}. El efecto global fue ${labI} = ${fmt(bt(M.mu),2,!isR)}, IC 95 % ${ci(bt(M.lo),bt(M.hi),2,!isR)}, <i>z</i> = ${fmt(M.z,2)}, <i>p</i> ${M.p<.001?("&lt; "+fmt(.001,3,false)):"= "+fmt(M.p,3,false)}. La heterogeneidad fue ${het}, <i>Q</i>(${M.df}) = ${fmt(M.Q,2)}, <i>p</i> ${M.pQ<.001?("&lt; "+fmt(.001,3,false)):"= "+fmt(M.pQ,3,false)}, <i>I</i><sup>2</sup> = ${fmt(100*M.I2,1)} %${model!=="FE"?`, τ<sup>2</sup> = ${fmt(M.tau2,3)}`:""}.${M.pi?` El intervalo de predicción al 95 % fue ${ci(bt(M.pi[0]),bt(M.pi[1]),2,!isR)}.`:""}${M.egger?` La prueba de Egger ${M.egger.p<.05?"indicó":"no indicó"} asimetría significativa en el funnel plot, <i>t</i>(${M.egger.df}) = ${fmt(M.egger.t,2)}, <i>p</i> = ${fmt(M.egger.p,3,false)}${M.k<10?" (con menos de 10 estudios, esta prueba tiene poca potencia)":""}.`:""}`;
+ $("tab").innerHTML=`<table class="t"><thead><tr><th>Estudio</th><th class="num">${lab}</th><th class="num">IC 95 %</th><th class="num">Peso</th></tr></thead><tbody>${S.map((s,i)=>{const se=Math.sqrt(s.v);return`<tr><td>${esc(s.name)}</td><td class="num">${fmt(bt(s.y),3,!isR)}</td><td class="num">${ci(bt(s.y-1.96*se),bt(s.y+1.96*se),2,!isR)}</td><td class="num">${fmt(100*M.w[i],1)} %</td></tr>`}).join("")}</tbody></table>`;
+ LAST={S,M,bt,isR,lab};draw()}
+function draw(){if(!LAST)return;const{S,M,bt,isR,lab}=LAST;
+ // FOREST
+ const rowH=26,top=10,nr=S.length+2,H=top+nr*rowH+34,{ctx,w}=setup($("forest"),H),nameW=Math.min(150,w*.38),L=nameW+8,Rm=10;
+ const lows=S.map(s=>s.y-1.96*Math.sqrt(s.v)),highs=S.map(s=>s.y+1.96*Math.sqrt(s.v));let lo=Math.min(...lows,M.pi?M.pi[0]:M.lo,0),hi=Math.max(...highs,M.pi?M.pi[1]:M.hi,0);const pad=(hi-lo)*.06;lo-=pad;hi+=pad;
+ const X=v=>L+(v-lo)/(hi-lo)*(w-L-Rm);
+ ctx.strokeStyle=C.line;ctx.beginPath();ctx.moveTo(X(0),top);ctx.lineTo(X(0),top+nr*rowH);ctx.stroke();
+ ctx.setLineDash([3,3]);ctx.strokeStyle=C.accent;ctx.beginPath();ctx.moveTo(X(M.mu),top);ctx.lineTo(X(M.mu),top+nr*rowH);ctx.stroke();ctx.setLineDash([]);
+ const maxw=Math.max(...M.w);
+ S.forEach((s,i)=>{const yy=top+i*rowH+rowH/2,se=Math.sqrt(s.v);ctx.fillStyle=C.ink;ctx.textAlign="left";ctx.font="12px Inter, sans-serif";let nm=s.name;while(ctx.measureText(nm).width>nameW&&nm.length>3)nm=nm.slice(0,-2);if(nm!==s.name)nm+="…";ctx.fillText(nm,0,yy+4);
+  ctx.strokeStyle=C.ink;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(X(s.y-1.96*se),yy);ctx.lineTo(X(s.y+1.96*se),yy);ctx.stroke();const sz=4+10*Math.sqrt(M.w[i]/maxw);ctx.fillStyle=C.accent;ctx.fillRect(X(s.y)-sz/2,yy-sz/2,sz,sz)});
+ const yd=top+(S.length+.6)*rowH;ctx.fillStyle=C.ink;ctx.font="600 12px Inter, sans-serif";ctx.fillText(LAST.M.tau2>0||$("model").value!=="FE"?"Efecto global (EA)":"Efecto global (EF)",0,yd+4);
+ ctx.fillStyle=C.red;ctx.beginPath();ctx.moveTo(X(M.lo),yd);ctx.lineTo(X(M.mu),yd-8);ctx.lineTo(X(M.hi),yd);ctx.lineTo(X(M.mu),yd+8);ctx.closePath();ctx.fill();
+ if(M.pi){const yp=top+(S.length+1.5)*rowH;ctx.font="12px Inter, sans-serif";ctx.fillStyle=C.muted;ctx.fillText("Intervalo de predicción",0,yp+4);ctx.strokeStyle=C.red;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X(M.pi[0]),yp);ctx.lineTo(X(M.pi[1]),yp);ctx.stroke();[M.pi[0],M.pi[1]].forEach(v=>{ctx.beginPath();ctx.moveTo(X(v),yp-5);ctx.lineTo(X(v),yp+5);ctx.stroke()})}
+ const ya=top+nr*rowH;ctx.strokeStyle=C.line;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(L,ya);ctx.lineTo(w-Rm,ya);ctx.stroke();ctx.fillStyle=C.muted;ctx.textAlign="center";ctx.font="11px Inter, sans-serif";
+ niceT(lo,hi,5).forEach(t=>{ctx.fillText(fmt(bt(t),isR?2:1,!isR),X(t),ya+14)});ctx.fillText(isR?"r (escala original; eje en z de Fisher)":lab,(L+w-Rm)/2,ya+28);
+ // FUNNEL
+ const f=setup($("funnel"),260),c2=f.ctx,W2=f.w,H2=260,L2=40,R2=10,T2=10,B2=30,ses=S.map(s=>Math.sqrt(s.v)),smax=Math.max(...ses)*1.1,flo=Math.min(M.mu-1.96*smax,...S.map(s=>s.y))-.05,fhi=Math.max(M.mu+1.96*smax,...S.map(s=>s.y))+.05,FX=v=>L2+(v-flo)/(fhi-flo)*(W2-L2-R2),FY=s=>T2+s/smax*(H2-T2-B2);
+ c2.fillStyle="rgba(93,99,112,.10)";c2.beginPath();c2.moveTo(FX(M.mu),FY(0));c2.lineTo(FX(M.mu-1.96*smax),FY(smax));c2.lineTo(FX(M.mu+1.96*smax),FY(smax));c2.closePath();c2.fill();
+ c2.strokeStyle=C.muted;c2.setLineDash([4,4]);c2.beginPath();c2.moveTo(FX(M.mu),FY(0));c2.lineTo(FX(M.mu-1.96*smax),FY(smax));c2.moveTo(FX(M.mu),FY(0));c2.lineTo(FX(M.mu+1.96*smax),FY(smax));c2.stroke();c2.setLineDash([]);
+ c2.beginPath();c2.moveTo(FX(M.mu),FY(0));c2.lineTo(FX(M.mu),FY(smax));c2.stroke();
+ S.forEach((s,i)=>{c2.fillStyle=C.accent;c2.beginPath();c2.arc(FX(s.y),FY(ses[i]),5,0,2*Math.PI);c2.fill()});
+ c2.fillStyle=C.muted;c2.font="11px Inter, sans-serif";c2.textAlign="right";niceT(0,smax,4).forEach(t=>c2.fillText(fmt(t,2),L2-6,FY(t)+4));
+ c2.textAlign="center";niceT(flo,fhi,5).forEach(t=>c2.fillText(fmt(t,2),FX(t),H2-B2+14));c2.fillText((isR?"z de Fisher":lab)+"   ·   eje vertical: error típico",W2/2,H2-4)}
+function niceT(lo,hi,n){const span=hi-lo,raw=span/n,p=Math.pow(10,Math.floor(Math.log10(raw))),st=[1,2,2.5,5,10].map(m=>m*p).find(s=>s>=raw);const o=[];for(let t=Math.ceil(lo/st)*st;t<=hi+1e-9;t+=st)o.push(+t.toFixed(10));return o}
+function setTipo(){const t=$("tipo").value;$("fmthelp").textContent="Formato: "+HELP[t];$("data").value=EX[t];run()}
+$("tipo").addEventListener("change",setTipo);$("model").addEventListener("change",run);$("data").addEventListener("input",run);
+$("dec").addEventListener("change",e=>{DEC=e.target.value;run()});
+let rt;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(draw,150)});
+setTipo();
+</script>
+<footer class="sf"><div class="sfw"><span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span><span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span></div></footer>
+</body>
+</html>

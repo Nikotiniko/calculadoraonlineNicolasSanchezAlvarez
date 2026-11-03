@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Conversión entre covarianza y correlación · Calculadora</title>
+<meta name="description" content="Pasa de cov a r y viceversa con las DT. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/covarianza-correlacion.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Conversión entre covarianza y correlación · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/covarianza-correlacion.html">
+<meta property="og:description" content="Pasa de cov a r y viceversa con las DT. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html" aria-current="page">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="covarianza-correlacion"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Correlación y regresión"><a href="correlacion-p-valor.html">Significación de una correlación</a><a href="ic-correlacion.html">Intervalo de confianza para una correlación</a><a href="dos-correlaciones.html">Comparar dos correlaciones independientes</a><a href="correlaciones-dependientes.html">Comparar dos correlaciones dependientes</a><a href="correlacion-parcial.html">Correlación parcial y semiparcial</a><a href="correlacion-datos.html">Correlación de Pearson y Spearman con datos</a><a href="covarianza-correlacion.html" aria-current="page">Conversión entre covarianza y correlación</a><a href="regresion-simple-datos.html">Regresión lineal simple con datos</a><a href="r2-ajustado.html">R² ajustado</a><a href="f-r2.html">Prueba F de R² en regresión múltiple</a><a href="cambio-r2.html">Cambio en R² (regresión jerárquica)</a><a href="ic-r2.html">Intervalo de confianza para R²</a><a href="ic-coeficiente.html">IC y significación de un coeficiente de regresión</a><a href="comparar-pendientes.html">Comparar dos pendientes de regresión</a><a href="ic-prediccion.html">Intervalo para un valor predicho</a><a href="beta-estandarizado.html">Coeficiente de regresión estandarizado</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Conversión entre covarianza y correlación</h1>
+      <p class="lede">Convierte una covarianza en correlación o una correlación en covarianza a partir de las desviaciones típicas de las dos variables.</p>
+      <div class="card">
+        <div class="fields"><label for="modo">Dato de partida<select id="modo" data-k="modo" data-t="s"><option value="cov">Covarianza</option><option value="r">Correlación</option></select></label><label for="val">Valor<input id="val" data-k="val" data-t="n" inputmode="decimal" autocomplete="off" value="12,6"></label><label for="sx">DT de X<input id="sx" data-k="sx" data-t="n" inputmode="decimal" autocomplete="off" value="4,2"></label><label for="sy">DT de Y<input id="sy" data-k="sy" data-t="n" inputmode="decimal" autocomplete="off" value="6"></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Correlación r</span><b data-out="r" data-f="4">—</b></div><div class="stat"><span>Covarianza</span><b data-out="cov" data-f="4">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>La correlación es la covarianza estandarizada: no depende de las unidades de medida.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Una covarianza de 12,6 entre dos escalas con DT 4,2 y 6 equivale a r = ,50.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">r = cov / (s_x s_y)   cov = r s_x s_y</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Cohen, J., Cohen, P., West, S. G. y Aiken, L. S. (2003). <i>Applied multiple regression/correlation analysis for the behavioral sciences</i> (3.ª ed.). Erlbaum.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="correlacion-datos.html">← Correlación de Pearson y Spearman con datos</a><a href="regresion-simple-datos.html">Regresión lineal simple con datos →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Conversión entre covarianza y correlación</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#correlacion-y-regresion">Todas las de Correlación y regresión</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

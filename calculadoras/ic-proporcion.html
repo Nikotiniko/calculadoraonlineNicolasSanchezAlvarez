@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Intervalo de confianza para una proporción · Calculadora</title>
+<meta name="description" content="Métodos de Wilson, Clopper-Pearson y Wald. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/ic-proporcion.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Intervalo de confianza para una proporción · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/ic-proporcion.html">
+<meta property="og:description" content="Métodos de Wilson, Clopper-Pearson y Wald. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html" aria-current="page">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="ic-proporcion"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Estimación"><a href="ic-media.html">Intervalo de confianza para la media</a><a href="ic-media-sigma.html">IC para la media con σ conocida</a><a href="ic-proporcion.html" aria-current="page">Intervalo de confianza para una proporción</a><a href="ic-diferencia-medias.html">IC para la diferencia de dos medias</a><a href="ic-diferencia-proporciones.html">IC para la diferencia de dos proporciones</a><a href="ic-varianza.html">IC para la varianza y la desviación típica</a><a href="ic-poisson.html">IC exacto para una tasa de Poisson</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Intervalo de confianza para una proporción</h1>
+      <p class="lede">Calcula el intervalo de confianza de una proporción con los métodos de Wilson (recomendado), Clopper-Pearson (exacto) y Wald.</p>
+      <div class="card">
+        <div class="fields"><label for="x">Casos x<input id="x" data-k="x" data-t="n" inputmode="decimal" autocomplete="off" value="18"></label><label for="n">Tamaño muestral n<input id="n" data-k="n" data-t="n" inputmode="decimal" autocomplete="off" value="120"></label><label for="conf">Nivel de confianza<select id="conf" data-k="conf" data-t="s"><option value="0.95">95 %</option><option value="0.90">90 %</option><option value="0.99">99 %</option></select></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Proporción</span><b data-out="p" data-f="3">—</b></div><div class="stat"><span>IC de Wilson</span><b data-out="wilson" data-f="t">—</b></div><div class="stat"><span>IC de Clopper-Pearson</span><b data-out="cp" data-f="t">—</b></div><div class="stat"><span>IC de Wald</span><b data-out="wald" data-f="t">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>El intervalo de Wald (p ± z·EE) funciona mal con proporciones extremas o muestras pequeñas. Wilson tiene mejor cobertura y es el recomendado; Clopper-Pearson es conservador.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>En una encuesta a 120 universitarios, 18 (15 %) informan ideación suicida en el último año. El IC 95 % de Wilson va aproximadamente del 9,7 % al 22,5 %.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">Wilson: [p̂ + z²/(2n) ± z√(p̂(1−p̂)/n + z²/(4n²))] / (1 + z²/n)
+Clopper-Pearson: cuantiles de distribuciones beta</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Newcombe, R. G. (1998). Two-sided confidence intervals for the single proportion: Comparison of seven methods. <i>Statistics in Medicine, 17</i>(8), 857–872.</li><li>Wilson, E. B. (1927). Probable inference, the law of succession, and statistical inference. <i>Journal of the American Statistical Association, 22</i>(158), 209–212.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="ic-media-sigma.html">← IC para la media con σ conocida</a><a href="ic-diferencia-medias.html">IC para la diferencia de dos medias →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Intervalo de confianza para una proporción</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#estimacion">Todas las de Estimación</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

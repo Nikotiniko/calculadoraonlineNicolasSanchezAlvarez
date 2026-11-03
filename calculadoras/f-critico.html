@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Valor crítico de F · Calculadora</title>
+<meta name="description" content="F crítico para α y grados de libertad. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/f-critico.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Valor crítico de F · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/f-critico.html">
+<meta property="og:description" content="F crítico para α y grados de libertad. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html" aria-current="page">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="f-critico"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Distribuciones"><a href="distribucion-normal.html">Distribución normal</a><a href="normal-intervalo.html">Probabilidad entre dos valores de una normal</a><a href="normal-cuantil.html">Cuantil de la distribución normal</a><a href="z-critico.html">Valor crítico de z</a><a href="area-normal-estandar.html">Áreas bajo la curva normal estándar</a><a href="distribucion-t.html">Distribución t de Student</a><a href="t-critico.html">Valor crítico de t</a><a href="distribucion-chi.html">Distribución chi-cuadrado</a><a href="chi-critico.html">Valor crítico de chi-cuadrado</a><a href="distribucion-f.html">Distribución F de Snedecor</a><a href="f-critico.html" aria-current="page">Valor crítico de F</a><a href="binomial-probabilidad.html">Probabilidad binomial</a><a href="binomial-acumulada.html">Probabilidad binomial acumulada</a><a href="poisson-probabilidad.html">Probabilidad de Poisson</a><a href="poisson-acumulada.html">Probabilidad de Poisson acumulada</a><a href="hipergeometrica.html">Distribución hipergeométrica</a><a href="geometrica.html">Distribución geométrica</a><a href="binomial-negativa.html">Distribución binomial negativa</a><a href="uniforme.html">Distribución uniforme continua</a><a href="exponencial.html">Distribución exponencial</a><a href="lognormal.html">Distribución lognormal</a><a href="distribucion-gamma.html">Distribución gamma</a><a href="distribucion-beta.html">Distribución beta</a><a href="t-no-central.html">Distribución t no central</a><a href="f-no-central.html">Distribución F no central</a><a href="chi-no-central.html">Distribución chi-cuadrado no central</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Valor crítico de F</h1>
+      <p class="lede">Obtén el valor crítico de la distribución F que deja en la cola superior una probabilidad α.</p>
+      <div class="card">
+        <div class="fields"><label for="alfa">Nivel de significación α<input id="alfa" data-k="alfa" data-t="n" inputmode="decimal" autocomplete="off" value="0,05"></label><label for="df1">gl numerador<input id="df1" data-k="df1" data-t="n" inputmode="decimal" autocomplete="off" value="3"></label><label for="df2">gl denominador<input id="df2" data-k="df2" data-t="n" inputmode="decimal" autocomplete="off" value="96"></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>F crítico</span><b data-out="f" data-f="4">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>En un ANOVA, si el F observado supera este valor el efecto es significativo al nivel α.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Con cuatro grupos de 25 participantes (gl = 3 y 96) y α = 0,05, el valor crítico es aproximadamente 2,70.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">F = F⁻¹(1 − α; d₁, d₂)</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Johnson, N. L., Kotz, S. y Balakrishnan, N. (1994). <i>Continuous univariate distributions</i> (2.ª ed., vols. 1–2). Wiley.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="distribucion-f.html">← Distribución F de Snedecor</a><a href="binomial-probabilidad.html">Probabilidad binomial →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Valor crítico de F</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#distribuciones">Todas las de Distribuciones</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nikotiniko.github.io/Myweb/sitemap.xml

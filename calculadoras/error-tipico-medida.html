@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Error típico de medida · Calculadora</title>
+<meta name="description" content="SEM, intervalo de la puntuación y puntuación verdadera estimada. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/error-tipico-medida.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Error típico de medida · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/error-tipico-medida.html">
+<meta property="og:description" content="SEM, intervalo de la puntuación y puntuación verdadera estimada. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html" aria-current="page">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="error-tipico-medida"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Psicometría"><a href="alfa-cronbach.html">Alfa de Cronbach a partir de varianzas</a><a href="alfa-estandarizado.html">Alfa estandarizado</a><a href="ic-alfa-feldt.html">Intervalo de confianza para alfa (Feldt)</a><a href="omega-mcdonald.html">Omega de McDonald</a><a href="spearman-brown.html">Profecía de Spearman-Brown</a><a href="error-tipico-medida.html" aria-current="page">Error típico de medida</a><a href="cambio-fiable.html">Índice de cambio fiable (Jacobson-Truax)</a><a href="correccion-atenuacion.html">Corrección por atenuación</a><a href="kappa-cohen.html">Kappa de Cohen</a><a href="cci-anova.html">Coeficiente de correlación intraclase</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Error típico de medida</h1>
+      <p class="lede">Calcula el error típico de medida y el intervalo de confianza de la puntuación de una persona, así como su puntuación verdadera estimada.</p>
+      <div class="card">
+        <div class="fields"><label for="s">DT de la prueba<input id="s" data-k="s" data-t="n" inputmode="decimal" autocomplete="off" value="15"></label><label for="rxx">Fiabilidad<input id="rxx" data-k="rxx" data-t="n" inputmode="decimal" autocomplete="off" value="0,90"></label><label for="x">Puntuación observada<input id="x" data-k="x" data-t="n" inputmode="decimal" autocomplete="off" value="118"></label><label for="mu">Media de la prueba (opcional)<input id="mu" data-k="mu" data-t="n" inputmode="decimal" autocomplete="off" value="100"></label><label for="conf">Nivel de confianza<select id="conf" data-k="conf" data-t="s"><option value="0.95">95 %</option><option value="0.90">90 %</option><option value="0.99">99 %</option></select></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Error típico de medida</span><b data-out="sem" data-f="3">—</b></div><div class="stat"><span>IC de la puntuación observada</span><b data-out="ico" data-f="t">—</b></div><div class="stat"><span>Puntuación verdadera estimada</span><b data-out="tv" data-f="2">—</b></div><div class="stat"><span>IC de la puntuación verdadera</span><b data-out="icv" data-f="t">—</b></div><div class="stat"><span>EE de la diferencia entre dos puntuaciones</span><b data-out="sed" data-f="3">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>Ninguna puntuación es exacta: el SEM cuantifica el error esperado. La puntuación verdadera estimada se acerca a la media en función de la fiabilidad (regresión a la media).</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Un CI de 118 en una prueba con DT 15 y fiabilidad ,90 tiene un SEM de 4,7: el IC 95 % de la puntuación observada va de 109 a 127, lo que debe considerarse al tomar decisiones clínicas o educativas.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">SEM = s√(1 − r_xx)   T&#x27; = r_xx·x + (1 − r_xx)μ   EE_est = s√(r_xx(1 − r_xx))</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Lord, F. M. y Novick, M. R. (1968). <i>Statistical theories of mental test scores</i>. Addison-Wesley.</li><li>Dudek, F. J. (1979). The continuing misinterpretation of the standard error of measurement. <i>Psychological Bulletin, 86</i>(2), 335–337.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="spearman-brown.html">← Profecía de Spearman-Brown</a><a href="cambio-fiable.html">Índice de cambio fiable (Jacobson-Truax) →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Error típico de medida</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#psicometria">Todas las de Psicometría</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

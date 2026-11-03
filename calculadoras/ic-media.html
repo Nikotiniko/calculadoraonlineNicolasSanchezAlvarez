@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Intervalo de confianza para la media · Calculadora</title>
+<meta name="description" content="IC con la t a partir de media, DT y n. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/ic-media.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Intervalo de confianza para la media · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/ic-media.html">
+<meta property="og:description" content="IC con la t a partir de media, DT y n. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html" aria-current="page">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="ic-media"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Estimación"><a href="ic-media.html" aria-current="page">Intervalo de confianza para la media</a><a href="ic-media-sigma.html">IC para la media con σ conocida</a><a href="ic-proporcion.html">Intervalo de confianza para una proporción</a><a href="ic-diferencia-medias.html">IC para la diferencia de dos medias</a><a href="ic-diferencia-proporciones.html">IC para la diferencia de dos proporciones</a><a href="ic-varianza.html">IC para la varianza y la desviación típica</a><a href="ic-poisson.html">IC exacto para una tasa de Poisson</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Intervalo de confianza para la media</h1>
+      <p class="lede">Calcula el intervalo de confianza para la media poblacional con la distribución t de Student.</p>
+      <div class="card">
+        <div class="fields"><label for="m">Media<input id="m" data-k="m" data-t="n" inputmode="decimal" autocomplete="off" value="102,4"></label><label for="s">Desviación típica<input id="s" data-k="s" data-t="n" inputmode="decimal" autocomplete="off" value="14,8"></label><label for="n">n<input id="n" data-k="n" data-t="n" inputmode="decimal" autocomplete="off" value="36"></label><label for="conf">Nivel de confianza<select id="conf" data-k="conf" data-t="s"><option value="0.95">95 %</option><option value="0.90">90 %</option><option value="0.99">99 %</option></select></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Error típico</span><b data-out="se" data-f="3">—</b></div><div class="stat"><span>t crítico</span><b data-out="tc" data-f="3">—</b></div><div class="stat"><span>Límite inferior</span><b data-out="lo" data-f="2">—</b></div><div class="stat"><span>Límite superior</span><b data-out="hi" data-f="2">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>Si se repitiera el estudio muchas veces, el 95 % de los intervalos calculados así contendría la media poblacional. La amplitud informa de la precisión.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Una muestra de 36 estudiantes obtiene M = 102,4 (DT = 14,8) en una prueba de razonamiento. El IC 95 % va de 97,39 a 107,41.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">EE = s/√n   IC = x̄ ± t_{1−α/2; n−1} · EE</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Cumming, G. (2012). <i>Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis</i>. Routledge.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="probabilidad-superioridad.html">← Probabilidad de superioridad y U₃</a><a href="ic-media-sigma.html">IC para la media con σ conocida →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Intervalo de confianza para la media</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#estimacion">Todas las de Estimación</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

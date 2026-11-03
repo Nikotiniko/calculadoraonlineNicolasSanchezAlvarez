@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teorema de Bayes en pruebas diagnósticas · Calculadora</title>
+<meta name="description" content="Valores predictivos a partir de sensibilidad, especificidad y prevalencia. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/teorema-bayes-diagnostico.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Teorema de Bayes en pruebas diagnósticas · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/teorema-bayes-diagnostico.html">
+<meta property="og:description" content="Valores predictivos a partir de sensibilidad, especificidad y prevalencia. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html" aria-current="page">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="teorema-bayes-diagnostico"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Probabilidad"><a href="probabilidad-sucesos.html">Probabilidad de sucesos independientes</a><a href="probabilidad-condicional.html">Probabilidad condicional</a><a href="teorema-bayes-diagnostico.html" aria-current="page">Teorema de Bayes en pruebas diagnósticas</a><a href="combinatoria.html">Factorial y combinatoria</a><a href="funcion-gamma.html">Función gamma</a><a href="gamma-incompleta.html">Función gamma incompleta</a><a href="funcion-beta.html">Función beta</a><a href="beta-incompleta.html">Función beta incompleta</a><a href="funcion-error.html">Función de error</a><a href="funcion-error-inversa.html">Función de error inversa</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Teorema de Bayes en pruebas diagnósticas</h1>
+      <p class="lede">Calcula los valores predictivos positivo y negativo y las razones de verosimilitud de una prueba de cribado.</p>
+      <div class="card">
+        <div class="fields"><label for="sens">Sensibilidad<input id="sens" data-k="sens" data-t="n" inputmode="decimal" autocomplete="off" value="0,90"></label><label for="esp">Especificidad<input id="esp" data-k="esp" data-t="n" inputmode="decimal" autocomplete="off" value="0,85"></label><label for="prev">Prevalencia<input id="prev" data-k="prev" data-t="n" inputmode="decimal" autocomplete="off" value="0,05"></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Valor predictivo positivo</span><b data-out="vpp" data-f="4">—</b></div><div class="stat"><span>Valor predictivo negativo</span><b data-out="vpn" data-f="4">—</b></div><div class="stat"><span>Razón de verosimilitud +</span><b data-out="rvp" data-f="3">—</b></div><div class="stat"><span>Razón de verosimilitud −</span><b data-out="rvn" data-f="3">—</b></div><div class="stat"><span>Proporción de positivos</span><b data-out="ppos" data-f="4">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>Con prevalencias bajas, incluso pruebas muy buenas generan muchos falsos positivos: el valor predictivo positivo puede ser bajo aunque la sensibilidad sea alta.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Un cuestionario de cribado de riesgo suicida con sensibilidad 0,90 y especificidad 0,85, aplicado donde la prevalencia es del 5 %, tiene un VPP de solo 0,24: tres de cada cuatro positivos serían falsos positivos y requieren una evaluación clínica posterior.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">VPP = S·P / [S·P + (1 − E)(1 − P)]
+VPN = E(1 − P) / [E(1 − P) + (1 − S)P]</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Altman, D. G. y Bland, J. M. (1994). Diagnostic tests 2: Predictive values. <i>BMJ, 309</i>(6947), 102.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="probabilidad-condicional.html">← Probabilidad condicional</a><a href="combinatoria.html">Factorial y combinatoria →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Teorema de Bayes en pruebas diagnósticas</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#probabilidad">Todas las de Probabilidad</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Omega de McDonald · Calculadora</title>
+<meta name="description" content="Fiabilidad a partir de cargas factoriales. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/omega-mcdonald.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Omega de McDonald · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/omega-mcdonald.html">
+<meta property="og:description" content="Fiabilidad a partir de cargas factoriales. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html" aria-current="page">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="omega-mcdonald"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Psicometría"><a href="alfa-cronbach.html">Alfa de Cronbach a partir de varianzas</a><a href="alfa-estandarizado.html">Alfa estandarizado</a><a href="ic-alfa-feldt.html">Intervalo de confianza para alfa (Feldt)</a><a href="omega-mcdonald.html" aria-current="page">Omega de McDonald</a><a href="spearman-brown.html">Profecía de Spearman-Brown</a><a href="error-tipico-medida.html">Error típico de medida</a><a href="cambio-fiable.html">Índice de cambio fiable (Jacobson-Truax)</a><a href="correccion-atenuacion.html">Corrección por atenuación</a><a href="kappa-cohen.html">Kappa de Cohen</a><a href="cci-anova.html">Coeficiente de correlación intraclase</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Omega de McDonald</h1>
+      <p class="lede">Calcula ω de McDonald, el coeficiente H y la varianza media extraída a partir de las cargas factoriales estandarizadas de un modelo unidimensional.</p>
+      <div class="card">
+        <div class="fields"><label for="cargas" class="wide">Cargas factoriales estandarizadas<textarea id="cargas" data-k="cargas" data-t="l" spellcheck="false">0,72 0,68 0,75 0,60 0,55 0,70</textarea></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>ω de McDonald</span><b data-out="om" data-f="3">—</b></div><div class="stat"><span>Coeficiente H</span><b data-out="hcoef" data-f="3">—</b></div><div class="stat"><span>Varianza media extraída (AVE)</span><b data-out="ave" data-f="3">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>ω no exige que todos los ítems tengan la misma carga y es la alternativa recomendada a α. El coeficiente H indica la fiabilidad máxima del factor; un AVE mayor de ,50 apoya la validez convergente.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Un análisis factorial confirmatorio de 6 ítems con cargas entre ,55 y ,75 da ω ≈ ,83.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">ω = (Σλ)² / [(Σλ)² + Σ(1 − λ²)]   H = 1/[1 + 1/Σ(λ²/(1 − λ²))]   AVE = Σλ²/k</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>McDonald, R. P. (1999). <i>Test theory: A unified treatment</i>. Erlbaum.</li><li>Hancock, G. R. y Mueller, R. O. (2001). Rethinking construct reliability within latent variable systems. En R. Cudeck et al. (Eds.), <i>Structural equation modeling: Present and future</i> (pp. 195–216). SSI.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="ic-alfa-feldt.html">← Intervalo de confianza para alfa (Feldt)</a><a href="spearman-brown.html">Profecía de Spearman-Brown →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Omega de McDonald</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#psicometria">Todas las de Psicometría</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

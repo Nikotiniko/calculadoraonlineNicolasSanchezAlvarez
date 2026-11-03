@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redactor APA</title>
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<meta name="description" content="Calcula el estadístico, el valor p y el tamaño del efecto, y redacta el párrafo de resultados en español.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f8fafb;--card:#ffffff;--ink:#1e2b34;--muted:#5e6d77;--line:#dfe6eb;
+  --accent:#2b6c94;--accent-soft:#e7f0f6;--ok:#2e7d4f;--ok-soft:#e5f3ea;--warn:#8a5a00;--warn-soft:#fbf1dc;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:28px 16px 60px}
+.back{font-size:.88rem;color:var(--accent);text-decoration:none}
+h1{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:clamp(1.7rem,5vw,2.3rem);margin:8px 0 6px}
+.lead{margin:0 0 22px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+.top{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:.84rem;color:var(--muted);font-weight:500}
+label.f small{font-weight:400;font-size:.76rem}
+input,select{font:inherit;font-size:.95rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+input:focus,select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.grid .full{grid-column:1/-1}
+h2{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.2rem;margin:0 0 12px}
+table.ed{width:100%;border-collapse:collapse;font-size:.9rem}
+table.ed th{font-weight:500;color:var(--muted);text-align:left;padding:0 4px 4px;font-size:.8rem}
+table.ed td{padding:3px}
+table.ed input{padding:7px 8px}
+.edwrap{overflow-x:auto;grid-column:1/-1}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.btn{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{opacity:.9;color:#fff}
+.apa{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.08rem;line-height:1.7;background:var(--bg);border-left:3px solid var(--accent);padding:14px 16px;border-radius:0 8px 8px 0}
+.apa.empty{font-family:Inter,sans-serif;font-size:.92rem;color:var(--muted)}
+.note{background:var(--warn-soft);color:var(--warn);font-size:.86rem;border-radius:8px;padding:10px 12px;margin-top:12px}
+.vals{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px}
+.vals div{background:var(--bg);border-radius:8px;padding:8px 10px;font-size:.82rem;color:var(--muted)}
+.vals b{display:block;color:var(--ink);font-size:.98rem;font-weight:600}
+.ok{color:var(--ok);font-size:.85rem;margin-left:6px}
+footer{margin-top:26px;font-size:.82rem;color:var(--muted)}
+@media (max-width:480px){.top{grid-template-columns:1fr}}
+
+.sh{background:#fff;border-bottom:1px solid #dfe6eb}.shw{max-width:1120px;margin:0 auto;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.sn{font:700 18px/1.2 "Bricolage Grotesque",system-ui,sans-serif;color:#1e2b34;text-decoration:none}.sn small{display:block;font:500 12px/1.3 "Public Sans",system-ui,sans-serif;color:#5e6d77}
+.snav{display:flex;flex-wrap:wrap;gap:4px}.snav a{padding:7px 12px;border-radius:6px;text-decoration:none;color:#1e2b34;font-size:15px}.snav a:hover{background:#f1f5f8}.snav a.cur{background:#e7f0f6;color:#2b6c94;font-weight:600}
+.tsub{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid #dfe6eb}.tsub a{font-size:13px;line-height:1.25;padding:7px 11px;border-radius:999px;background:#fff;border:1px solid #dfe6eb;color:#1e2b34;text-decoration:none}.tsub a:hover{border-color:#2b6c94;color:#2b6c94}.tsub a.cur{background:#2b6c94;border-color:#2b6c94;color:#fff;font-weight:600}
+.citebox{background:#fff;border:1px solid #dfe6eb;border-radius:8px;padding:12px 14px;font-size:13px;margin-top:10px;overflow-wrap:anywhere;color:#1e2b34}
+.sf{border-top:1px solid #dfe6eb;background:#fff;color:#5e6d77;font-size:13px;margin-top:20px}.sfw{max-width:1120px;margin:0 auto;padding:18px 16px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}.sf a{color:#2b6c94}
+</style>
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/herramientas/redactor-apa.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Redactor APA">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/herramientas/redactor-apa.html">
+<meta property="og:description" content="Calcula el estadístico, el valor p y el tamaño del efecto, y redacta el párrafo de resultados en español.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="sh"><div class="shw"><a class="sn" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a><nav class="snav" aria-label="Principal"><a href="../index.html">Inicio</a><a href="../index.html#publicaciones">Publicaciones</a><a href="../index.html#libros">Libros</a><a href="../calculadoras/index.html">Calculadoras</a><a href="../herramientas/index.html" class="cur">Herramientas</a></nav></div></header>
+<div class="wrap">
+  <nav class="tsub" aria-label="Herramientas"><a href="que-prueba-uso.html">¿Qué prueba uso?</a><a href="redactor-apa.html" class="cur">Redactor APA</a><a href="simuladores.html">Simuladores</a><a href="tamanos-efecto.html">Tamaños del efecto</a><a href="potencia.html">Potencia</a><a href="psicometria.html">Psicometría</a><a href="bayes.html">Bayes</a><a href="metaanalisis.html">Metaanálisis</a></nav>
+  <h1>Redactor de resultados APA 7</h1>
+  <p class="lead">Elige la prueba e introduce tus datos. La herramienta calcula el estadístico, el valor <i>p</i>, el tamaño del efecto y su intervalo de confianza, y redacta el párrafo de resultados en español, listo para copiar.</p>
+
+  <div class="card">
+    <div class="top">
+      <label class="f"><span>Prueba</span><select id="test"></select></label>
+      <label class="f"><span>Decimales</span><select id="dec"><option value=",">Coma (0,45)</option><option value=".">Punto (0.45)</option></select></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Datos</h2>
+    <div class="grid" id="form"></div>
+  </div>
+
+  <div class="card">
+    <h2>Resultado redactado</h2>
+    <div class="apa" id="out"></div>
+    <div class="btns"><button class="btn primary" id="copy">Copiar texto</button><span class="ok" id="copied"></span></div>
+    <div id="note"></div>
+    <div class="vals" id="vals"></div>
+  </div>
+
+  <div class="citebox"><b>Cómo citar esta herramienta</b><br>Sánchez Álvarez, N. (2026). <i>Redactor de resultados APA 7</i> [Herramienta en línea]. Universidad de Málaga. https://nikotiniko.github.io/Myweb/herramientas/redactor-apa.html</div>
+  <footer>Nicolás Sánchez Álvarez · Universidad de Málaga. α = .05, contrastes bilaterales. Los intervalos de confianza de los tamaños del efecto usan aproximaciones normales. Revisa siempre el texto antes de incluirlo en tu trabajo.</footer>
+</div>
+
+<script>
+/* ---------- Distribuciones ---------- */
+function lnG(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,.1208650973866179e-2,-.5395239384953e-5];let y=x,t=x+5.5;t-=(x+.5)*Math.log(t);let s=1.000000000190015;for(const ci of c)s+=ci/++y;return -t+Math.log(2.5066282746310005*s/x)}
+function betacf(a,b,x){const F=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<F)d=F;d=1/d;let h=d;for(let m=1;m<=300;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return h}
+function ibeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lnG(a+b)-lnG(a)-lnG(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b}
+function gser(a,x){let ap=a,sum=1/a,del=sum;for(let n=0;n<1000;n++){ap++;del*=x/ap;sum+=del;if(Math.abs(del)<Math.abs(sum)*3e-14)break}return sum*Math.exp(-x+a*Math.log(x)-lnG(a))}
+function gcf(a,x){const F=1e-300;let b=x+1-a,c=1/F,d=1/b,h=d;for(let i=1;i<1000;i++){const an=-i*(i-a);b+=2;d=an*d+b;if(Math.abs(d)<F)d=F;c=b+an/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return Math.exp(-x+a*Math.log(x)-lnG(a))*h}
+function gammaQ(a,x){if(x<=0)return 1;return x<a+1?1-gser(a,x):gcf(a,x)}
+const pT2=(t,df)=>ibeta(df/(df+t*t),df/2,.5);
+const pF=(F,d1,d2)=>F<=0?1:ibeta(d2/(d2+d1*F),d2/2,d1/2);
+const pChi=(x,df)=>gammaQ(df/2,x/2);
+const pZ2=z=>gammaQ(.5,z*z/2);
+function tcrit(df){let lo=0,hi=1000;for(let i=0;i<200;i++){const m=(lo+hi)/2;pT2(m,df)>.05?lo=m:hi=m}return(lo+hi)/2}
+
+/* ---------- Formato ---------- */
+let DEC=",";
+function f(x,d=2,lead=true){if(!isFinite(x))return"—";let s=Math.abs(x).toFixed(d);if(!lead&&s[0]==="0")s=s.slice(1);const neg=x<0&&parseFloat(s)!==0;return(neg?"−":"")+s.replace(".",DEC)}
+const fp=p=>p<.001?"<i>p</i> &lt; "+f(.001,3,false):"<i>p</i> = "+f(p,3,false);
+const ci=(a,b,d=2,lead=true)=>`[${f(a,d,lead)}${DEC===","?";":","} ${f(b,d,lead)}]`;
+const fs=x=>String(Math.round(x*100)/100).replace(".",DEC).replace("-","−");
+const fdf=df=>Math.abs(df-Math.round(df))<1e-9?String(Math.round(df)):f(df,2);
+const MDT=(m,sd)=>`(<i>M</i> = ${f(m)}, <i>DT</i> = ${f(sd)})`;
+const cap=s=>s?s[0].toUpperCase()+s.slice(1):"";
+const lista=a=>a.length<2?(a[0]||""):a.slice(0,-1).join(", ")+" y "+a[a.length-1];
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const N=x=>parseFloat(String(x??"").trim().replace(",","."));
+const D=[.2,.5,.8],R=[.1,.3,.5],ETA=[.01,.06,.14],F2=[.02,.15,.35];
+const mag=(x,c)=>x<c[0]?"muy pequeño":x<c[1]?"pequeño":x<c[2]?"mediano":"grande";
+const de=t=>/^el /i.test(t)?"del "+t.slice(3):"de "+t;
+const fpv=p=>p<.0001?"< "+f(.0001,4,false):f(p,4,false);
+const okN=(...a)=>a.every(isFinite);
+
+/* ---------- Pruebas ---------- */
+const T={
+welch:{name:"t para muestras independientes",grp:"Comparar dos grupos",fields:[
+ ["vd","Variable dependiente","t","la ansiedad"],
+ ["g1","Grupo 1","t","el grupo experimental"],["m1","Media 1","n","24.3"],["sd1","DT 1","n","5.1"],["n1","n 1","n","40"],
+ ["g2","Grupo 2","t","el grupo control"],["m2","Media 2","n","20.8"],["sd2","DT 2","n","6.2"],["n2","n 2","n","38"],
+ ["tipo","Versión","s","welch",[["welch","Welch (recomendada)"],["student","Student (varianzas iguales)"]]]],
+ calc(v,e){const m1=N(v.m1),sd1=N(v.sd1),n1=N(v.n1),m2=N(v.m2),sd2=N(v.sd2),n2=N(v.n2);
+  if(!okN(m1,sd1,n1,m2,sd2,n2)||sd1<=0||sd2<=0||n1<2||n2<2)return null;
+  const W=v.tipo==="welch",a=sd1*sd1/n1,b=sd2*sd2/n2,diff=m1-m2;let se,df;
+  if(W){se=Math.sqrt(a+b);df=(a+b)**2/(a*a/(n1-1)+b*b/(n2-1))}else{const sp2=((n1-1)*sd1*sd1+(n2-1)*sd2*sd2)/(n1+n2-2);se=Math.sqrt(sp2*(1/n1+1/n2));df=n1+n2-2}
+  const t=diff/se,p=pT2(t,df),tc=tcrit(df),sp=Math.sqrt(((n1-1)*sd1*sd1+(n2-1)*sd2*sd2)/(n1+n2-2)),d=diff/sp,J=1-3/(4*(n1+n2)-9),g=J*d,sg=J*Math.sqrt((n1+n2)/(n1*n2)+d*d/(2*(n1+n2)));
+  const st=`<i>t</i>(${fdf(df)}) = ${f(t)}, ${fp(p)}, <i>g</i> = ${f(g)}, IC 95 % ${ci(g-1.96*sg,g+1.96*sg)}`;
+  let x=`Se aplicó una prueba <i>t</i> de ${W?"Welch":"Student"} para muestras independientes con el fin de comparar ${e.vd} entre ${e.g1} y ${e.g2}. `;
+  x+=p<.05?`Se observaron puntuaciones significativamente ${diff>0?"más altas":"más bajas"} en ${e.g1} ${MDT(m1,sd1)} que en ${e.g2} ${MDT(m2,sd2)}, ${st}. `:`No se encontraron diferencias estadísticamente significativas entre ${e.g1} ${MDT(m1,sd1)} y ${e.g2} ${MDT(m2,sd2)}, ${st}. `;
+  x+=`La diferencia de medias fue de ${f(diff)} puntos (IC 95 % ${ci(diff-tc*se,diff+tc*se)}), con un tamaño del efecto ${mag(Math.abs(g),D)}.`;
+  return{x,vals:[["t",f(t,3)],["gl",fdf(df)],["p",fpv(p)],["Diferencia de medias",f(diff,3)],["g de Hedges",f(g,3)],["d de Cohen",f(d,3)]]}}},
+
+pareada:{name:"t para muestras relacionadas",grp:"Comparar dos grupos",fields:[
+ ["vd","Variable dependiente","t","la autoestima"],
+ ["c1","Momento o condición 1","t","en el pretest",null,"Escríbelo como complemento: «en el pretest», «antes del tratamiento»"],["m1","Media 1","n","22.1"],["sd1","DT 1","n","4.8"],
+ ["c2","Momento o condición 2","t","en el postest"],["m2","Media 2","n","24.6"],["sd2","DT 2","n","4.5"],
+ ["sdd","DT de las diferencias","n","3.9"],["n","n (pares)","n","30"]],
+ calc(v,e){const m1=N(v.m1),sd1=N(v.sd1),m2=N(v.m2),sd2=N(v.sd2),sdd=N(v.sdd),n=N(v.n);
+  if(!okN(m1,sd1,m2,sd2,sdd,n)||sdd<=0||n<2)return null;
+  const diff=m2-m1,se=sdd/Math.sqrt(n),df=n-1,t=diff/se,p=pT2(t,df),tc=tcrit(df),dz=diff/sdd,sd=Math.sqrt(1/n+dz*dz/(2*n));
+  const st=`<i>t</i>(${df}) = ${f(t)}, ${fp(p)}, <i>d</i><sub>z</sub> = ${f(dz)}, IC 95 % ${ci(dz-1.96*sd,dz+1.96*sd)}`;
+  let x=`Se aplicó una prueba <i>t</i> para muestras relacionadas con el fin de comparar ${e.vd} ${e.c1} y ${e.c2}. `;
+  x+=p<.05?`Las puntuaciones ${e.c2} ${MDT(m2,sd2)} fueron significativamente ${diff>0?"más altas":"más bajas"} que ${e.c1} ${MDT(m1,sd1)}, ${st}. `:`No se encontraron diferencias estadísticamente significativas entre las puntuaciones ${e.c1} ${MDT(m1,sd1)} y ${e.c2} ${MDT(m2,sd2)}, ${st}. `;
+  x+=`La diferencia media fue de ${f(diff)} puntos (IC 95 % ${ci(diff-tc*se,diff+tc*se)}), con un tamaño del efecto ${mag(Math.abs(dz),D)}.`;
+  return{x,vals:[["t",f(t,3)],["gl",df],["p",fpv(p)],["Diferencia media",f(diff,3)],["dz",f(dz,3)]]}}},
+
+una:{name:"t para una muestra",grp:"Comparar dos grupos",fields:[
+ ["vd","Variable","t","la puntuación en el test"],["ref","Valor de referencia (descripción)","t","la media normativa"],
+ ["mu","Valor de referencia","n","100"],["m","Media","n","103.4"],["sd","DT","n","14.2"],["n","n","n","50"]],
+ calc(v,e){const mu=N(v.mu),m=N(v.m),sd=N(v.sd),n=N(v.n);if(!okN(mu,m,sd,n)||sd<=0||n<2)return null;
+  const df=n-1,t=(m-mu)/(sd/Math.sqrt(n)),p=pT2(t,df),d=(m-mu)/sd,s=Math.sqrt(1/n+d*d/(2*n));
+  const st=`<i>t</i>(${df}) = ${f(t)}, ${fp(p)}, <i>d</i> = ${f(d)}, IC 95 % ${ci(d-1.96*s,d+1.96*s)}`;
+  let x=`Se aplicó una prueba <i>t</i> para una muestra con el fin de comparar ${e.vd} con ${e.ref} (${fs(mu)}). `;
+  x+=p<.05?`La media de la muestra ${MDT(m,sd)} fue significativamente ${m>mu?"superior":"inferior"} a dicho valor, ${st}. `:`La media de la muestra ${MDT(m,sd)} no difirió significativamente de dicho valor, ${st}. `;
+  x+=`El tamaño del efecto fue ${mag(Math.abs(d),D)}.`;
+  return{x,vals:[["t",f(t,3)],["gl",df],["p",fpv(p)],["d de Cohen",f(d,3)]]}}},
+
+anova:{name:"ANOVA de un factor",grp:"Comparar tres o más grupos",fields:[
+ ["vd","Variable dependiente","t","el rendimiento"],["fac","Factor","t","el tipo de intervención"],["groups","","groups"]],
+ init:{groups:[["el grupo A","18.2","3.1","25"],["el grupo B","21.5","3.6","25"],["el grupo C","20.1","3.4","25"]]},
+ calc(v,e){const G=v.groups.map(r=>({nm:esc(r[0]),m:N(r[1]),sd:N(r[2]),n:N(r[3])}));
+  if(G.length<2||G.some(g=>!okN(g.m,g.sd,g.n)||g.sd<0||g.n<2))return null;
+  const k=G.length,Nt=G.reduce((s,g)=>s+g.n,0),GM=G.reduce((s,g)=>s+g.n*g.m,0)/Nt,SSB=G.reduce((s,g)=>s+g.n*(g.m-GM)**2,0),SSW=G.reduce((s,g)=>s+(g.n-1)*g.sd*g.sd,0);
+  const d1=k-1,d2=Nt-k,MSW=SSW/d2,F=(SSB/d1)/MSW,p=pF(F,d1,d2),eta=SSB/(SSB+SSW),om=Math.max(0,(SSB-d1*MSW)/(SSB+SSW+MSW));
+  let x=`Se realizó un ANOVA de un factor para analizar si ${e.vd} difería en función ${de(e.fac)}. Los estadísticos descriptivos fueron: ${lista(G.map(g=>`${g.nm} ${MDT(g.m,g.sd)}`))}. `;
+  x+=`El efecto ${de(e.fac)} ${p<.05?"fue":"no fue"} estadísticamente significativo, <i>F</i>(${d1}, ${d2}) = ${f(F)}, ${fp(p)}, η<sup>2</sup> = ${f(eta,2,false)}, ω<sup>2</sup> = ${f(om,2,false)}, lo que indica un tamaño del efecto ${mag(om,ETA)}.`;
+  const note=p<.05?"Completa el análisis con comparaciones post hoc (Tukey o, si las varianzas difieren, Games-Howell). Si no se cumple la homogeneidad de varianzas, informa el <i>F</i> de Welch.":"Si no se cumple la homogeneidad de varianzas, informa el <i>F</i> de Welch.";
+  return{x,note,vals:[["F",f(F,3)],["gl",`${d1}, ${d2}`],["p",fpv(p)],["η²",f(eta,3,false)],["ω²",f(om,3,false)]]}}},
+
+kw:{name:"H de Kruskal-Wallis",grp:"Comparar tres o más grupos",fields:[
+ ["vd","Variable dependiente","t","la satisfacción laboral"],["fac","Factor","t","el turno de trabajo"],
+ ["H","H","n","9.84"],["k","Número de grupos","n","3"],["Nt","N total","n","90"]],
+ calc(v,e){const H=N(v.H),k=N(v.k),n=N(v.Nt);if(!okN(H,k,n)||H<0||k<2||n<=k)return null;
+  const df=k-1,p=pChi(H,df),eps=H/(n-1);
+  let x=`Se aplicó la prueba <i>H</i> de Kruskal-Wallis para analizar si ${e.vd} difería en función ${de(e.fac)}. ${p<.05?"Se":"No se"} encontraron diferencias estadísticamente significativas, <i>H</i>(${df}) = ${f(H)}, ${fp(p)}, ε<sup>2</sup> = ${f(eps,2,false)}, lo que corresponde a un tamaño del efecto ${mag(eps,ETA)}.`;
+  return{x,note:p<.05?"Completa el análisis con comparaciones por pares (prueba de Dunn con corrección de Holm).":"",vals:[["H",f(H,3)],["gl",df],["p",fpv(p)],["ε²",f(eps,3,false)]]}}},
+
+mw:{name:"U de Mann-Whitney",grp:"Comparar dos grupos",fields:[
+ ["vd","Variable dependiente","t","el nivel de estrés"],
+ ["g1","Grupo 1","t","las mujeres"],["mdn1","Mediana 1","n","6"],["n1","n 1","n","50"],
+ ["g2","Grupo 2","t","los hombres"],["mdn2","Mediana 2","n","4"],["n2","n 2","n","48"],
+ ["U","U del grupo 1","n","1650",null,"Número de pares en los que el grupo 1 supera al 2"]],
+ calc(v,e){const U=N(v.U),n1=N(v.n1),n2=N(v.n2),a=N(v.mdn1),b=N(v.mdn2);
+  if(!okN(U,n1,n2,a,b)||n1<1||n2<1||U<0||U>n1*n2)return null;
+  const mu=n1*n2/2,sg=Math.sqrt(n1*n2*(n1+n2+1)/12),z=(U-mu)/sg,p=pZ2(z),r=2*U/(n1*n2)-1;
+  const st=`<i>U</i> = ${fs(U)}, <i>z</i> = ${f(z)}, ${fp(p)}, <i>r</i><sub>rb</sub> = ${f(r,2,false)}`;
+  let x=`Se aplicó la prueba <i>U</i> de Mann-Whitney para comparar ${e.vd} entre ${e.g1} y ${e.g2}. `;
+  x+=p<.05?`Se observaron valores significativamente ${r>0?"más altos":"más bajos"} en ${e.g1} (<i>Mdn</i> = ${fs(a)}) que en ${e.g2} (<i>Mdn</i> = ${fs(b)}), ${st}. `:`No se encontraron diferencias estadísticamente significativas entre ${e.g1} (<i>Mdn</i> = ${fs(a)}) y ${e.g2} (<i>Mdn</i> = ${fs(b)}), ${st}. `;
+  x+=`El tamaño del efecto fue ${mag(Math.abs(r),R)}.`;
+  return{x,note:"El valor z se obtiene por aproximación normal, sin corrección por empates.",vals:[["z",f(z,3)],["p",fpv(p)],["r biserial de rangos",f(r,3,false)]]}}},
+
+wil:{name:"Wilcoxon (rangos con signo)",grp:"Comparar dos grupos",fields:[
+ ["vd","Variable dependiente","t","la ansiedad"],
+ ["c1","Momento o condición 1","t","antes de la intervención",null,"Como complemento: «antes de…», «en el pretest»"],["mdn1","Mediana 1","n","7"],
+ ["c2","Momento o condición 2","t","después de la intervención"],["mdn2","Mediana 2","n","5"],
+ ["Tp","T+ (suma de rangos positivos)","n","85",null,"Rangos de las diferencias en las que 2 > 1"],["n","n (sin diferencias nulas)","n","25"]],
+ calc(v,e){const Tp=N(v.Tp),n=N(v.n),a=N(v.mdn1),b=N(v.mdn2);const tot=n*(n+1)/2;
+  if(!okN(Tp,n,a,b)||n<2||Tp<0||Tp>tot)return null;
+  const z=(Tp-tot/2)/Math.sqrt(n*(n+1)*(2*n+1)/24),p=pZ2(z),r=2*Tp/tot-1;
+  const st=`<i>T</i> = ${fs(Tp)}, <i>z</i> = ${f(z)}, ${fp(p)}, <i>r</i><sub>rb</sub> = ${f(r,2,false)}`;
+  let x=`Se aplicó la prueba de rangos con signo de Wilcoxon para comparar ${e.vd} ${e.c1} (<i>Mdn</i> = ${fs(a)}) y ${e.c2} (<i>Mdn</i> = ${fs(b)}). `;
+  x+=p<.05?`Los valores ${e.c2} fueron significativamente ${r>0?"más altos":"más bajos"}, ${st}. `:`No se encontraron diferencias estadísticamente significativas, ${st}. `;
+  x+=`El tamaño del efecto fue ${mag(Math.abs(r),R)}.`;
+  return{x,note:"El valor z se obtiene por aproximación normal (adecuada con n ≥ 20, aproximadamente).",vals:[["z",f(z,3)],["p",fpv(p)],["r biserial de rangos",f(r,3,false)]]}}},
+
+cor:{name:"Correlación (Pearson o Spearman)",grp:"Relacionar variables",fields:[
+ ["met","Coeficiente","s","pearson",[["pearson","Pearson"],["spearman","Spearman"]]],
+ ["x","Variable 1","t","la gratitud"],["y","Variable 2","t","el optimismo"],["r","r","n","0.42"],["n","n","n","120"]],
+ calc(v,e){const r=N(v.r),n=N(v.n);if(!okN(r,n)||Math.abs(r)>=1||n<4)return null;
+  const P=v.met==="pearson",df=n-2,t=r*Math.sqrt(df)/Math.sqrt(1-r*r),p=pT2(t,df),z=Math.atanh(r),se=P?1/Math.sqrt(n-3):Math.sqrt((1+r*r/2)/(n-3)),lo=Math.tanh(z-1.96*se),hi=Math.tanh(z+1.96*se);
+  const sym=P?"<i>r</i>":"<i>r</i><sub>s</sub>",st=`${sym}(${df}) = ${f(r,2,false)}, ${fp(p)}, IC 95 % ${ci(lo,hi,2,false)}`;
+  let x=`Se calculó el coeficiente de correlación de ${P?"Pearson":"Spearman"} entre ${e.x} y ${e.y}. `;
+  x+=p<.05?`Se observó una relación ${r>0?"positiva":"negativa"}, estadísticamente significativa y de magnitud ${mag(Math.abs(r),R).replace("muy pequeño","muy pequeña").replace("pequeño","pequeña").replace("mediano","mediana")}, ${st}.`:`La correlación no fue estadísticamente significativa, ${st}.`;
+  return{x,vals:[["t",f(t,3)],["gl",df],["p",fpv(p)],["IC 95 %",ci(lo,hi,3,false)]]}}},
+
+chi:{name:"χ² de independencia",grp:"Relacionar variables",fields:[
+ ["A","Variable de filas","t","el sexo"],["B","Variable de columnas","t","la reincidencia"],["tab","","table"]],
+ init:{rows:["los hombres","las mujeres"],cols:["Sí","No"],cells:[["34","66"],["18","82"]]},
+ calc(v,e){const O=v.cells.map(r=>r.map(N));if(O.flat().some(x=>!isFinite(x)||x<0))return null;
+  const nr=O.length,nc=O[0].length,rs=O.map(r=>r.reduce((a,b)=>a+b,0)),cs=O[0].map((_,j)=>O.reduce((a,r)=>a+r[j],0)),Nt=rs.reduce((a,b)=>a+b,0);
+  if(Nt===0||rs.includes(0)||cs.includes(0))return null;
+  let chi=0,small=0;O.forEach((r,i)=>r.forEach((o,j)=>{const E=rs[i]*cs[j]/Nt;chi+=(o-E)**2/E;if(E<5)small++}));
+  const df=(nr-1)*(nc-1),p=pChi(chi,df),m=Math.min(nr,nc)-1,V=Math.sqrt(chi/(Nt*m)),cut=R.map(c=>c/Math.sqrt(m));
+  const pc=O.map((r,i)=>`del ${f(100*r[0]/rs[i],1)} % en ${esc(v.rows[i])}`);
+  let x=`Se aplicó una prueba χ<sup>2</sup> de independencia para analizar la relación entre ${e.A} y ${e.B}. El porcentaje de casos en la categoría «${esc(v.cols[0])}» fue ${lista(pc)}. `;
+  x+=`La asociación ${p<.05?"fue":"no fue"} estadísticamente significativa, χ<sup>2</sup>(${df}, <i>N</i> = ${Nt}) = ${f(chi)}, ${fp(p)}, <i>V</i> de Cramér = ${f(V,2,false)}, lo que indica un tamaño del efecto ${mag(V,cut)}.`;
+  const note=small/(nr*nc)>.2?"Más del 20 % de las frecuencias esperadas son menores que 5. Utiliza la prueba exacta de Fisher.":"";
+  return{x,note,vals:[["χ²",f(chi,3)],["gl",df],["p",fpv(p)],["V de Cramér",f(V,3,false)],["N",Nt]]}}},
+
+reg:{name:"Regresión lineal",grp:"Predecir",fields:[
+ ["vd","Variable dependiente","t","la satisfacción vital"],["n","n","n","200"],["k","Número de predictores","n","3"],["R2","R²","n","0.28"],
+ ["pred","Predictor a informar (opcional)","t","el optimismo"],["b","b","n","0.45"],["se","Error típico de b","n","0.09"],["beta","β (opcional)","n","0.32"]],
+ calc(v,e){const n=N(v.n),k=N(v.k),R2=N(v.R2);if(!okN(n,k,R2)||k<1||n<=k+1||R2<0||R2>=1)return null;
+  const d2=n-k-1,F=(R2/k)/((1-R2)/d2),p=pF(F,k,d2),adj=1-(1-R2)*(n-1)/d2,f2=R2/(1-R2);
+  let x=`Se ajustó un modelo de regresión lineal ${k===1?"simple":"múltiple"} para predecir ${e.vd} a partir de ${k===1?"un predictor":k+" predictores"}. El modelo ${p<.05?"fue":"no fue"} estadísticamente significativo, <i>F</i>(${k}, ${d2}) = ${f(F)}, ${fp(p)}, y explicó el ${f(R2*100,1)} % de la varianza (<i>R</i><sup>2</sup> = ${f(R2,2,false)}, <i>R</i><sup>2</sup> ajustado = ${f(adj,2,false)}; <i>f</i><sup>2</sup> = ${f(f2)}, tamaño del efecto ${mag(f2,F2)}).`;
+  const vals=[["F",f(F,3)],["gl",`${k}, ${d2}`],["p",fpv(p)],["R² ajustado",f(adj,3,false)],["f²",f(f2,3)]];
+  const b=N(v.b),se=N(v.se),bt=N(v.beta);
+  if(String(v.pred).trim()&&okN(b,se)&&se>0){const t=b/se,p2=pT2(t,d2),tc=tcrit(d2);
+   x+=` ${cap(e.pred)} ${p2<.05?`se asoció de forma significativa y ${b>0?"positiva":"negativa"}`:"no se asoció de forma significativa"} con ${e.vd}, <i>b</i> = ${f(b)}, <i>ET</i> = ${f(se)}${isFinite(bt)?`, β = ${f(bt,2,false)}`:""}, <i>t</i>(${d2}) = ${f(t)}, ${fp(p2)}, IC 95 % ${ci(b-tc*se,b+tc*se)}.`;
+   vals.push(["t del predictor",f(t,3)],["p del predictor",fpv(p2)])}
+  return{x,note:"Si tienes varios predictores, informa cada uno de ellos (o preséntalos en una tabla).",vals}}}
+};
+
+/* ---------- Estado e interfaz ---------- */
+const S={cur:"welch",vals:{}};
+const $=id=>document.getElementById(id);
+function V(){const k=S.cur;if(!S.vals[k]){const o={};T[k].fields.forEach(fd=>{if(fd[2]!=="groups"&&fd[2]!=="table")o[fd[0]]=fd[3]});Object.assign(o,JSON.parse(JSON.stringify(T[k].init||{})));S.vals[k]=o}return S.vals[k]}
+
+function renderForm(){const v=V();$("form").innerHTML=T[S.cur].fields.map(fd=>{const[id,label,type,,opts,help]=fd;
+ if(type==="s")return`<label class="f"><span>${label}</span><select data-k="${id}">${opts.map(o=>`<option value="${o[0]}"${v[id]===o[0]?" selected":""}>${o[1]}</option>`).join("")}</select></label>`;
+ if(type==="groups")return`<div class="edwrap"><table class="ed"><tr><th>Grupo</th><th>Media</th><th>DT</th><th>n</th></tr>${v.groups.map((g,i)=>`<tr>${g.map((c,j)=>`<td><input data-g="${i}" data-c="${j}" value="${esc(c)}" ${j?'inputmode="decimal" style="width:80px"':""}></td>`).join("")}</tr>`).join("")}</table><div class="btns"><button class="btn" data-act="addg">+ Añadir grupo</button>${v.groups.length>2?'<button class="btn" data-act="delg">− Quitar el último</button>':""}</div></div>`;
+ if(type==="table")return`<div class="edwrap"><table class="ed"><tr><th></th>${v.cols.map((c,j)=>`<th><input data-col="${j}" value="${esc(c)}"></th>`).join("")}</tr>${v.rows.map((r,i)=>`<tr><td><input data-row="${i}" value="${esc(r)}"></td>${v.cells[i].map((c,j)=>`<td><input data-ci="${i}" data-cj="${j}" value="${esc(c)}" inputmode="numeric"></td>`).join("")}</tr>`).join("")}</table><div class="btns"><button class="btn" data-act="addr">+ Fila</button>${v.rows.length>2?'<button class="btn" data-act="delr">− Fila</button>':""}<button class="btn" data-act="addc">+ Columna</button>${v.cols.length>2?'<button class="btn" data-act="delc">− Columna</button>':""}</div></div>`;
+ return`<label class="f${type==="t"?" full":""}"><span>${label}</span><input data-k="${id}" ${type==="n"?'inputmode="decimal"':""} value="${esc(v[id])}">${help?`<small>${help}</small>`:""}</label>`}).join("");
+ out()}
+
+function out(){const v=V(),e={};Object.keys(v).forEach(k=>{if(typeof v[k]==="string")e[k]=esc(v[k])});
+ let r=null;try{r=T[S.cur].calc(v,e)}catch(err){r=null}
+ const o=$("out");
+ if(!r){o.className="apa empty";o.innerHTML="Completa los datos con valores válidos para generar el texto.";$("vals").innerHTML="";$("note").innerHTML="";return}
+ o.className="apa";o.innerHTML=r.x;
+ $("note").innerHTML=r.note?`<div class="note">${r.note}</div>`:"";
+ $("vals").innerHTML=r.vals.map(([a,b])=>`<div>${a}<b>${b}</b></div>`).join("")}
+
+$("form").addEventListener("input",ev=>{const t=ev.target,v=V(),d=t.dataset;
+ if(d.k!==undefined)v[d.k]=t.value;
+ else if(d.g!==undefined)v.groups[+d.g][+d.c]=t.value;
+ else if(d.col!==undefined)v.cols[+d.col]=t.value;
+ else if(d.row!==undefined)v.rows[+d.row]=t.value;
+ else if(d.ci!==undefined)v.cells[+d.ci][+d.cj]=t.value;
+ out()});
+$("form").addEventListener("change",ev=>{if(ev.target.tagName==="SELECT"){V()[ev.target.dataset.k]=ev.target.value;out()}});
+$("form").addEventListener("click",ev=>{const a=ev.target.dataset.act;if(!a)return;const v=V();
+ if(a==="addg")v.groups.push([`el grupo ${String.fromCharCode(65+v.groups.length)}`,"","",""]);
+ if(a==="delg")v.groups.pop();
+ if(a==="addr"){v.rows.push(`categoría ${v.rows.length+1}`);v.cells.push(v.cols.map(()=>"0"))}
+ if(a==="delr"){v.rows.pop();v.cells.pop()}
+ if(a==="addc"){v.cols.push(`Categoría ${v.cols.length+1}`);v.cells.forEach(r=>r.push("0"))}
+ if(a==="delc"){v.cols.pop();v.cells.forEach(r=>r.pop())}
+ renderForm()});
+
+const grps=[...new Set(Object.values(T).map(t=>t.grp))];
+$("test").innerHTML=grps.map(g=>`<optgroup label="${g}">${Object.entries(T).filter(([,t])=>t.grp===g).map(([k,t])=>`<option value="${k}">${t.name}</option>`).join("")}</optgroup>`).join("");
+$("test").addEventListener("change",e=>{S.cur=e.target.value;renderForm()});
+$("dec").addEventListener("change",e=>{DEC=e.target.value;out()});
+
+$("copy").addEventListener("click",async()=>{const o=$("out");if(o.classList.contains("empty"))return;
+ const html=o.innerHTML,plain=o.innerText;
+ try{await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([plain],{type:"text/plain"})})])}
+ catch(e){try{await navigator.clipboard.writeText(plain)}catch(e2){const r=document.createRange();r.selectNodeContents(o);const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand("copy");s.removeAllRanges()}}
+ $("copied").textContent="Copiado ✓";setTimeout(()=>$("copied").textContent="",2000)});
+
+/* Prueba preseleccionada desde el árbol: ?prueba=clave */
+(function(){let q="";try{q=new URLSearchParams(location.search).get("prueba")||""}catch(e){}
+ if(q==="spearman"){S.cur="cor";V().met="spearman"}else if(T[q])S.cur=q;
+ $("test").value=S.cur;renderForm()})();
+</script>
+<footer class="sf"><div class="sfw"><span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span><span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span></div></footer>
+</body>
+</html>

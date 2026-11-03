@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>d para medidas relacionadas · Calculadora</title>
+<meta name="description" content="dz, dav y drm en diseños pre-post. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/d-relacionadas.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="d para medidas relacionadas · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/d-relacionadas.html">
+<meta property="og:description" content="dz, dav y drm en diseños pre-post. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html" aria-current="page">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="d-relacionadas"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Tamaño del efecto"><a href="d-cohen.html">d de Cohen y g de Hedges</a><a href="d-ic-exacto.html">IC exacto para la d de Cohen</a><a href="d-desde-t.html">d de Cohen a partir de t</a><a href="d-relacionadas.html" aria-current="page">d para medidas relacionadas</a><a href="delta-glass.html">Δ de Glass</a><a href="eta-desde-f.html">η² parcial a partir de F</a><a href="omega-desde-f.html">ω² a partir de F</a><a href="f-cohen-eta.html">Conversión entre f de Cohen y η²</a><a href="conversion-efectos.html">Conversión entre tamaños del efecto</a><a href="riesgo-odds-2x2.html">Riesgo relativo y odds ratio</a><a href="nnt.html">Número necesario a tratar (NNT)</a><a href="phi-v-cramer.html">φ y V de Cramér a partir de χ²</a><a href="w-cohen.html">w de Cohen</a><a href="h-cohen.html">h de Cohen</a><a href="probabilidad-superioridad.html">Probabilidad de superioridad y U₃</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">d para medidas relacionadas</h1>
+      <p class="lede">Calcula las distintas versiones de la d de Cohen para dos medidas relacionadas, a partir de medias, DT y correlación entre medidas.</p>
+      <div class="card">
+        <div class="fields"><label for="m1">Media pre<input id="m1" data-k="m1" data-t="n" inputmode="decimal" autocomplete="off" value="18,2"></label><label for="s1">DT pre<input id="s1" data-k="s1" data-t="n" inputmode="decimal" autocomplete="off" value="5,1"></label><label for="m2">Media post<input id="m2" data-k="m2" data-t="n" inputmode="decimal" autocomplete="off" value="21,0"></label><label for="s2">DT post<input id="s2" data-k="s2" data-t="n" inputmode="decimal" autocomplete="off" value="5,4"></label><label for="r">Correlación pre-post<input id="r" data-k="r" data-t="n" inputmode="decimal" autocomplete="off" value="0,65"></label><label for="n">n<input id="n" data-k="n" data-t="n" inputmode="decimal" autocomplete="off" value="35"></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>dz (DT de las diferencias)</span><b data-out="dz" data-f="3">—</b></div><div class="stat"><span>dav (DT media)</span><b data-out="dav" data-f="3">—</b></div><div class="stat"><span>drm (medidas repetidas)</span><b data-out="drm" data-f="3">—</b></div><div class="stat"><span>DT de las diferencias</span><b data-out="sdif" data-f="3">—</b></div><div class="stat"><span>t equivalente</span><b data-out="t" data-f="3">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>dz depende de la correlación entre medidas y no es comparable con la d entre grupos. dav y drm sí lo son, y son las adecuadas para comparar con estudios entre grupos o incluir en metaanálisis.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Una intervención eleva la puntuación de 18,2 a 21,0 en 35 participantes con correlación pre-post de ,65. dz = 0,64, mientras que dav = 0,53.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">s_dif = √(s₁² + s₂² − 2r s₁ s₂)   dz = (x̄₂ − x̄₁)/s_dif
+dav = (x̄₂ − x̄₁)/[(s₁ + s₂)/2]   drm = dz √[2(1 − r)]</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science. <i>Frontiers in Psychology, 4</i>, 863.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="d-desde-t.html">← d de Cohen a partir de t</a><a href="delta-glass.html">Δ de Glass →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>d para medidas relacionadas</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#tamano-del-efecto">Todas las de Tamaño del efecto</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

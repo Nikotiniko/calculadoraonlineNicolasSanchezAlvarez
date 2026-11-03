@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conversor de tamaños del efecto</title>
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<meta name="description" content="Convierte entre d de Cohen, g de Hedges, r, odds ratio, η², f, t, F y χ², con intervalos de confianza e interpretación. Calculadora en español.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>:root{--bg:#f8fafb;--card:#ffffff;--ink:#1e2b34;--muted:#5e6d77;--line:#dfe6eb;--accent:#2b6c94;--accent-soft:#e7f0f6;--red:#b3412e;--red-soft:#f8e6e2;--tip:#fbf4e6;--tip-ink:#7a5214;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:28px 16px 60px}
+.navl{font-size:.88rem}.navl a{color:var(--accent);text-decoration:none}.navl span{color:var(--muted);margin:0 6px}
+h1{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:clamp(1.7rem,5vw,2.3rem);margin:8px 0 6px}
+.lead{margin:0 0 20px;color:var(--muted)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}
+.tabs button{font:inherit;font-size:.9rem;white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:99px;cursor:pointer}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px}
+h2{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.3rem;margin:0 0 6px}
+.desc{color:var(--muted);margin:0 0 16px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:6px}
+.grid .full{grid-column:1/-1}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:.84rem;color:var(--muted);font-weight:500}
+label.f small{font-weight:400;font-size:.76rem}
+input,select,textarea{font:inherit;font-size:.95rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+textarea{font-family:ui-monospace,Menlo,monospace;font-size:.85rem;min-height:150px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px}
+.res div{background:var(--bg);border-radius:8px;padding:9px 11px;font-size:.8rem;color:var(--muted)}
+.res b{display:block;color:var(--ink);font-size:1.08rem;font-weight:600}
+.res small{display:block;font-size:.74rem}
+.res .hl{background:var(--accent-soft)}.res .hl b{color:var(--accent)}
+.res .bad{background:var(--red-soft)}.res .bad b{color:var(--red)}
+table.t{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:12px}
+table.t th{text-align:left;font-weight:500;color:var(--muted);font-size:.8rem;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.t td{padding:8px;border-bottom:1px solid var(--line)}
+table.t tr.src td{background:var(--accent-soft)}
+.tw{overflow-x:auto}
+.say{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.04rem;line-height:1.65;background:var(--bg);border-left:3px solid var(--accent);padding:12px 14px;border-radius:0 8px 8px 0;margin-top:14px}
+.warn{background:var(--red-soft);color:var(--red);font-size:.88rem;border-radius:8px;padding:10px 12px;margin-top:12px}
+.tip{background:var(--tip);color:var(--tip-ink);border-radius:10px;padding:12px 14px;font-size:.88rem;margin-top:14px}
+.tip strong{display:block;margin-bottom:2px}
+canvas{width:100%;display:block;margin-top:12px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.top{display:flex;justify-content:flex-end;margin-bottom:10px}.top label{flex-direction:row;align-items:center;gap:8px}.top select{width:auto}
+.btn{font:inherit;font-size:.9rem;border:1px solid var(--accent);background:var(--accent);color:#fff;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:600}
+footer{margin-top:24px;font-size:.82rem;color:var(--muted)}
+
+.sh{background:#fff;border-bottom:1px solid #dfe6eb}.shw{max-width:1120px;margin:0 auto;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.sn{font:700 18px/1.2 "Bricolage Grotesque",system-ui,sans-serif;color:#1e2b34;text-decoration:none}.sn small{display:block;font:500 12px/1.3 "Public Sans",system-ui,sans-serif;color:#5e6d77}
+.snav{display:flex;flex-wrap:wrap;gap:4px}.snav a{padding:7px 12px;border-radius:6px;text-decoration:none;color:#1e2b34;font-size:15px}.snav a:hover{background:#f1f5f8}.snav a.cur{background:#e7f0f6;color:#2b6c94;font-weight:600}
+.tsub{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid #dfe6eb}.tsub a{font-size:13px;line-height:1.25;padding:7px 11px;border-radius:999px;background:#fff;border:1px solid #dfe6eb;color:#1e2b34;text-decoration:none}.tsub a:hover{border-color:#2b6c94;color:#2b6c94}.tsub a.cur{background:#2b6c94;border-color:#2b6c94;color:#fff;font-weight:600}
+.citebox{background:#fff;border:1px solid #dfe6eb;border-radius:8px;padding:12px 14px;font-size:13px;margin-top:10px;overflow-wrap:anywhere;color:#1e2b34}
+.sf{border-top:1px solid #dfe6eb;background:#fff;color:#5e6d77;font-size:13px;margin-top:20px}.sfw{max-width:1120px;margin:0 auto;padding:18px 16px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}.sf a{color:#2b6c94}
+</style>
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/herramientas/tamanos-efecto.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Conversor de tamaños del efecto">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/herramientas/tamanos-efecto.html">
+<meta property="og:description" content="Convierte entre d de Cohen, g de Hedges, r, odds ratio, η², f, t, F y χ², con intervalos de confianza e interpretación. Calculadora en español.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="sh"><div class="shw"><a class="sn" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a><nav class="snav" aria-label="Principal"><a href="../index.html">Inicio</a><a href="../index.html#publicaciones">Publicaciones</a><a href="../index.html#libros">Libros</a><a href="../calculadoras/index.html">Calculadoras</a><a href="../herramientas/index.html" class="cur">Herramientas</a></nav></div></header>
+<div class="wrap">
+  <nav class="tsub" aria-label="Herramientas"><a href="que-prueba-uso.html">¿Qué prueba uso?</a><a href="redactor-apa.html">Redactor APA</a><a href="simuladores.html">Simuladores</a><a href="tamanos-efecto.html" class="cur">Tamaños del efecto</a><a href="potencia.html">Potencia</a><a href="psicometria.html">Psicometría</a><a href="bayes.html">Bayes</a><a href="metaanalisis.html">Metaanálisis</a></nav>
+  <h1>Conversor de tamaños del efecto</h1>
+  <p class="lead">Introduce un tamaño del efecto o un estadístico de contraste para dos grupos y obtén todas sus equivalencias, con intervalos de confianza al 95 %, su interpretación y una representación gráfica.</p>
+
+  <div class="card">
+    <div class="top"><label class="f">Decimales <select id="dec"><option value=",">Coma</option><option value=".">Punto</option></select></label></div>
+    <div class="grid">
+      <label class="f full">Lo que tienes
+        <select id="src">
+          <option value="d">d de Cohen</option>
+          <option value="g">g de Hedges</option>
+          <option value="r">r (correlación o biserial puntual)</option>
+          <option value="or">Odds ratio (OR)</option>
+          <option value="t">t de Student (dos grupos independientes)</option>
+          <option value="f1">F(1, gl) de un ANOVA con dos grupos</option>
+          <option value="chi">χ²(1) de una tabla 2×2</option>
+          <option value="eta">η² (dos grupos)</option>
+        </select></label>
+      <label class="f">Valor<input id="val" inputmode="decimal" value="0.5"></label>
+      <label class="f">n grupo 1<input id="n1" inputmode="numeric" value="50"></label>
+      <label class="f">n grupo 2<input id="n2" inputmode="numeric" value="50"></label>
+    </div>
+    <div id="warn"></div>
+  </div>
+
+  <div class="card">
+    <h2>Equivalencias</h2>
+    <div class="tw"><table class="t"><thead><tr><th>Medida</th><th>Valor</th><th>IC 95 %</th></tr></thead><tbody id="tab"></tbody></table></div>
+    <div class="say" id="say"></div>
+  </div>
+
+  <div class="card">
+    <h2>Qué significa visualmente</h2>
+    <canvas id="cv"></canvas>
+    <div class="legend"><span><i style="background:rgba(93,99,112,.35)"></i>Grupo 2 (referencia)</span><span><i style="background:rgba(43,108,148,.4)"></i>Grupo 1</span><span><i style="background:rgba(179,65,46,.35)"></i>Solapamiento</span></div>
+    <div class="tip"><strong>Notas sobre el cálculo</strong>Las conversiones siguen las fórmulas habituales en metaanálisis (Borenstein et al., 2009) y asumen distribuciones normales con varianzas iguales. El paso entre d y OR usa la aproximación logística (ln OR = d·π/√3). El IC se calcula en la métrica d (o en la de r, mediante la transformación de Fisher, si partes de r, χ² o η²) y se transforma al resto de medidas. Las referencias para interpretar son orientativas: Cohen (1988) para d, r, η² y f, y Chen et al. (2010) para OR. Siempre es preferible compararlas con los efectos habituales en tu campo.</div>
+  </div>
+
+  <div class="citebox"><b>Cómo citar esta herramienta</b><br>Sánchez Álvarez, N. (2026). <i>Conversor de tamaños del efecto</i> [Herramienta en línea]. Universidad de Málaga. https://nikotiniko.github.io/Myweb/herramientas/tamanos-efecto.html</div>
+  <footer>Nicolás Sánchez Álvarez · Universidad de Málaga.</footer>
+</div>
+<script>
+/* ---------- Núcleo estadístico ---------- */
+const $=id=>document.getElementById(id);
+let DEC=",";
+const fmt=(x,d=2,lead=true)=>{if(!isFinite(x))return x===Infinity?"∞":x===-Infinity?"−∞":"—";let s=Math.abs(x).toFixed(d);if(!lead&&s[0]==="0")s=s.slice(1);const neg=x<0&&parseFloat(s)!==0;return(neg?"−":"")+s.replace(".",DEC)};
+const ci=(a,b,d=2,lead=true)=>`[${fmt(a,d,lead)}${DEC===","?";":","} ${fmt(b,d,lead)}]`;
+const N=x=>parseFloat(String(x??"").trim().replace(",","."));
+function lnG(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,.1208650973866179e-2,-.5395239384953e-5];let y=x,t=x+5.5;t-=(x+.5)*Math.log(t);let s=1.000000000190015;for(const ci of c)s+=ci/++y;return -t+Math.log(2.5066282746310005*s/x)}
+function betacf(a,b,x){const F=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<F)d=F;d=1/d;let h=d;for(let m=1;m<=500;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return h}
+function ibeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lnG(a+b)-lnG(a)-lnG(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b}
+function gser(a,x){let ap=a,sum=1/a,del=sum;for(let n=0;n<2000;n++){ap++;del*=x/ap;sum+=del;if(Math.abs(del)<Math.abs(sum)*3e-14)break}return sum*Math.exp(-x+a*Math.log(x)-lnG(a))}
+function gcf(a,x){const F=1e-300;let b=x+1-a,c=1/F,d=1/b,h=d;for(let i=1;i<2000;i++){const an=-i*(i-a);b+=2;d=an*d+b;if(Math.abs(d)<F)d=F;c=b+an/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return Math.exp(-x+a*Math.log(x)-lnG(a))*h}
+function gammaP(a,x){if(x<=0)return 0;return x<a+1?gser(a,x):1-gcf(a,x)}
+const gammaQ=(a,x)=>1-gammaP(a,x);
+const Phi=x=>x>=0?1-.5*gcfQ(x):.5*gcfQ(x);
+function gcfQ(x){const v=x*x/2;return v<1.5?1-gser(.5,v):gcf(.5,v)}
+function qnorm(p){let lo=-40,hi=40;for(let i=0;i<200;i++){const m=(lo+hi)/2;Phi(m)<p?lo=m:hi=m}return(lo+hi)/2}
+const pT2=(t,df)=>ibeta(df/(df+t*t),df/2,.5);
+const pF=(F,d1,d2)=>F<=0?1:ibeta(d2/(d2+d1*F),d2/2,d1/2);
+const pChi=(x,df)=>gammaQ(df/2,x/2);
+function tcrit(df,alpha=.05){let lo=0,hi=1e4;for(let i=0;i<200;i++){const m=(lo+hi)/2;pT2(m,df)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function fcrit(d1,d2,alpha=.05){let lo=0,hi=1e5;for(let i=0;i<200;i++){const m=(lo+hi)/2;pF(m,d1,d2)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function chicrit(df,alpha=.05){let lo=0,hi=1e5;for(let i=0;i<200;i++){const m=(lo+hi)/2;pChi(m,df)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function setup(cv,h){const w=cv.clientWidth||cv.parentNode.clientWidth,dpr=window.devicePixelRatio||1;cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+"px";const ctx=cv.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.font="12px Inter, sans-serif";return{ctx,w,h}}
+const C={accent:"#2b6c94",red:"#b3412e",ink:"#1e2b34",muted:"#5e6d77",line:"#dfe6eb",grey:"#d5dde3"};
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const mag=(x,c,fem)=>{const l=x<c[0]?"muy pequeño":x<c[1]?"pequeño":x<c[2]?"mediano":"grande";return fem?l.replace(/o$/,"a"):l};
+
+const D=[.2,.5,.8],R=[.1,.3,.5],ETA=[.01,.06,.14],FF=[.1,.25,.4],ORc=[1.68,3.47,6.71];
+function compute(){
+ const src=$("src").value,v=N($("val").value),n1=N($("n1").value),n2=N($("n2").value),w=$("warn");w.innerHTML="";
+ if(!isFinite(v)||!isFinite(n1)||!isFinite(n2)||n1<2||n2<2){$("tab").innerHTML="";$("say").textContent="Introduce un valor y los tamaños de los grupos.";return}
+ const Nt=n1+n2,a=Nt*Nt/(n1*n2),J=1-3/(4*Nt-9);
+ const r2d=r=>r*Math.sqrt(a)/Math.sqrt(1-r*r),d2r=d=>d/Math.sqrt(d*d+a);
+ let d,lo,hi,viaR=false,r0;
+ const bad=m=>{w.innerHTML=`<div class="warn">${m}</div>`;$("tab").innerHTML="";$("say").textContent="";drawPlot(NaN)};
+ switch(src){
+  case"d":d=v;break;case"g":d=v/J;break;
+  case"r":if(Math.abs(v)>=1)return bad("r debe estar entre −1 y 1.");r0=v;viaR=true;break;
+  case"or":if(v<=0)return bad("El OR debe ser mayor que 0.");d=Math.log(v)*Math.sqrt(3)/Math.PI;break;
+  case"t":d=v*Math.sqrt(1/n1+1/n2);break;
+  case"f1":if(v<0)return bad("F no puede ser negativo.");d=Math.sqrt(v)*Math.sqrt(1/n1+1/n2);w.innerHTML=`<div class="warn">F no conserva el signo: el efecto se muestra como positivo. Cambia el signo de d según qué grupo tuviera la media mayor.</div>`;break;
+  case"chi":if(v<0)return bad("χ² no puede ser negativo.");r0=Math.sqrt(v/Nt);if(r0>=1)return bad("χ² no puede superar N.");viaR=true;w.innerHTML=`<div class="warn">χ² no conserva el signo y aquí se toma N = n₁ + n₂ = ${Nt}. La conversión a d trata φ como una correlación biserial puntual, lo cual es solo una aproximación con variables dicotómicas. Para tablas 2×2 suele ser más adecuado calcular el OR directamente a partir de las frecuencias.</div>`;break;
+  case"eta":if(v<0||v>=1)return bad("η² debe estar entre 0 y 1.");r0=Math.sqrt(v);viaR=true;w.innerHTML=`<div class="warn">η² no conserva el signo: el efecto se muestra como positivo.</div>`;break}
+ if(viaR){d=r2d(r0);const z=Math.atanh(r0),se=1/Math.sqrt(Nt-3);lo=r2d(Math.tanh(z-1.96*se));hi=r2d(Math.tanh(z+1.96*se))}
+ else{const se=Math.sqrt(Nt/(n1*n2)+d*d/(2*Nt));lo=d-1.96*se;hi=d+1.96*se}
+ const Mx=[
+  ["d","d de Cohen",x=>x,0,(x)=>"efecto "+mag(Math.abs(x),D)],
+  ["g","g de Hedges",x=>J*x,0,(x)=>"efecto "+mag(Math.abs(x),D)],
+  ["r","r",d2r,0,x=>mag(Math.abs(x),R,true)],
+  ["r2","r² (varianza explicada)",x=>d2r(x)**2,1,()=>""],
+  ["eta","η²",x=>d2r(x)**2,1,x=>mag(x,ETA)],
+  ["f","f de Cohen",x=>{const r=d2r(x);return Math.abs(r)/Math.sqrt(1-r*r)},1,x=>mag(x,FF)],
+  ["or","Odds ratio",x=>Math.exp(x*Math.PI/Math.sqrt(3)),0,x=>mag(Math.max(x,1/x),ORc)],
+  ["lor","ln OR",x=>x*Math.PI/Math.sqrt(3),0,()=>""],
+  ["cles","Probabilidad de superioridad",x=>Phi(x/Math.SQRT2),0,()=>""],
+  ["u3","U₃ de Cohen",x=>Phi(x),0,x=>`${fmt(100*x,1)} % por encima de la media`],
+  ["ovl","Solapamiento",x=>2*Phi(-Math.abs(x)/2),2,()=>""],
+  ["nnt","NNT",x=>{const c=2*Phi(x/Math.SQRT2)-1;return c===0?Infinity:1/c},3,()=>""]];
+ const pairs={d:"d",g:"g",r:"r",or:"or",eta:"eta",t:"d",f1:"d",chi:"r"};
+ $("tab").innerHTML=Mx.map(([k,lab,fn,typ,interp])=>{
+  const val=fn(d);let a1=fn(lo),b1=fn(hi);
+  if(typ===1){if(lo<0&&hi>0){a1=0;b1=Math.max(fn(lo),fn(hi))}else{[a1,b1]=[Math.min(a1,b1),Math.max(a1,b1)]}}
+  if(typ===2){if(lo<0&&hi>0){a1=Math.min(fn(lo),fn(hi));b1=1}else{[a1,b1]=[Math.min(a1,b1),Math.max(a1,b1)]}}
+  let ics=ci(a1,b1,typ===3?1:k==="or"?2:3);
+  if(typ===3){ics=(lo<0&&hi>0)?"Incluye ∞ (el IC de d contiene 0)":ci(Math.min(a1,b1),Math.max(a1,b1),1)}
+  const dd=k==="nnt"||k==="or"||k==="cles"||k==="u3"||k==="ovl"?2:3;
+  const shown=k==="nnt"?fmt(val,1):fmt(val,dd);
+  return`<tr class="${pairs[src]===k?"src":""}"><td>${lab}${interp(val)?`<small style="display:block;color:var(--muted);font-size:.78rem">${interp(val)}</small>`:""}</td><td><b>${shown}</b></td><td style="white-space:nowrap">${ics}</td></tr>`}).join("");
+ const cl=Phi(d/Math.SQRT2),u3=Phi(d),ov=2*Phi(-Math.abs(d)/2),nnt=1/(2*cl-1);
+ $("say").innerHTML=`Con <i>d</i> = ${fmt(d)}, el ${fmt(100*u3,1)} % del grupo 1 se sitúa por encima de la media del grupo 2 (U₃), las dos distribuciones se solapan en un ${fmt(100*ov,1)} % y hay un ${fmt(100*cl,1)} % de probabilidad de que una persona elegida al azar del grupo 1 puntúe más alto que una del grupo 2.${isFinite(nnt)&&Math.abs(nnt)<1e4?` Habría que tratar a unas ${fmt(Math.abs(nnt),1)} personas para obtener un resultado favorable adicional respecto al grupo ${nnt>0?"2":"1"} (NNT).`:""}`;
+ drawPlot(d)}
+function drawPlot(d){const cv=$("cv");if(!isFinite(d)){setup(cv,10);return}
+ const{ctx,w,h}=setup(cv,220),L=8,Rm=8,T=10,B=26,x0=Math.min(-3.5,d-3.5),x1=Math.max(3.5,d+3.5),X=v=>L+(v-x0)/(x1-x0)*(w-L-Rm),pdf=x=>Math.exp(-x*x/2)/Math.sqrt(2*Math.PI),Y=y=>h-B-y/.42*(h-B-T);
+ for(let px=L;px<w-Rm;px++){const x=x0+(px-L)/(w-L-Rm)*(x1-x0),a=pdf(x),b=pdf(x-d),m=Math.min(a,b);
+  ctx.fillStyle="rgba(93,99,112,.25)";ctx.fillRect(px,Y(a),1,h-B-Y(a));ctx.fillStyle="rgba(43,108,148,.32)";ctx.fillRect(px,Y(b),1,h-B-Y(b));ctx.fillStyle="rgba(179,65,46,.30)";ctx.fillRect(px,Y(m),1,h-B-Y(m))}
+ [[0,C.muted],[d,C.accent]].forEach(([s,c])=>{ctx.strokeStyle=c;ctx.lineWidth=2;ctx.beginPath();for(let px=L;px<w-Rm;px++){const x=x0+(px-L)/(w-L-Rm)*(x1-x0),y=Y(pdf(x-s));px===L?ctx.moveTo(px,y):ctx.lineTo(px,y)}ctx.stroke();ctx.setLineDash([4,4]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(X(s),Y(pdf(0)));ctx.lineTo(X(s),h-B);ctx.stroke();ctx.setLineDash([])});
+ ctx.strokeStyle=C.line;ctx.beginPath();ctx.moveTo(L,h-B);ctx.lineTo(w-Rm,h-B);ctx.stroke();ctx.fillStyle=C.muted;ctx.textAlign="center";
+ for(let t=Math.ceil(x0);t<=x1;t++){ctx.fillText(fmt(t,0),X(t),h-B+16)}
+ ctx.fillText("unidades de DT",w/2,T+2)}
+["src","val","n1","n2"].forEach(id=>$(id).addEventListener("input",compute));
+$("dec").addEventListener("change",e=>{DEC=e.target.value;compute()});
+let rt;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(compute,150)});
+compute();
+</script>
+<footer class="sf"><div class="sfw"><span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span><span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span></div></footer>
+</body>
+</html>

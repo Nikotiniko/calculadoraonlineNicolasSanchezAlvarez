@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Potencia y tamaño muestral</title>
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<meta name="description" content="Calculadora de tamaño muestral y potencia estadística en español: t de Student, correlación, ANOVA, χ² y regresión. Resultados equivalentes a G*Power y texto para justificar la muestra.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>:root{--bg:#f8fafb;--card:#ffffff;--ink:#1e2b34;--muted:#5e6d77;--line:#dfe6eb;--accent:#2b6c94;--accent-soft:#e7f0f6;--red:#b3412e;--red-soft:#f8e6e2;--tip:#fbf4e6;--tip-ink:#7a5214;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:28px 16px 60px}
+.navl{font-size:.88rem}.navl a{color:var(--accent);text-decoration:none}.navl span{color:var(--muted);margin:0 6px}
+h1{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:clamp(1.7rem,5vw,2.3rem);margin:8px 0 6px}
+.lead{margin:0 0 20px;color:var(--muted)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}
+.tabs button{font:inherit;font-size:.9rem;white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:99px;cursor:pointer}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px}
+h2{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.3rem;margin:0 0 6px}
+.desc{color:var(--muted);margin:0 0 16px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:6px}
+.grid .full{grid-column:1/-1}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:.84rem;color:var(--muted);font-weight:500}
+label.f small{font-weight:400;font-size:.76rem}
+input,select,textarea{font:inherit;font-size:.95rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+textarea{font-family:ui-monospace,Menlo,monospace;font-size:.85rem;min-height:150px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px}
+.res div{background:var(--bg);border-radius:8px;padding:9px 11px;font-size:.8rem;color:var(--muted)}
+.res b{display:block;color:var(--ink);font-size:1.08rem;font-weight:600}
+.res small{display:block;font-size:.74rem}
+.res .hl{background:var(--accent-soft)}.res .hl b{color:var(--accent)}
+.res .bad{background:var(--red-soft)}.res .bad b{color:var(--red)}
+table.t{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:12px}
+table.t th{text-align:left;font-weight:500;color:var(--muted);font-size:.8rem;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.t td{padding:8px;border-bottom:1px solid var(--line)}
+table.t tr.src td{background:var(--accent-soft)}
+.tw{overflow-x:auto}
+.say{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.04rem;line-height:1.65;background:var(--bg);border-left:3px solid var(--accent);padding:12px 14px;border-radius:0 8px 8px 0;margin-top:14px}
+.warn{background:var(--red-soft);color:var(--red);font-size:.88rem;border-radius:8px;padding:10px 12px;margin-top:12px}
+.tip{background:var(--tip);color:var(--tip-ink);border-radius:10px;padding:12px 14px;font-size:.88rem;margin-top:14px}
+.tip strong{display:block;margin-bottom:2px}
+canvas{width:100%;display:block;margin-top:12px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.top{display:flex;justify-content:flex-end;margin-bottom:10px}.top label{flex-direction:row;align-items:center;gap:8px}.top select{width:auto}
+.btn{font:inherit;font-size:.9rem;border:1px solid var(--accent);background:var(--accent);color:#fff;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:600}
+footer{margin-top:24px;font-size:.82rem;color:var(--muted)}
+
+.presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.presets button{font:inherit;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);padding:4px 10px;border-radius:99px;cursor:pointer}
+.presets button:hover{border-color:var(--accent);color:var(--accent)}
+.bign{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:2.4rem;font-weight:600;color:var(--accent);line-height:1.1}
+.bigl{color:var(--muted);font-size:.9rem}
+
+.sh{background:#fff;border-bottom:1px solid #dfe6eb}.shw{max-width:1120px;margin:0 auto;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.sn{font:700 18px/1.2 "Bricolage Grotesque",system-ui,sans-serif;color:#1e2b34;text-decoration:none}.sn small{display:block;font:500 12px/1.3 "Public Sans",system-ui,sans-serif;color:#5e6d77}
+.snav{display:flex;flex-wrap:wrap;gap:4px}.snav a{padding:7px 12px;border-radius:6px;text-decoration:none;color:#1e2b34;font-size:15px}.snav a:hover{background:#f1f5f8}.snav a.cur{background:#e7f0f6;color:#2b6c94;font-weight:600}
+.tsub{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid #dfe6eb}.tsub a{font-size:13px;line-height:1.25;padding:7px 11px;border-radius:999px;background:#fff;border:1px solid #dfe6eb;color:#1e2b34;text-decoration:none}.tsub a:hover{border-color:#2b6c94;color:#2b6c94}.tsub a.cur{background:#2b6c94;border-color:#2b6c94;color:#fff;font-weight:600}
+.citebox{background:#fff;border:1px solid #dfe6eb;border-radius:8px;padding:12px 14px;font-size:13px;margin-top:10px;overflow-wrap:anywhere;color:#1e2b34}
+.sf{border-top:1px solid #dfe6eb;background:#fff;color:#5e6d77;font-size:13px;margin-top:20px}.sfw{max-width:1120px;margin:0 auto;padding:18px 16px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}.sf a{color:#2b6c94}
+</style>
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/herramientas/potencia.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Potencia y tamaño muestral">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/herramientas/potencia.html">
+<meta property="og:description" content="Calculadora de tamaño muestral y potencia estadística en español: t de Student, correlación, ANOVA, χ² y regresión. Resultados equivalentes a G*Power y texto para justificar la muestra.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="sh"><div class="shw"><a class="sn" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a><nav class="snav" aria-label="Principal"><a href="../index.html">Inicio</a><a href="../index.html#publicaciones">Publicaciones</a><a href="../index.html#libros">Libros</a><a href="../calculadoras/index.html">Calculadoras</a><a href="../herramientas/index.html" class="cur">Herramientas</a></nav></div></header>
+<div class="wrap">
+  <nav class="tsub" aria-label="Herramientas"><a href="que-prueba-uso.html">¿Qué prueba uso?</a><a href="redactor-apa.html">Redactor APA</a><a href="simuladores.html">Simuladores</a><a href="tamanos-efecto.html">Tamaños del efecto</a><a href="potencia.html" class="cur">Potencia</a><a href="psicometria.html">Psicometría</a><a href="bayes.html">Bayes</a><a href="metaanalisis.html">Metaanálisis</a></nav>
+  <h1>Tamaño muestral y potencia</h1>
+  <p class="lead">Calcula cuántos participantes necesitas para detectar un efecto, o qué potencia tiene tu diseño con una muestra dada. Los cálculos usan las distribuciones no centrales exactas, las mismas que G*Power, y generan el párrafo para justificar la muestra en tu trabajo.</p>
+
+  <div class="card">
+    <div class="grid">
+      <label class="f full">Diseño
+        <select id="des">
+          <option value="t2">t para dos grupos independientes</option>
+          <option value="tp">t para muestras relacionadas o una muestra</option>
+          <option value="cor">Correlación (H₀: ρ = 0)</option>
+          <option value="anova">ANOVA de un factor</option>
+          <option value="chi">χ² (bondad de ajuste o tabla de contingencia)</option>
+          <option value="reg">Regresión lineal múltiple (R² ≠ 0)</option>
+        </select></label>
+      <label class="f full">Qué quieres calcular
+        <select id="mode"><option value="n">El tamaño muestral necesario</option><option value="p">La potencia con un tamaño muestral dado</option></select></label>
+      <div class="f full" id="esbox"></div>
+      <label class="f">α<select id="alpha"><option value="0.01">0,01</option><option value="0.05" selected>0,05</option><option value="0.1">0,10</option></select></label>
+      <label class="f" id="tailsbox">Contraste<select id="tails"><option value="2">Bilateral</option><option value="1">Unilateral</option></select></label>
+      <label class="f" id="powbox">Potencia deseada<select id="pow"><option value="0.8" selected>0,80</option><option value="0.85">0,85</option><option value="0.9">0,90</option><option value="0.95">0,95</option></select></label>
+      <label class="f" id="nbox">n<input id="nin" inputmode="numeric" value="50"></label>
+      <label class="f" id="extbox"></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="bigl" id="bigl"></div>
+    <div class="bign" id="big"></div>
+    <div class="res" id="res"></div>
+    <div class="say" id="say"></div>
+    <button class="btn" id="copy" style="margin-top:10px">Copiar el párrafo</button> <span id="ok" style="color:#2e7d4f;font-size:.85rem"></span>
+  </div>
+
+  <div class="card">
+    <h2>Potencia según el tamaño muestral</h2>
+    <canvas id="cv"></canvas>
+    <div class="tip"><strong>Para elegir el tamaño del efecto</strong>No uses por defecto los valores «pequeño, mediano, grande» de Cohen: busca el efecto mínimo de interés práctico o el promedio de los metaanálisis de tu campo. Si lo tomas de un único estudio previo, ten en cuenta que los efectos publicados suelen estar inflados, así que conviene usar un valor más conservador.</div>
+  </div>
+
+  <div class="citebox"><b>Cómo citar esta herramienta</b><br>Sánchez Álvarez, N. (2026). <i>Tamaño muestral y potencia</i> [Herramienta en línea]. Universidad de Málaga. https://nikotiniko.github.io/Myweb/herramientas/potencia.html</div>
+  <footer>Nicolás Sánchez Álvarez · Universidad de Málaga. Referencia: Cohen, J. (1988). <i>Statistical power analysis for the behavioral sciences</i> (2.ª ed.). Para la correlación se usa la aproximación de Fisher, que puede diferir en uno o dos casos del modelo exacto de G*Power.</footer>
+</div>
+<script>
+/* ---------- Núcleo estadístico ---------- */
+const $=id=>document.getElementById(id);
+let DEC=",";
+const fmt=(x,d=2,lead=true)=>{if(!isFinite(x))return x===Infinity?"∞":x===-Infinity?"−∞":"—";let s=Math.abs(x).toFixed(d);if(!lead&&s[0]==="0")s=s.slice(1);const neg=x<0&&parseFloat(s)!==0;return(neg?"−":"")+s.replace(".",DEC)};
+const ci=(a,b,d=2,lead=true)=>`[${fmt(a,d,lead)}${DEC===","?";":","} ${fmt(b,d,lead)}]`;
+const N=x=>parseFloat(String(x??"").trim().replace(",","."));
+function lnG(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,.1208650973866179e-2,-.5395239384953e-5];let y=x,t=x+5.5;t-=(x+.5)*Math.log(t);let s=1.000000000190015;for(const ci of c)s+=ci/++y;return -t+Math.log(2.5066282746310005*s/x)}
+function betacf(a,b,x){const F=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<F)d=F;d=1/d;let h=d;for(let m=1;m<=500;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return h}
+function ibeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lnG(a+b)-lnG(a)-lnG(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b}
+function gser(a,x){let ap=a,sum=1/a,del=sum;for(let n=0;n<2000;n++){ap++;del*=x/ap;sum+=del;if(Math.abs(del)<Math.abs(sum)*3e-14)break}return sum*Math.exp(-x+a*Math.log(x)-lnG(a))}
+function gcf(a,x){const F=1e-300;let b=x+1-a,c=1/F,d=1/b,h=d;for(let i=1;i<2000;i++){const an=-i*(i-a);b+=2;d=an*d+b;if(Math.abs(d)<F)d=F;c=b+an/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return Math.exp(-x+a*Math.log(x)-lnG(a))*h}
+function gammaP(a,x){if(x<=0)return 0;return x<a+1?gser(a,x):1-gcf(a,x)}
+const gammaQ=(a,x)=>1-gammaP(a,x);
+const Phi=x=>x>=0?1-.5*gcfQ(x):.5*gcfQ(x);
+function gcfQ(x){const v=x*x/2;return v<1.5?1-gser(.5,v):gcf(.5,v)}
+function qnorm(p){let lo=-40,hi=40;for(let i=0;i<200;i++){const m=(lo+hi)/2;Phi(m)<p?lo=m:hi=m}return(lo+hi)/2}
+const pT2=(t,df)=>ibeta(df/(df+t*t),df/2,.5);
+const pF=(F,d1,d2)=>F<=0?1:ibeta(d2/(d2+d1*F),d2/2,d1/2);
+const pChi=(x,df)=>gammaQ(df/2,x/2);
+function tcrit(df,alpha=.05){let lo=0,hi=1e4;for(let i=0;i<200;i++){const m=(lo+hi)/2;pT2(m,df)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function fcrit(d1,d2,alpha=.05){let lo=0,hi=1e5;for(let i=0;i<200;i++){const m=(lo+hi)/2;pF(m,d1,d2)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function chicrit(df,alpha=.05){let lo=0,hi=1e5;for(let i=0;i<200;i++){const m=(lo+hi)/2;pChi(m,df)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function setup(cv,h){const w=cv.clientWidth||cv.parentNode.clientWidth,dpr=window.devicePixelRatio||1;cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+"px";const ctx=cv.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.font="12px Inter, sans-serif";return{ctx,w,h}}
+const C={accent:"#2b6c94",red:"#b3412e",ink:"#1e2b34",muted:"#5e6d77",line:"#dfe6eb",grey:"#d5dde3"};
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const mag=(x,c,fem)=>{const l=x<c[0]?"muy pequeño":x<c[1]?"pequeño":x<c[2]?"mediano":"grande";return fem?l.replace(/o$/,"a"):l};
+
+/* ----- potencia ----- */
+function pwT(delta,df,alpha,tails){const tc=tcrit(df,tails===2?alpha:2*alpha),m=Math.sqrt(df),A=Math.max(0,m-12),B=m+12,M=800,h=(B-A)/M,lc=-(df/2-1)*Math.log(2)-lnG(df/2);let s=0;
+ for(let i=0;i<=M;i++){const x=A+i*h,w=i===0||i===M?1:i%2?4:2,pdf=x<=0?(df===1?Math.exp(lc):0):Math.exp(lc+(df-1)*Math.log(x)-x*x/2),q=x/m;s+=w*pdf*((1-Phi(tc*q-delta))+(tails===2?Phi(-tc*q-delta):0))}
+ return Math.min(1,Math.max(0,s*h/3))}
+function poisW(lam){const m=lam/2,js=[],J=Math.ceil(m+12*Math.sqrt(m+1)+30);for(let j=0;j<=J;j++)js.push(Math.exp(-m+j*Math.log(Math.max(m,1e-300))-lnG(j+1)));if(m===0){js.fill(0);js[0]=1}return js}
+function pwF(lam,d1,d2,alpha){const fc=fcrit(d1,d2,alpha),x=d1*fc/(d1*fc+d2),w=poisW(lam);let cdf=0;w.forEach((wj,j)=>{if(wj>1e-16)cdf+=wj*ibeta(x,d1/2+j,d2/2)});return Math.min(1,Math.max(0,1-cdf))}
+function pwChi(lam,df,alpha){const c=chicrit(df,alpha),w=poisW(lam);let cdf=0;w.forEach((wj,j)=>{if(wj>1e-16)cdf+=wj*gammaP(df/2+j,c/2)});return Math.min(1,Math.max(0,1-cdf))}
+function pwCor(r,n,alpha,tails){const z=Math.atanh(Math.abs(r))*Math.sqrt(n-3),zc=qnorm(1-(tails===2?alpha/2:alpha));return Phi(z-zc)+(tails===2?Phi(-z-zc):0)}
+
+const DES={
+ t2:{es:"d",lab:"d de Cohen",def:.5,pre:[.2,.5,.8],tails:1,min:2,ext:["ratio","Razón n₂ / n₁","1"],nlab:"n por grupo (n₁)",
+  pw:(e,n,a,t,x)=>{const n2=Math.ceil(n*x-1e-9),delta=e*Math.sqrt(n*n2/(n+n2));return pwT(delta,n+n2-2,a,t)},
+  tot:(n,x)=>n+Math.ceil(n*x-1e-9),
+  big:(n,x)=>{const n2=Math.ceil(n*x-1e-9);return x===1?[`${n} por grupo`,`N total = ${2*n}`]:[`n₁ = ${n}, n₂ = ${n2}`,`N total = ${n+n2}`]},
+  lam:(e,n,x)=>e*Math.sqrt(n*Math.ceil(n*x-1e-9)/(n+Math.ceil(n*x-1e-9))),
+  txt:(e,a,t)=>`para detectar un tamaño del efecto de <i>d</i> = ${fmt(e)} en una prueba <i>t</i> para muestras independientes (${t===2?"bilateral":"unilateral"}, α = ${fmt(a,2,false)})`},
+ tp:{es:"dz",lab:"d<sub>z</sub> (d de las diferencias)",def:.5,pre:[.2,.5,.8],tails:1,min:2,nlab:"n (pares o participantes)",
+  pw:(e,n,a,t)=>pwT(e*Math.sqrt(n),n-1,a,t),tot:n=>n,big:n=>[`${n} participantes`,""],lam:(e,n)=>e*Math.sqrt(n),
+  txt:(e,a,t)=>`para detectar un tamaño del efecto de <i>d</i><sub>z</sub> = ${fmt(e)} en una prueba <i>t</i> para muestras relacionadas (${t===2?"bilateral":"unilateral"}, α = ${fmt(a,2,false)})`},
+ cor:{es:"r",lab:"ρ (correlación esperada)",def:.3,pre:[.1,.3,.5],tails:1,min:4,nlab:"N",
+  pw:(e,n,a,t)=>pwCor(e,n,a,t),tot:n=>n,big:n=>[`${n} participantes`,""],lam:(e,n)=>Math.atanh(Math.abs(e))*Math.sqrt(n-3),
+  txt:(e,a,t)=>`para detectar una correlación de ρ = ${fmt(e,2,false)} (${t===2?"bilateral":"unilateral"}, α = ${fmt(a,2,false)})`},
+ anova:{es:"f",lab:"f de Cohen",def:.25,pre:[.1,.25,.4],tails:0,ext:["k","Número de grupos","3"],nlab:"N total",
+  min:(x)=>x+1,round:(n,x)=>Math.ceil(n/x)*x,pw:(e,n,a,t,x)=>pwF(e*e*n,x-1,n-x,a),tot:n=>n,big:(n,x)=>[`N = ${n}`,n%x===0?`${n/x} por grupo`:`≈ ${Math.ceil(n/x)} por grupo`],lam:(e,n)=>e*e*n,
+  txt:(e,a,t,p,n,x)=>`para detectar un tamaño del efecto de <i>f</i> = ${fmt(e)} en un ANOVA de un factor con ${x} grupos (α = ${fmt(a,2,false)})`},
+ chi:{es:"w",lab:"w de Cohen",def:.3,pre:[.1,.3,.5],tails:0,ext:["df","Grados de libertad","1"],nlab:"N",min:2,
+  pw:(e,n,a,t,x)=>pwChi(e*e*n,x,a),tot:n=>n,big:n=>[`N = ${n}`,""],lam:(e,n)=>e*e*n,
+  txt:(e,a,t,p,n,x)=>`para detectar un tamaño del efecto de <i>w</i> = ${fmt(e)} en una prueba χ<sup>2</sup> con ${x} ${x===1?"grado":"grados"} de libertad (α = ${fmt(a,2,false)})`},
+ reg:{es:"f2",lab:"f² de Cohen",def:.15,pre:[.02,.15,.35],tails:0,ext:["p","Número de predictores","3"],nlab:"N",
+  min:(x)=>x+2,pw:(e,n,a,t,x)=>pwF(e*n,x,n-x-1,a),tot:n=>n,big:n=>[`N = ${n}`,""],lam:(e,n)=>e*n,
+  txt:(e,a,t,p,n,x)=>`para detectar un tamaño del efecto de <i>f</i><sup>2</sup> = ${fmt(e)} en un modelo de regresión lineal con ${x} ${x===1?"predictor":"predictores"} (α = ${fmt(a,2,false)})`}};
+
+const st={};
+function cfg(){const k=$("des").value,D=DES[k];
+ st[k]=st[k]||{e:String(D.def),x:D.ext?D.ext[2]:"1"};
+ $("esbox").innerHTML=`<label class="f">${D.lab}<input id="es" inputmode="decimal" value="${st[k].e}"></label><div class="presets">${D.pre.map((v,i)=>`<button data-v="${v}">${["Pequeño","Mediano","Grande"][i]} (${fmt(v,2)})</button>`).join("")}</div>`;
+ $("tailsbox").style.display=D.tails?"":"none";
+ $("extbox").innerHTML=D.ext?`${D.ext[1]}<input id="ext" inputmode="decimal" value="${st[k].x}">`:"";$("extbox").style.display=D.ext?"":"none";
+ $("nbox").firstChild.textContent=D.nlab;
+ const m=$("mode").value;$("powbox").style.display=m==="n"?"":"none";$("nbox").style.display=m==="p"?"":"none";
+ $("es").addEventListener("input",e=>{st[k].e=e.target.value;run()});
+ if(D.ext)$("ext").addEventListener("input",e=>{st[k].x=e.target.value;run()});
+ $("esbox").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{$("es").value=b.dataset.v;st[k].e=b.dataset.v;run()}));
+ run()}
+function minN(D,x){return typeof D.min==="function"?D.min(x):D.min}
+function solveN(D,e,a,t,x,target){let lo=minN(D,x),hi=lo;if(D.pw(e,lo,a,t,x)>=target)return lo;
+ while(D.pw(e,hi,a,t,x)<target){lo=hi;hi=hi*2;if(hi>2e6)return null}
+ while(hi-lo>1){const m=Math.floor((lo+hi)/2);D.pw(e,m,a,t,x)>=target?hi=m:lo=m}return hi}
+let LAST=null;
+function run(){const k=$("des").value,D=DES[k],e=N($("es").value),a=+$("alpha").value,t=+$("tails").value,x=D.ext?N($("ext").value):1,mode=$("mode").value;
+ const fail=m=>{$("big").textContent="—";$("bigl").textContent=m;$("res").innerHTML="";$("say").innerHTML="";LAST=null;setup($("cv"),10)};
+ if(!isFinite(e)||e<=0)return fail("Introduce un tamaño del efecto mayor que 0.");
+ if(k==="cor"&&e>=1)return fail("ρ debe ser menor que 1.");
+ if(D.ext&&(!isFinite(x)||x<=0||(k!=="t2"&&!Number.isInteger(x))||(k==="anova"&&x<2)))return fail("Revisa el valor de "+D.ext[1].toLowerCase()+".");
+ let n,pw,target=+$("pow").value;
+ if(mode==="n"){n=solveN(D,e,a,t,x,target);if(n===null)return fail("El tamaño muestral necesario supera los 2 millones.");if(D.round)n=D.round(n,x);pw=D.pw(e,n,a,t,x)}
+ else{n=Math.round(N($("nin").value));if(!isFinite(n)||n<minN(D,x))return fail(`El tamaño mínimo para este diseño es ${minN(D,x)}.`);pw=D.pw(e,n,a,t,x)}
+ const[b1,b2]=D.big(n,x);
+ if(mode==="n"){$("bigl").textContent="Tamaño muestral necesario";$("big").textContent=b1}else{$("bigl").textContent=`Potencia con ${b1}`;$("big").textContent=fmt(100*pw,1)+" %"}
+ $("res").innerHTML=(b2?`<div>${mode==="n"?"Total":"Tamaño"}<b>${b2.replace("N total = ","").replace("≈ ","≈ ")}</b>${b2.startsWith("≈")?"<small>por grupo</small>":""}</div>`:"")+`<div class="${pw<.8?"bad":"hl"}">Potencia alcanzada<b>${fmt(pw,4,false)}</b></div><div>β (error tipo II)<b>${fmt(1-pw,4,false)}</b></div><div>${k==="cor"?"z (Fisher)·√(N−3)":k==="t2"||k==="tp"?"No centralidad δ":"No centralidad λ"}<b>${fmt(D.lam(e,n,x),3)}</b></div>`;
+ const req=k==="t2"?(x===1?` se requieren ${n} participantes por grupo (<i>N</i> = ${2*n})`:` se requieren ${n} y ${Math.ceil(n*x-1e-9)} participantes en cada grupo (<i>N</i> = ${D.tot(n,x)})`):` se requiere una muestra de <i>N</i> = ${n}`;
+ const txt=mode==="n"?`Se realizó un análisis de potencia a priori. P${D.txt(e,a,t,pw,n,x).slice(1)} con una potencia de ${fmt(target,2,false)},${req}. La potencia alcanzada con este tamaño muestral es de ${fmt(pw,3,false)}.`
+  :`Se calculó la potencia del diseño con el tamaño muestral disponible (${b1}${b2&&!b2.startsWith("≈")?"; "+b2.replace("N total","<i>N</i> total"):""}). La potencia ${D.txt(e,a,t,pw,n,x)} es de ${fmt(pw,3,false)}.`;
+ $("say").innerHTML=txt+` Los cálculos se basaron en las distribuciones no centrales correspondientes.`;
+ LAST={D,e,a,t,x,n};drawCurve()}
+function drawCurve(){if(!LAST)return;const{D,e,a,t,x,n}=LAST,cv=$("cv"),{ctx,w,h}=setup(cv,230),L=40,Rm=12,T=10,B=30,n0=minN(D,x),n1=Math.max(n0+10,Math.ceil(n*2.2)),X=v=>L+(v-n0)/(n1-n0)*(w-L-Rm),Y=p=>h-B-p*(h-B-T);
+ ctx.strokeStyle=C.line;ctx.fillStyle=C.muted;ctx.textAlign="right";[0,.2,.4,.6,.8,1].forEach(p=>{ctx.beginPath();ctx.moveTo(L,Y(p));ctx.lineTo(w-Rm,Y(p));ctx.stroke();ctx.fillText(fmt(p,1),L-6,Y(p)+4)});
+ ctx.setLineDash([4,4]);ctx.strokeStyle=C.red;ctx.beginPath();ctx.moveTo(L,Y(.8));ctx.lineTo(w-Rm,Y(.8));ctx.stroke();ctx.setLineDash([]);
+ ctx.strokeStyle=C.accent;ctx.lineWidth=2.2;ctx.beginPath();const S=70;for(let i=0;i<=S;i++){const nn=Math.round(n0+(n1-n0)*i/S),p=D.pw(e,nn,a,t,x);i?ctx.lineTo(X(nn),Y(p)):ctx.moveTo(X(nn),Y(p))}ctx.stroke();
+ const p0=D.pw(e,n,a,t,x);ctx.fillStyle=C.accent;ctx.beginPath();ctx.arc(X(n),Y(p0),5,0,2*Math.PI);ctx.fill();
+ ctx.fillStyle=C.muted;ctx.textAlign="center";const step=Math.max(1,Math.round((n1-n0)/5/10)*10||1);for(let v=Math.ceil(n0/step)*step;v<=n1;v+=step)ctx.fillText(v,X(v),h-B+16);
+ ctx.fillText(D.nlab,w/2,h-2)}
+["des","mode"].forEach(id=>$(id).addEventListener("change",cfg));
+["alpha","tails","pow"].forEach(id=>$(id).addEventListener("change",run));
+$("nin").addEventListener("input",run);
+$("copy").addEventListener("click",async()=>{const o=$("say");try{await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([o.innerHTML],{type:"text/html"}),"text/plain":new Blob([o.innerText],{type:"text/plain"})})])}catch(e){try{await navigator.clipboard.writeText(o.innerText)}catch(e2){}}$("ok").textContent="Copiado ✓";setTimeout(()=>$("ok").textContent="",2000)});
+let rt;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(drawCurve,150)});
+cfg();
+</script>
+<footer class="sf"><div class="sfw"><span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span><span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span></div></footer>
+</body>
+</html>

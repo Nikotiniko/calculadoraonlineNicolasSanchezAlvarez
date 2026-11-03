@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tamaño muestral: correlación · Calculadora</title>
+<meta name="description" content="n para detectar una r distinta de 0. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/tamano-muestral-correlacion.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Tamaño muestral: correlación · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/tamano-muestral-correlacion.html">
+<meta property="og:description" content="n para detectar una r distinta de 0. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html" aria-current="page">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="tamano-muestral-correlacion"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Potencia y muestra"><a href="tamano-muestral-t.html">Tamaño muestral: t para grupos independientes</a><a href="potencia-t-independientes.html">Potencia: t para grupos independientes</a><a href="tamano-muestral-t-relacionadas.html">Tamaño muestral: t para medidas relacionadas</a><a href="potencia-t-relacionadas.html">Potencia: t para medidas relacionadas</a><a href="tamano-muestral-correlacion.html" aria-current="page">Tamaño muestral: correlación</a><a href="potencia-correlacion.html">Potencia: correlación</a><a href="tamano-muestral-anova.html">Tamaño muestral: ANOVA de un factor</a><a href="potencia-anova.html">Potencia: ANOVA de un factor</a><a href="tamano-muestral-regresion.html">Tamaño muestral: regresión múltiple</a><a href="potencia-regresion.html">Potencia: regresión múltiple</a><a href="tamano-muestral-proporciones.html">Tamaño muestral: dos proporciones</a><a href="tamano-muestral-chi.html">Tamaño muestral: prueba χ²</a><a href="tamano-muestral-media-precision.html">Tamaño muestral para estimar una media</a><a href="tamano-muestral-proporcion-precision.html">Tamaño muestral para estimar una proporción</a><a href="efecto-minimo-detectable.html">Efecto mínimo detectable (sensibilidad)</a><a href="potencia-sem-rmsea.html">Potencia y tamaño muestral en SEM (RMSEA)</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Tamaño muestral: correlación</h1>
+      <p class="lede">Calcula el tamaño muestral necesario para detectar una correlación de Pearson con la potencia deseada.</p>
+      <div class="card">
+        <div class="fields"><label for="r">r esperada<input id="r" data-k="r" data-t="n" inputmode="decimal" autocomplete="off" value="0,30"></label><label for="alfa">α<select id="alfa" data-k="alfa" data-t="s"><option value="0.05">0,05</option><option value="0.01">0,01</option><option value="0.10">0,10</option></select></label><label for="potencia">Potencia (1 − β)<select id="potencia" data-k="potencia" data-t="s"><option value="0.80">0,80</option><option value="0.90">0,90</option><option value="0.95">0,95</option></select></label><label for="colas">Contraste<select id="colas" data-k="colas" data-t="s"><option value="2">Bilateral</option><option value="1">Unilateral</option></select></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>n</span><b data-out="n" data-f="i">—</b></div><div class="stat"><span>Potencia alcanzada</span><b data-out="real" data-f="3">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>Usa la aproximación de Fisher, que coincide con G*Power en una o dos unidades.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Para detectar r = ,30 con potencia de 0,80 y α = 0,05 bilateral hacen falta unos 85 participantes.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">Potencia ≈ Φ(|atanh r|√(n − 3) − z_c)</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Cohen, J. (1988). <i>Statistical power analysis for the behavioral sciences</i> (2.ª ed.). Erlbaum.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="potencia-t-relacionadas.html">← Potencia: t para medidas relacionadas</a><a href="potencia-correlacion.html">Potencia: correlación →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Tamaño muestral: correlación</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#potencia-y-muestra">Todas las de Potencia y muestra</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

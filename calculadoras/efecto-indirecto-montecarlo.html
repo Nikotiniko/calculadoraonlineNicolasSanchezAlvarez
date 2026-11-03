@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IC Monte Carlo para el efecto indirecto · Calculadora</title>
+<meta name="description" content="Intervalo de ab por simulación a partir de a, b y sus EE. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/efecto-indirecto-montecarlo.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="IC Monte Carlo para el efecto indirecto · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/efecto-indirecto-montecarlo.html">
+<meta property="og:description" content="Intervalo de ab por simulación a partir de a, b y sus EE. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html" aria-current="page">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="efecto-indirecto-montecarlo"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Mediación"><a href="efecto-indirecto-sobel.html">Efecto indirecto y test de Sobel</a><a href="efecto-indirecto-montecarlo.html" aria-current="page">IC Monte Carlo para el efecto indirecto</a><a href="efecto-total-mediacion.html">Efecto total y proporción mediada</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">IC Monte Carlo para el efecto indirecto</h1>
+      <p class="lede">Calcula un intervalo de confianza para el efecto indirecto ab mediante simulación Monte Carlo, sin necesidad de los datos brutos.</p>
+      <div class="card">
+        <div class="fields"><label for="a">a (X → M)<input id="a" data-k="a" data-t="n" inputmode="decimal" autocomplete="off" value="0,40"></label><label for="sa">EE de a<input id="sa" data-k="sa" data-t="n" inputmode="decimal" autocomplete="off" value="0,10"></label><label for="b">b (M → Y, controlando X)<input id="b" data-k="b" data-t="n" inputmode="decimal" autocomplete="off" value="0,35"></label><label for="sb">EE de b<input id="sb" data-k="sb" data-t="n" inputmode="decimal" autocomplete="off" value="0,09"></label><label for="reps">Número de simulaciones<input id="reps" data-k="reps" data-t="n" inputmode="decimal" autocomplete="off" value="20000"></label><label for="conf">Nivel de confianza<select id="conf" data-k="conf" data-t="s"><option value="0.95">95 %</option><option value="0.90">90 %</option><option value="0.99">99 %</option></select></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Efecto indirecto ab</span><b data-out="ab" data-f="4">—</b></div><div class="stat"><span>Límite inferior</span><b data-out="lo" data-f="4">—</b></div><div class="stat"><span>Límite superior</span><b data-out="hi" data-f="4">—</b></div><div class="stat"><span>Conclusión</span><b data-out="sig" data-f="t">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        <p class="nota">La simulación usa una semilla fija: el mismo resultado se reproduce con los mismos datos.</p>
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>El método simula muchos valores de a y b y multiplica cada par. El intervalo respeta la asimetría de ab y tiene propiedades similares al bootstrap. Si no incluye 0, hay evidencia de efecto indirecto.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Con los mismos datos del ejemplo de Sobel, el IC 95 % Monte Carlo no incluye el 0, lo que confirma la mediación del apoyo social.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">a* ~ N(a, s_a²)   b* ~ N(b, s_b²)   IC = percentiles de a*·b*</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Preacher, K. J. y Selig, J. P. (2012). Advantages of Monte Carlo confidence intervals for indirect effects. <i>Communication Methods and Measures, 6</i>(2), 77–98.</li><li>Hayes, A. F. (2022). <i>Introduction to mediation, moderation, and conditional process analysis</i> (3.ª ed.). Guilford.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="efecto-indirecto-sobel.html">← Efecto indirecto y test de Sobel</a><a href="efecto-total-mediacion.html">Efecto total y proporción mediada →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>IC Monte Carlo para el efecto indirecto</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#mediacion">Todas las de Mediación</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

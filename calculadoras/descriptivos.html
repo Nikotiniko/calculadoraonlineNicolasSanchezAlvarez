@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estadísticos descriptivos · Calculadora</title>
+<meta name="description" content="Media, mediana, DT, cuartiles, asimetría y curtosis a partir de los datos. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/descriptivos.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Estadísticos descriptivos · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/descriptivos.html">
+<meta property="og:description" content="Media, mediana, DT, cuartiles, asimetría y curtosis a partir de los datos. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html" aria-current="page">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="descriptivos"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Descriptivos"><a href="descriptivos.html" aria-current="page">Estadísticos descriptivos</a><a href="puntuaciones-tipicas.html">Conversión de puntuaciones típicas</a><a href="puntuacion-z.html">Puntuación z y percentil</a><a href="coeficiente-variacion.html">Coeficiente de variación</a><a href="valores-atipicos.html">Detección de valores atípicos</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Estadísticos descriptivos</h1>
+      <p class="lede">Pega tus datos y obtén los estadísticos descriptivos básicos: tendencia central, dispersión, cuartiles y forma de la distribución.</p>
+      <div class="card">
+        <div class="fields"><label for="datos" class="wide">Datos (separados por espacios, punto y coma o saltos de línea)<textarea id="datos" data-k="datos" data-t="l" spellcheck="false">12 15 14 10 18 21 13 16 15 14 40 17 11 15 16</textarea></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>n</span><b data-out="n" data-f="i">—</b></div><div class="stat"><span>Media</span><b data-out="media" data-f="3">—</b></div><div class="stat"><span>Mediana</span><b data-out="mediana" data-f="3">—</b></div><div class="stat"><span>Desviación típica</span><b data-out="de" data-f="3">—</b></div><div class="stat"><span>Varianza</span><b data-out="var" data-f="3">—</b></div><div class="stat"><span>Error típico de la media</span><b data-out="ee" data-f="3">—</b></div><div class="stat"><span>Mínimo</span><b data-out="min" data-f="3">—</b></div><div class="stat"><span>Máximo</span><b data-out="max" data-f="3">—</b></div><div class="stat"><span>Cuartil 1</span><b data-out="q1" data-f="3">—</b></div><div class="stat"><span>Cuartil 3</span><b data-out="q3" data-f="3">—</b></div><div class="stat"><span>Asimetría (G1)</span><b data-out="asim" data-f="3">—</b></div><div class="stat"><span>Curtosis (G2, exceso)</span><b data-out="curt" data-f="3">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>Si la media se aleja mucho de la mediana o la asimetría es alta, la distribución es asimétrica o hay valores extremos, y la mediana describe mejor el centro. La curtosis positiva indica colas más pesadas que la normal.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Los datos de ejemplo son tiempos de respuesta (s) de 15 participantes. Un valor de 40 s eleva la media por encima de la mediana y produce una asimetría alta: conviene revisar ese caso en la calculadora de valores atípicos.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">DT = √[Σ(x − x̄)² / (n − 1)]
+G1 = g1 · √(n(n−1)) / (n − 2)
+G2 = [(n − 1)/((n − 2)(n − 3))] · [(n + 1)g2 + 6]</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Joanes, D. N. y Gill, C. A. (1998). Comparing measures of sample skewness and kurtosis. <i>The Statistician, 47</i>(1), 183–189.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="funcion-error-inversa.html">← Función de error inversa</a><a href="puntuaciones-tipicas.html">Conversión de puntuaciones típicas →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Estadísticos descriptivos</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#descriptivos">Todas las de Descriptivos</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

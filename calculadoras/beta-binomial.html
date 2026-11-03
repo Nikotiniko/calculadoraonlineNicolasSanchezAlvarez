@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proporción bayesiana (beta-binomial) · Calculadora</title>
+<meta name="description" content="Posterior de una proporción con prior beta. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/beta-binomial.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Proporción bayesiana (beta-binomial) · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/beta-binomial.html">
+<meta property="og:description" content="Posterior de una proporción con prior beta. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html" aria-current="page">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="beta-binomial"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Bayesiana"><a href="factor-bayes-t.html">Factor de Bayes para una prueba t</a><a href="factor-bayes-bic.html">Factor de Bayes a partir del BIC</a><a href="beta-binomial.html" aria-current="page">Proporción bayesiana (beta-binomial)</a><a href="normal-normal.html">Media bayesiana (normal-normal)</a><a href="probabilidad-posterior.html">Probabilidad posterior a partir del factor de Bayes</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Proporción bayesiana (beta-binomial)</h1>
+      <p class="lede">Actualiza una distribución previa beta con datos binomiales y obtiene la distribución posterior de la proporción, su media e intervalo de credibilidad.</p>
+      <div class="card">
+        <div class="fields"><label for="a">α del prior<input id="a" data-k="a" data-t="n" inputmode="decimal" autocomplete="off" value="1"></label><label for="b">β del prior<input id="b" data-k="b" data-t="n" inputmode="decimal" autocomplete="off" value="1"></label><label for="x">Éxitos observados<input id="x" data-k="x" data-t="n" inputmode="decimal" autocomplete="off" value="14"></label><label for="n">Ensayos<input id="n" data-k="n" data-t="n" inputmode="decimal" autocomplete="off" value="40"></label><label for="ref">Valor de referencia (opcional)<input id="ref" data-k="ref" data-t="n" inputmode="decimal" autocomplete="off" value="0,25"></label><label for="conf">Nivel de confianza<select id="conf" data-k="conf" data-t="s"><option value="0.95">95 %</option><option value="0.90">90 %</option><option value="0.99">99 %</option></select></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Distribución posterior</span><b data-out="post" data-f="t">—</b></div><div class="stat"><span>Media posterior</span><b data-out="media" data-f="3">—</b></div><div class="stat"><span>Moda posterior</span><b data-out="moda" data-f="3">—</b></div><div class="stat"><span>Intervalo de credibilidad</span><b data-out="ic" data-f="t">—</b></div><div class="stat"><span>P(θ > referencia)</span><b data-out="pmay" data-f="3">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>Beta(1, 1) es un prior uniforme. A diferencia del intervalo de confianza, el de credibilidad sí admite la lectura «hay un 95 % de probabilidad de que la proporción esté en este intervalo», dado el prior y los datos.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>14 de 40 estudiantes (35 %) completan un programa voluntario. Con prior uniforme, la probabilidad de que la tasa real supere el 25 % es de aproximadamente 0,93.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">θ | datos ~ Beta(α + x, β + n − x)</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A. y Rubin, D. B. (2013). <i>Bayesian data analysis</i> (3.ª ed.). CRC Press.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="factor-bayes-bic.html">← Factor de Bayes a partir del BIC</a><a href="normal-normal.html">Media bayesiana (normal-normal) →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Proporción bayesiana (beta-binomial)</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#bayesiana">Todas las de Bayesiana</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

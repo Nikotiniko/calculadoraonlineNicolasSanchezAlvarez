@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Riesgo relativo y odds ratio · Calculadora</title>
+<meta name="description" content="RR, OR y diferencia de riesgos con IC en una tabla 2 × 2. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/riesgo-odds-2x2.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Riesgo relativo y odds ratio · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/riesgo-odds-2x2.html">
+<meta property="og:description" content="RR, OR y diferencia de riesgos con IC en una tabla 2 × 2. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html" aria-current="page">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="riesgo-odds-2x2"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Tamaño del efecto"><a href="d-cohen.html">d de Cohen y g de Hedges</a><a href="d-ic-exacto.html">IC exacto para la d de Cohen</a><a href="d-desde-t.html">d de Cohen a partir de t</a><a href="d-relacionadas.html">d para medidas relacionadas</a><a href="delta-glass.html">Δ de Glass</a><a href="eta-desde-f.html">η² parcial a partir de F</a><a href="omega-desde-f.html">ω² a partir de F</a><a href="f-cohen-eta.html">Conversión entre f de Cohen y η²</a><a href="conversion-efectos.html">Conversión entre tamaños del efecto</a><a href="riesgo-odds-2x2.html" aria-current="page">Riesgo relativo y odds ratio</a><a href="nnt.html">Número necesario a tratar (NNT)</a><a href="phi-v-cramer.html">φ y V de Cramér a partir de χ²</a><a href="w-cohen.html">w de Cohen</a><a href="h-cohen.html">h de Cohen</a><a href="probabilidad-superioridad.html">Probabilidad de superioridad y U₃</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Riesgo relativo y odds ratio</h1>
+      <p class="lede">Calcula el riesgo relativo, la odds ratio y la diferencia de riesgos con sus intervalos de confianza a partir de una tabla 2 × 2.</p>
+      <div class="card">
+        <div class="fields"><label for="a">Expuestos con el suceso (a)<input id="a" data-k="a" data-t="n" inputmode="decimal" autocomplete="off" value="25"></label><label for="b">Expuestos sin el suceso (b)<input id="b" data-k="b" data-t="n" inputmode="decimal" autocomplete="off" value="75"></label><label for="c">No expuestos con el suceso (c)<input id="c" data-k="c" data-t="n" inputmode="decimal" autocomplete="off" value="10"></label><label for="d">No expuestos sin el suceso (d)<input id="d" data-k="d" data-t="n" inputmode="decimal" autocomplete="off" value="90"></label><label for="conf">Nivel de confianza<select id="conf" data-k="conf" data-t="s"><option value="0.95">95 %</option><option value="0.90">90 %</option><option value="0.99">99 %</option></select></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Riesgo en expuestos</span><b data-out="r1" data-f="3">—</b></div><div class="stat"><span>Riesgo en no expuestos</span><b data-out="r2" data-f="3">—</b></div><div class="stat"><span>Riesgo relativo</span><b data-out="rr" data-f="3">—</b></div><div class="stat"><span>IC del RR</span><b data-out="icrr" data-f="t">—</b></div><div class="stat"><span>Odds ratio</span><b data-out="or" data-f="3">—</b></div><div class="stat"><span>IC de la OR</span><b data-out="icor" data-f="t">—</b></div><div class="stat"><span>Diferencia de riesgos</span><b data-out="dr" data-f="3">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>El RR es más intuitivo (cuántas veces más riesgo); la OR se aproxima al RR solo cuando el suceso es poco frecuente. Si alguna celda es 0 se suma 0,5 a todas.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Entre 100 jóvenes con consumo de alcohol, 25 presentan conductas de riesgo; entre 100 sin consumo, 10. El riesgo es 2,5 veces mayor (RR = 2,50) y la OR es 3,00.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">RR = [a/(a+b)] / [c/(c+d)]   EE(ln RR) = √[1/a − 1/(a+b) + 1/c − 1/(c+d)]
+OR = ad/bc   EE(ln OR) = √(1/a + 1/b + 1/c + 1/d)</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Agresti, A. (2013). <i>Categorical data analysis</i> (3.ª ed.). Wiley.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="conversion-efectos.html">← Conversión entre tamaños del efecto</a><a href="nnt.html">Número necesario a tratar (NNT) →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Riesgo relativo y odds ratio</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#tamano-del-efecto">Todas las de Tamaño del efecto</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

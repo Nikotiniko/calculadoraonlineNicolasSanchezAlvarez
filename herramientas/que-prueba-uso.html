@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Qué prueba uso?</title>
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<meta name="description" content="Asistente que recomienda la prueba estadística adecuada según tu diseño y tus variables, con supuestos, tamaño del efecto y código R.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f8fafb;--card:#ffffff;--ink:#1e2b34;--muted:#5e6d77;--line:#dfe6eb;
+  --accent:#2b6c94;--accent-soft:#e7f0f6;--ok:#2e7d4f;--ok-soft:#e5f3ea;--code:#f1f5f8;
+}
+:root{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:28px 16px 60px}
+header h1{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:clamp(1.7rem,5vw,2.3rem);margin:0 0 6px}
+header p{margin:0 0 22px;color:var(--muted)}
+.crumbs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;min-height:28px}
+.crumbs span{font-size:.8rem;background:var(--accent-soft);color:var(--accent);padding:4px 10px;border-radius:99px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.step{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+h2{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.35rem;margin:0 0 6px}
+.help{color:var(--muted);margin:0 0 16px;font-size:.93rem}
+.opts{display:grid;gap:10px}
+button.opt{all:unset;cursor:pointer;display:block;border:1px solid var(--line);border-radius:10px;padding:13px 15px;background:var(--bg);transition:border-color .15s,background .15s}
+button.opt:hover,button.opt:focus-visible{border-color:var(--accent);background:var(--accent-soft)}
+.opt b{display:block;font-weight:600}
+.opt small{color:var(--muted);font-size:.86rem}
+.nav{display:flex;gap:10px;margin-top:18px}
+.nav button{font:inherit;font-size:.9rem;border:1px solid var(--line);background:transparent;color:var(--ink);padding:8px 14px;border-radius:8px;cursor:pointer}
+.nav button:hover{border-color:var(--accent);color:var(--accent)}
+.result .tag{display:inline-block;background:var(--ok-soft);color:var(--ok);font-size:.78rem;font-weight:600;padding:3px 10px;border-radius:99px;margin-bottom:8px}
+.result h2{font-size:1.6rem}
+.result dl{margin:16px 0 0;display:grid;gap:12px}
+.result dt{font-weight:600;font-size:.88rem;color:var(--accent)}
+.result dd{margin:2px 0 0}
+pre{background:var(--code);border-radius:8px;padding:12px;overflow-x:auto;font:13px/1.5 "JetBrains Mono",ui-monospace,monospace;margin:4px 0 0;white-space:pre}
+a.calc{display:inline-block;margin-top:16px;background:var(--accent);color:var(--card);text-decoration:none;padding:10px 16px;border-radius:8px;font-weight:600;font-size:.92rem}
+footer{margin-top:26px;font-size:.82rem;color:var(--muted)}
+
+.sh{background:#fff;border-bottom:1px solid #dfe6eb}.shw{max-width:1120px;margin:0 auto;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.sn{font:700 18px/1.2 "Bricolage Grotesque",system-ui,sans-serif;color:#1e2b34;text-decoration:none}.sn small{display:block;font:500 12px/1.3 "Public Sans",system-ui,sans-serif;color:#5e6d77}
+.snav{display:flex;flex-wrap:wrap;gap:4px}.snav a{padding:7px 12px;border-radius:6px;text-decoration:none;color:#1e2b34;font-size:15px}.snav a:hover{background:#f1f5f8}.snav a.cur{background:#e7f0f6;color:#2b6c94;font-weight:600}
+.tsub{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid #dfe6eb}.tsub a{font-size:13px;line-height:1.25;padding:7px 11px;border-radius:999px;background:#fff;border:1px solid #dfe6eb;color:#1e2b34;text-decoration:none}.tsub a:hover{border-color:#2b6c94;color:#2b6c94}.tsub a.cur{background:#2b6c94;border-color:#2b6c94;color:#fff;font-weight:600}
+.citebox{background:#fff;border:1px solid #dfe6eb;border-radius:8px;padding:12px 14px;font-size:13px;margin-top:10px;overflow-wrap:anywhere;color:#1e2b34}
+.sf{border-top:1px solid #dfe6eb;background:#fff;color:#5e6d77;font-size:13px;margin-top:20px}.sfw{max-width:1120px;margin:0 auto;padding:18px 16px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}.sf a{color:#2b6c94}
+</style>
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/herramientas/que-prueba-uso.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="¿Qué prueba uso?">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/herramientas/que-prueba-uso.html">
+<meta property="og:description" content="Asistente que recomienda la prueba estadística adecuada según tu diseño y tus variables, con supuestos, tamaño del efecto y código R.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="sh"><div class="shw"><a class="sn" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a><nav class="snav" aria-label="Principal"><a href="../index.html">Inicio</a><a href="../index.html#publicaciones">Publicaciones</a><a href="../index.html#libros">Libros</a><a href="../calculadoras/index.html">Calculadoras</a><a href="../herramientas/index.html" class="cur">Herramientas</a></nav></div></header>
+<div class="wrap">
+  <nav class="tsub" aria-label="Herramientas"><a href="que-prueba-uso.html" class="cur">¿Qué prueba uso?</a><a href="redactor-apa.html">Redactor APA</a><a href="simuladores.html">Simuladores</a><a href="tamanos-efecto.html">Tamaños del efecto</a><a href="potencia.html">Potencia</a><a href="psicometria.html">Psicometría</a><a href="bayes.html">Bayes</a><a href="metaanalisis.html">Metaanálisis</a></nav>
+  <header>
+    <h1>¿Qué prueba estadística uso?</h1>
+    <p>Responde unas pocas preguntas sobre tu diseño y tus variables y te indicaré el análisis adecuado, sus supuestos, el tamaño del efecto que debes informar y cómo hacerlo en R.</p>
+  </header>
+  <div class="crumbs" id="crumbs"></div>
+  <div class="card" id="app" aria-live="polite"></div>
+  <div class="citebox"><b>Cómo citar esta herramienta</b><br>Sánchez Álvarez, N. (2026). <i>¿Qué prueba uso?</i> [Herramienta en línea]. Universidad de Málaga. https://nikotiniko.github.io/Myweb/herramientas/que-prueba-uso.html</div>
+  <footer>Nicolás Sánchez Álvarez · Universidad de Málaga. Esta guía orienta la elección; revisa siempre los supuestos con tus datos.</footer>
+</div>
+<script>
+const N = {
+ inicio:{q:"¿Cuál es el objetivo de tu análisis?",opts:[
+  ["Comparar grupos o condiciones","¿Difieren las medias, medianas o proporciones?","comp_vd"],
+  ["Relacionar dos variables","¿Están asociadas? ¿En qué grado?","rel_tipo"],
+  ["Predecir una variable","A partir de uno o más predictores","pred_vd"],
+  ["Analizar una sola variable","Contrastarla con un valor o una distribución teórica","una_tipo"]]},
+ // COMPARAR
+ comp_vd:{q:"¿Cómo es la variable dependiente?",help:"La variable que mides y comparas entre grupos.",opts:[
+  ["Cuantitativa","Puntuaciones, tiempos, escalas con muchos valores","comp_nvi"],
+  ["Ordinal","Rangos o escalas tipo Likert de un solo ítem","ord_ng"],
+  ["Categórica","Sí/no, categorías nominales","cat_dis"]]},
+ comp_nvi:{q:"¿Cuántas variables independientes (factores) tienes?",opts:[
+  ["Una","Un único factor de agrupación o condición","cu_ng"],
+  ["Dos o más","Diseño factorial","fact_dis"]]},
+ cu_ng:{q:"¿Cuántos grupos o condiciones comparas?",opts:[["Dos","","cu2_dis"],["Tres o más","","cu3_dis"]]},
+ cu2_dis:{q:"¿Los datos son independientes o relacionados?",help:"Relacionados: mismas personas medidas varias veces, o parejas emparejadas.",opts:[
+  ["Grupos independientes","Personas distintas en cada grupo","cu2i_norm"],
+  ["Medidas relacionadas","Pre-post, emparejados","cu2r_norm"]]},
+ cu2i_norm:{q:"¿Es razonable asumir normalidad en cada grupo?",help:"Con muestras grandes (n > 30 por grupo) la prueba t es robusta a desviaciones moderadas.",opts:[
+  ["Sí","","r_welch"],["No o con dudas","Asimetría fuerte, valores atípicos, muestras pequeñas","r_mann"]]},
+ cu2r_norm:{q:"¿Las diferencias entre las dos medidas son aproximadamente normales?",opts:[["Sí","","r_trel"],["No o con dudas","","r_wilcox"]]},
+ cu3_dis:{q:"¿Los datos son independientes o relacionados?",opts:[
+  ["Grupos independientes","","cu3i_norm"],["Medidas repetidas","Mismas personas en todas las condiciones","cu3r_norm"]]},
+ cu3i_norm:{q:"¿Es razonable asumir normalidad en cada grupo?",opts:[["Sí","","r_anova"],["No o con dudas","","r_kruskal"]]},
+ cu3r_norm:{q:"¿Es razonable asumir normalidad?",opts:[["Sí","","r_anovamr"],["No o con dudas","","r_friedman"]]},
+ fact_dis:{q:"¿Cómo son tus factores?",opts:[
+  ["Todos entre sujetos","Grupos distintos en cada combinación","r_factorial"],
+  ["Todos intrasujeto","Todos los participantes pasan por todas las condiciones","r_mrfact"],
+  ["Mixto","Al menos un factor entre y uno intra","r_mixto"]]},
+ ord_ng:{q:"¿Cuántos grupos o condiciones comparas?",opts:[["Dos","","ord2"],["Tres o más","","ord3"]]},
+ ord2:{q:"¿Los datos son independientes o relacionados?",opts:[["Independientes","","r_mann"],["Relacionados","","r_wilcox"]]},
+ ord3:{q:"¿Los datos son independientes o relacionados?",opts:[["Independientes","","r_kruskal"],["Relacionados","","r_friedman"]]},
+ cat_dis:{q:"¿Los datos son independientes o relacionados?",opts:[
+  ["Independientes","Personas distintas en cada grupo","r_chi"],
+  ["Relacionados","Misma persona medida varias veces","cat_rel"]]},
+ cat_rel:{q:"¿Cuántas mediciones tienes?",help:"Para respuestas dicotómicas (sí/no).",opts:[["Dos","Pre-post","r_mcnemar"],["Tres o más","","r_cochran"]]},
+ // RELACIONAR
+ rel_tipo:{q:"¿Qué tipo de variables quieres relacionar?",opts:[
+  ["Ambas cuantitativas","","rel_lin"],
+  ["Al menos una ordinal","","r_spearman"],
+  ["Ambas categóricas","","r_chiasoc"],
+  ["Una dicotómica y una cuantitativa","Por ejemplo, sexo y puntuación","r_biserial"]]},
+ rel_lin:{q:"¿La relación es lineal y sin valores atípicos influyentes?",help:"Míralo primero en un diagrama de dispersión.",opts:[["Sí","","r_pearson"],["No o con dudas","Relación monótona no lineal, atípicos","r_spearman"]]},
+ // PREDECIR
+ pred_vd:{q:"¿Cómo es la variable que quieres predecir?",opts:[
+  ["Cuantitativa continua","","pred_np"],
+  ["Dicotómica","Sí/no, reincide/no reincide","r_logit"],
+  ["Categórica con más de dos categorías","","r_multinom"],
+  ["Ordinal","Bajo / medio / alto","r_ordinal"],
+  ["Recuento","Número de delitos, de visitas…","r_poisson"]]},
+ pred_np:{q:"¿Cuántos predictores tienes?",opts:[["Uno","","r_lms"],["Varios","","r_lmm"]]},
+ // UNA VARIABLE
+ una_tipo:{q:"¿Cómo es la variable?",opts:[
+  ["Cuantitativa","Comparar su media con un valor de referencia","una_norm"],
+  ["Dicotómica","Comparar una proporción con un valor","r_binom"],
+  ["Categórica con varias categorías","Comparar frecuencias con las esperadas","r_bondad"]]},
+ una_norm:{q:"¿Es razonable asumir normalidad?",opts:[["Sí","","r_t1"],["No o con dudas","","r_w1"]]}
+};
+
+const R = {
+ r_welch:{t:"Prueba t de Welch para muestras independientes",d:"Compara las medias de dos grupos independientes sin asumir varianzas iguales. Es la opción recomendada por defecto frente a la t de Student clásica.",s:"Independencia de observaciones; normalidad aproximada en cada grupo.",a:"Si no hay normalidad: U de Mann-Whitney.",e:"d de Cohen o g de Hedges, con su intervalo de confianza.",r:"t.test(y ~ grupo, data = d)   # Welch por defecto\neffectsize::hedges_g(y ~ grupo, data = d)"},
+ r_mann:{t:"U de Mann-Whitney",d:"Compara dos grupos independientes a partir de los rangos. Adecuada para variables ordinales o cuantitativas no normales.",s:"Independencia; distribuciones de forma similar si quieres interpretarla como diferencia de medianas.",a:"Con normalidad: t de Welch.",e:"Correlación biserial de rangos (r<sub>rb</sub>) o r = Z/√N.",r:"wilcox.test(y ~ grupo, data = d)\neffectsize::rank_biserial(y ~ grupo, data = d)"},
+ r_trel:{t:"Prueba t para muestras relacionadas",d:"Compara dos medias obtenidas en los mismos participantes (pre-post) o en pares emparejados.",s:"Las diferencias entre ambas medidas siguen una distribución aproximadamente normal.",a:"Sin normalidad: prueba de Wilcoxon.",e:"d<sub>z</sub> o d<sub>av</sub> (especifica cuál informas).",r:"t.test(d$post, d$pre, paired = TRUE)\neffectsize::cohens_d(d$post, d$pre, paired = TRUE)"},
+ r_wilcox:{t:"Prueba de los rangos con signo de Wilcoxon",d:"Alternativa no paramétrica para dos medidas relacionadas.",s:"Diferencias aproximadamente simétricas.",a:"Con normalidad de las diferencias: t para muestras relacionadas.",e:"Correlación biserial de rangos emparejada o r = Z/√N.",r:"wilcox.test(d$post, d$pre, paired = TRUE)\neffectsize::rank_biserial(d$post, d$pre, paired = TRUE)"},
+ r_anova:{t:"ANOVA de un factor",d:"Compara las medias de tres o más grupos independientes. Si las varianzas son distintas, usa la versión de Welch. Si es significativo, continúa con comparaciones post hoc.",s:"Independencia; normalidad en cada grupo; homogeneidad de varianzas (o Welch).",a:"Sin normalidad: Kruskal-Wallis.",e:"η² y, mejor, ω² (menos sesgado).",r:"oneway.test(y ~ grupo, data = d)        # Welch\nm <- aov(y ~ grupo, data = d)\neffectsize::omega_squared(m)\nTukeyHSD(m)                               # post hoc"},
+ r_kruskal:{t:"H de Kruskal-Wallis",d:"Alternativa no paramétrica al ANOVA de un factor para tres o más grupos independientes.",s:"Independencia; variable al menos ordinal.",a:"Con normalidad: ANOVA de un factor. Post hoc: prueba de Dunn.",e:"ε² de rangos.",r:"kruskal.test(y ~ grupo, data = d)\neffectsize::rank_epsilon_squared(y ~ grupo, data = d)"},
+ r_anovamr:{t:"ANOVA de medidas repetidas",d:"Compara tres o más condiciones medidas en los mismos participantes.",s:"Normalidad; esfericidad (si no se cumple, corrección de Greenhouse-Geisser).",a:"Sin normalidad: Friedman. Con datos ausentes, considera un modelo lineal mixto.",e:"η²<sub>p</sub> o η²<sub>G</sub> (generalizada).",r:"library(afex)\naov_ez(id = \"id\", dv = \"y\", data = d, within = \"tiempo\")"},
+ r_friedman:{t:"Prueba de Friedman",d:"Alternativa no paramétrica al ANOVA de medidas repetidas.",s:"Variable al menos ordinal; mismos sujetos en todas las condiciones.",a:"Con normalidad: ANOVA de medidas repetidas.",e:"W de Kendall.",r:"friedman.test(y ~ tiempo | id, data = d)\neffectsize::kendalls_w(y ~ tiempo | id, data = d)"},
+ r_factorial:{t:"ANOVA factorial entre sujetos",d:"Analiza el efecto de dos o más factores y su interacción sobre una VD cuantitativa.",s:"Independencia; normalidad de residuos; homogeneidad de varianzas.",a:"Con violaciones graves: ANOVA robusto (paquete WRS2).",e:"η²<sub>p</sub> u ω²<sub>p</sub> para cada efecto.",r:"library(afex)\naov_ez(id = \"id\", dv = \"y\", data = d, between = c(\"A\", \"B\"))"},
+ r_mrfact:{t:"ANOVA factorial de medidas repetidas",d:"Dos o más factores intrasujeto y su interacción.",s:"Normalidad; esfericidad para cada efecto con más de dos niveles.",a:"Modelo lineal mixto si hay datos ausentes.",e:"η²<sub>G</sub> (recomendada para diseños intrasujeto).",r:"library(afex)\naov_ez(id = \"id\", dv = \"y\", data = d, within = c(\"A\", \"B\"))"},
+ r_mixto:{t:"ANOVA mixto",d:"Combina factores entre sujetos (p. ej., grupo) e intrasujeto (p. ej., tiempo). Típico en diseños pre-post con grupo control.",s:"Normalidad; homogeneidad de varianzas entre grupos; esfericidad.",a:"Modelo lineal mixto (lme4) si hay datos ausentes o desequilibrio.",e:"η²<sub>G</sub>; la clave suele ser la interacción grupo × tiempo.",r:"library(afex)\naov_ez(id = \"id\", dv = \"y\", data = d,\n       between = \"grupo\", within = \"tiempo\")"},
+ r_chi:{t:"χ² de independencia",d:"Compara proporciones entre dos o más grupos independientes a partir de una tabla de contingencia.",s:"Observaciones independientes; frecuencias esperadas ≥ 5 en al menos el 80 % de las casillas.",a:"Con frecuencias esperadas pequeñas: prueba exacta de Fisher.",e:"φ (tablas 2×2) o V de Cramér; odds ratio en 2×2.",r:"tab <- table(d$grupo, d$respuesta)\nchisq.test(tab)\nfisher.test(tab)          # si hay frecuencias bajas\neffectsize::cramers_v(tab)"},
+ r_mcnemar:{t:"Prueba de McNemar",d:"Compara dos proporciones relacionadas, por ejemplo una respuesta sí/no antes y después de una intervención.",s:"Variable dicotómica medida dos veces en los mismos sujetos.",a:"Con pocos casos discordantes: versión exacta (binomial).",e:"Odds ratio de pares discordantes o g de Cohen.",r:"mcnemar.test(table(d$pre, d$post))"},
+ r_cochran:{t:"Q de Cochran",d:"Extiende McNemar a tres o más mediciones dicotómicas relacionadas.",s:"Variable dicotómica; mismos sujetos en todas las mediciones.",a:"Modelo logístico mixto (GLMM) para diseños más complejos.",e:"Diferencias de proporciones con IC en las comparaciones por pares.",r:"DescTools::CochranQTest(as.matrix(d[, c(\"t1\", \"t2\", \"t3\")]))"},
+ r_pearson:{t:"Correlación de Pearson",d:"Mide la intensidad y dirección de la relación lineal entre dos variables cuantitativas.",s:"Relación lineal; normalidad bivariada aproximada; sin atípicos influyentes.",a:"Si no se cumple: Spearman.",e:"La propia r (y r² como proporción de varianza compartida).",r:"cor.test(d$x, d$y)"},
+ r_spearman:{t:"Correlación de Spearman (o tau de Kendall)",d:"Mide la relación monótona entre dos variables a partir de rangos. Tau-b de Kendall es preferible con muestras pequeñas o muchos empates.",s:"Variables al menos ordinales; relación monótona.",a:"Si la relación es lineal y hay normalidad: Pearson.",e:"ρ de Spearman o τ de Kendall.",r:"cor.test(d$x, d$y, method = \"spearman\")\ncor.test(d$x, d$y, method = \"kendall\")"},
+ r_chiasoc:{t:"χ² de independencia con V de Cramér",d:"Contrasta si dos variables categóricas están asociadas y cuantifica la intensidad.",s:"Independencia; frecuencias esperadas suficientes.",a:"Prueba exacta de Fisher con frecuencias bajas.",e:"φ (2×2) o V de Cramér.",r:"tab <- table(d$x, d$y)\nchisq.test(tab)\neffectsize::cramers_v(tab)"},
+ r_biserial:{t:"Correlación biserial puntual",d:"Relación entre una variable dicotómica y una cuantitativa. Es matemáticamente equivalente a una prueba t de Student.",s:"Normalidad de la variable cuantitativa en cada grupo.",a:"Si te interesa la diferencia entre grupos: t de Welch.",e:"r<sub>pb</sub> (convertible en d de Cohen).",r:"cor.test(d$y, as.numeric(d$grupo))"},
+ r_lms:{t:"Regresión lineal simple",d:"Modela la relación lineal entre un predictor y una VD cuantitativa.",s:"Linealidad; independencia; homocedasticidad y normalidad de residuos.",a:"Con heterocedasticidad: errores típicos robustos (HC3).",e:"R², pendiente estandarizada (β).",r:"m <- lm(y ~ x, data = d)\nsummary(m)\nplot(m)    # diagnóstico de residuos"},
+ r_lmm:{t:"Regresión lineal múltiple",d:"Predice una VD cuantitativa a partir de varios predictores, estimando el efecto de cada uno controlando los demás.",s:"Linealidad; independencia; homocedasticidad; normalidad de residuos; ausencia de multicolinealidad grave (VIF).",a:"Errores típicos robustos o regresión robusta si hay violaciones.",e:"R² y R² ajustado; β; f² de Cohen para bloques de predictores.",r:"m <- lm(y ~ x1 + x2 + x3, data = d)\nsummary(m)\ncar::vif(m)\neffectsize::standardize_parameters(m)"},
+ r_logit:{t:"Regresión logística binaria",d:"Predice la probabilidad de un resultado dicotómico a partir de uno o más predictores.",s:"Independencia; linealidad en el logit para predictores continuos; unos 10 eventos o más por predictor como orientación.",a:"Con eventos muy raros: regresión de Firth (paquete logistf).",e:"Odds ratios con IC; R² de Nagelkerke o Tjur; AUC.",r:"m <- glm(y ~ x1 + x2, family = binomial, data = d)\nsummary(m)\nexp(cbind(OR = coef(m), confint(m)))"},
+ r_multinom:{t:"Regresión logística multinomial",d:"Predice una VD categórica con más de dos categorías no ordenadas, frente a una categoría de referencia.",s:"Independencia de alternativas irrelevantes (IIA); tamaño muestral suficiente por categoría.",a:"Si las categorías tienen orden: regresión ordinal.",e:"Odds ratios relativos (RRR) con IC.",r:"m <- nnet::multinom(y ~ x1 + x2, data = d)\nexp(coef(m))"},
+ r_ordinal:{t:"Regresión logística ordinal",d:"Predice una VD con categorías ordenadas (modelo de odds proporcionales).",s:"Odds proporcionales (contrástalo con la prueba de Brant).",a:"Si falla el supuesto: modelo de odds proporcionales parciales o multinomial.",e:"Odds ratios acumulados con IC.",r:"m <- MASS::polr(y ~ x1 + x2, data = d, Hess = TRUE)\nexp(cbind(OR = coef(m), confint(m)))"},
+ r_poisson:{t:"Regresión de Poisson (o binomial negativa)",d:"Modela variables de recuento (0, 1, 2…). Si la varianza supera claramente a la media (sobredispersión), usa la binomial negativa.",s:"Media ≈ varianza en Poisson; independencia.",a:"Con exceso de ceros: modelos zero-inflated o hurdle (paquete pscl).",e:"Razón de tasas de incidencia (IRR) con IC.",r:"m <- glm(y ~ x, family = poisson, data = d)\nm_nb <- MASS::glm.nb(y ~ x, data = d)   # si hay sobredispersión\nexp(coef(m_nb))"},
+ r_t1:{t:"Prueba t para una muestra",d:"Compara la media de una muestra con un valor de referencia (p. ej., la media normativa de un test).",s:"Normalidad aproximada; independencia.",a:"Sin normalidad: Wilcoxon para una muestra.",e:"d de Cohen = (media − valor) / DT.",r:"t.test(d$y, mu = 100)\neffectsize::cohens_d(d$y, mu = 100)"},
+ r_w1:{t:"Wilcoxon para una muestra",d:"Compara la mediana de una muestra con un valor de referencia.",s:"Distribución aproximadamente simétrica.",a:"Con normalidad: t para una muestra.",e:"Correlación biserial de rangos.",r:"wilcox.test(d$y, mu = 100)"},
+ r_binom:{t:"Prueba binomial",d:"Contrasta si una proporción observada difiere de un valor teórico.",s:"Ensayos independientes con la misma probabilidad de éxito.",a:"Con n grande: aproximación normal (prop.test).",e:"Diferencia de proporciones con IC o h de Cohen.",r:"binom.test(x = 34, n = 80, p = 0.5)"},
+ r_bondad:{t:"χ² de bondad de ajuste",d:"Contrasta si las frecuencias observadas de una variable categórica se ajustan a unas proporciones esperadas.",s:"Frecuencias esperadas ≥ 5 por categoría.",a:"Con frecuencias bajas: prueba multinomial exacta.",e:"w de Cohen.",r:"chisq.test(table(d$x), p = c(.25, .25, .50))"}
+};
+
+// Pruebas que ya tienen redactor APA (clave del árbol → clave del redactor)
+const REDACTOR = {r_welch:"welch", r_trel:"pareada", r_t1:"una", r_anova:"anova", r_kruskal:"kw",
+  r_mann:"mw", r_wilcox:"wil", r_pearson:"cor", r_spearman:"spearman", r_biserial:"cor",
+  r_chi:"chi", r_chiasoc:"chi", r_lms:"reg", r_lmm:"reg"};
+
+let path = [];   // [{node, label}]
+let current = "inicio";
+const app = document.getElementById("app"), crumbs = document.getElementById("crumbs");
+
+function render(){
+  crumbs.innerHTML = path.map(p => `<span>${p.label}</span>`).join("");
+  const nav = path.length ? `<div class="nav"><button onclick="back()">← Atrás</button><button onclick="restart()">Empezar de nuevo</button></div>` : "";
+  if (R[current]) {
+    const r = R[current];
+    app.className = "card result";
+    app.innerHTML = `<span class="tag">Prueba recomendada</span><h2>${r.t}</h2><p>${r.d}</p>
+      <dl><div><dt>Supuestos</dt><dd>${r.s}</dd></div>
+      <div><dt>Alternativa</dt><dd>${r.a}</dd></div>
+      <div><dt>Tamaño del efecto a informar</dt><dd>${r.e}</dd></div>
+      <div><dt>En R</dt><dd><pre>${r.r}</pre></dd></div></dl>
+      ${REDACTOR[current] ? `<a class="calc" href="redactor-apa.html?prueba=${REDACTOR[current]}">Redactar el resultado en APA →</a>` : ""}${nav}`;
+  } else {
+    const n = N[current];
+    app.className = "card";
+    app.innerHTML = `<div class="step">Pregunta ${path.length + 1}</div><h2>${n.q}</h2>${n.help ? `<p class="help">${n.help}</p>` : ""}
+      <div class="opts">${n.opts.map((o,i) => `<button class="opt" onclick="go(${i})"><b>${o[0]}</b>${o[1] ? `<small>${o[1]}</small>` : ""}</button>`).join("")}</div>${nav}`;
+  }
+  app.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+function go(i){ const o = N[current].opts[i]; path.push({node: current, label: o[0]}); current = o[2]; render(); }
+function back(){ const p = path.pop(); current = p.node; render(); }
+function restart(){ path = []; current = "inicio"; render(); }
+render();
+</script>
+<footer class="sf"><div class="sfw"><span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span><span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span></div></footer>
+</body>
+</html>

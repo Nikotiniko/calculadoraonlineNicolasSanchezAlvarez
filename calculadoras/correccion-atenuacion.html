@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Corrección por atenuación · Calculadora</title>
+<meta name="description" content="Correlación entre puntuaciones verdaderas. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/correccion-atenuacion.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Corrección por atenuación · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/correccion-atenuacion.html">
+<meta property="og:description" content="Correlación entre puntuaciones verdaderas. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html" aria-current="page">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="correccion-atenuacion"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Psicometría"><a href="alfa-cronbach.html">Alfa de Cronbach a partir de varianzas</a><a href="alfa-estandarizado.html">Alfa estandarizado</a><a href="ic-alfa-feldt.html">Intervalo de confianza para alfa (Feldt)</a><a href="omega-mcdonald.html">Omega de McDonald</a><a href="spearman-brown.html">Profecía de Spearman-Brown</a><a href="error-tipico-medida.html">Error típico de medida</a><a href="cambio-fiable.html">Índice de cambio fiable (Jacobson-Truax)</a><a href="correccion-atenuacion.html" aria-current="page">Corrección por atenuación</a><a href="kappa-cohen.html">Kappa de Cohen</a><a href="cci-anova.html">Coeficiente de correlación intraclase</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Corrección por atenuación</h1>
+      <p class="lede">Estima la correlación entre los constructos libres de error de medida a partir de la correlación observada y las fiabilidades.</p>
+      <div class="card">
+        <div class="fields"><label for="r">Correlación observada<input id="r" data-k="r" data-t="n" inputmode="decimal" autocomplete="off" value="0,35"></label><label for="rxx">Fiabilidad de X<input id="rxx" data-k="rxx" data-t="n" inputmode="decimal" autocomplete="off" value="0,80"></label><label for="ryy">Fiabilidad de Y<input id="ryy" data-k="ryy" data-t="n" inputmode="decimal" autocomplete="off" value="0,70"></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Correlación corregida</span><b data-out="rc" data-f="3">—</b></div><div class="stat"><span>Corregida solo por X</span><b data-out="rx" data-f="3">—</b></div><div class="stat"><span>Correlación máxima observable</span><b data-out="max" data-f="3">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>El error de medida reduce las correlaciones observadas. La corrección estima cuánto se relacionarían los constructos si se midieran sin error. Con fiabilidades bajas puede dar valores mayores que 1, señal de que las fiabilidades están infraestimadas.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Una correlación observada de ,35 entre dos escalas con fiabilidades ,80 y ,70 corresponde a una correlación entre constructos de aproximadamente ,47.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">r_c = r_xy / √(r_xx r_yy)</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Spearman, C. (1904). The proof and measurement of association between two things. <i>American Journal of Psychology, 15</i>(1), 72–101.</li><li>Schmidt, F. L. y Hunter, J. E. (1996). Measurement error in psychological research. <i>Psychological Methods, 1</i>(2), 199–223.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="cambio-fiable.html">← Índice de cambio fiable (Jacobson-Truax)</a><a href="kappa-cohen.html">Kappa de Cohen →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Corrección por atenuación</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#psicometria">Todas las de Psicometría</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

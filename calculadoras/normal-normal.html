@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Media bayesiana (normal-normal) · Calculadora</title>
+<meta name="description" content="Posterior de una media con prior normal y σ conocida. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/estilo.css">
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/calculadoras/normal-normal.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Media bayesiana (normal-normal) · Calculadora">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/calculadoras/normal-normal.html">
+<meta property="og:description" content="Posterior de una media con prior normal y σ conocida. Con fórmulas, interpretación, ejemplo aplicado y referencias.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="site-head gutter"><div class="wrap">
+  <a class="site-name" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a>
+  <nav class="site-nav" aria-label="Principal">
+    <a href="../index.html">Inicio</a>
+    <a href="../index.html#publicaciones">Publicaciones</a>
+    <a href="../index.html#libros">Libros</a>
+    <a href="../calculadoras/index.html" aria-current="page">Calculadoras</a>
+    <a href="../herramientas/index.html">Herramientas</a>
+  </nav>
+</div></header>
+<div class="cat-bar gutter"><div class="wrap"><nav class="cat-nav" aria-label="Categorías"><a href="distribucion-normal.html">Distribuciones</a><a href="probabilidad-sucesos.html">Probabilidad</a><a href="descriptivos.html">Descriptivos</a><a href="p-valor.html">Contrastes</a><a href="correlacion-p-valor.html">Correlación y regresión</a><a href="efecto-indirecto-sobel.html">Mediación</a><a href="d-cohen.html">Tamaño del efecto</a><a href="ic-media.html">Estimación</a><a href="alfa-cronbach.html">Psicometría</a><a href="tamano-muestral-t.html">Potencia y muestra</a><a href="metaanalisis-efectos.html">Metaanálisis</a><a href="factor-bayes-t.html" aria-current="page">Bayesiana</a></nav></div></div>
+<main class="gutter" data-calc="normal-normal"><div class="wrap">
+  <nav class="sub-tabs" aria-label="Calculadoras de Bayesiana"><a href="factor-bayes-t.html">Factor de Bayes para una prueba t</a><a href="factor-bayes-bic.html">Factor de Bayes a partir del BIC</a><a href="beta-binomial.html">Proporción bayesiana (beta-binomial)</a><a href="normal-normal.html" aria-current="page">Media bayesiana (normal-normal)</a><a href="probabilidad-posterior.html">Probabilidad posterior a partir del factor de Bayes</a></nav>
+  <div class="calc-layout">
+    <div style="min-width:0">
+      <h1 style="margin-top:24px">Media bayesiana (normal-normal)</h1>
+      <p class="lede">Combina una distribución previa normal sobre la media con los datos de una muestra (σ conocida) y obtiene la distribución posterior.</p>
+      <div class="card">
+        <div class="fields"><label for="m0">Media del prior<input id="m0" data-k="m0" data-t="n" inputmode="decimal" autocomplete="off" value="100"></label><label for="s0">DT del prior<input id="s0" data-k="s0" data-t="n" inputmode="decimal" autocomplete="off" value="10"></label><label for="xm">Media muestral<input id="xm" data-k="xm" data-t="n" inputmode="decimal" autocomplete="off" value="108"></label><label for="sigma">DT de los datos σ<input id="sigma" data-k="sigma" data-t="n" inputmode="decimal" autocomplete="off" value="15"></label><label for="n">n<input id="n" data-k="n" data-t="n" inputmode="decimal" autocomplete="off" value="20"></label><label for="conf">Nivel de confianza<select id="conf" data-k="conf" data-t="s"><option value="0.95">95 %</option><option value="0.90">90 %</option><option value="0.99">99 %</option></select></label></div>
+        <p class="err" id="err" hidden></p>
+        <div class="result"><div class="stat"><span>Media posterior</span><b data-out="mp" data-f="3">—</b></div><div class="stat"><span>DT posterior</span><b data-out="sp" data-f="3">—</b></div><div class="stat"><span>Intervalo de credibilidad</span><b data-out="ic" data-f="t">—</b></div><div class="stat"><span>Peso de los datos</span><b data-out="peso" data-f="3">—</b></div></div>
+        <div class="apa" id="apa-box" hidden><div><small>Cómo informarlo (APA 7)</small><code id="apa"></code></div><button type="button" class="copy" data-copy="apa">Copiar</button></div>
+        
+      </div>
+      <div class="doc">
+        <section><h2>Cómo interpretarlo</h2><p>La media posterior es un promedio ponderado del prior y los datos según su precisión. Con más datos, el prior pierde influencia.</p></section>
+        <section><h2>Ejemplo aplicado</h2><p>Un prior centrado en 100 (DT 10) y una muestra de 20 con media 108 dan una media posterior de unos 107,2: los datos pesan alrededor del 90 %.</p><p class="nota">Los valores de ejemplo cargados en la calculadora corresponden a este caso.</p></section>
+        <section><h2>Fórmulas</h2><div class="formula">1/σ²_post = 1/σ₀² + n/σ²   μ_post = σ²_post(μ₀/σ₀² + n·x̄/σ²)</div></section>
+        <section><h2>Referencias</h2><ol class="refs"><li>Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A. y Rubin, D. B. (2013). <i>Bayesian data analysis</i> (3.ª ed.). CRC Press.</li></ol></section>
+      </div>
+      <nav class="pager" aria-label="Calculadora anterior y siguiente"><a href="beta-binomial.html">← Proporción bayesiana (beta-binomial)</a><a href="probabilidad-posterior.html">Probabilidad posterior a partir del factor de Bayes →</a></nav>
+    </div>
+    <aside class="side">
+      <div><h3>Cómo citar esta calculadora</h3><div class="cite">Sánchez Álvarez, N. (2026). <i>Media bayesiana (normal-normal)</i> [Calculadora en línea]. <span data-url></span></div></div>
+      <div><h3>Privacidad</h3><p style="margin:0;color:var(--muted)">Los cálculos se hacen en tu navegador. Los datos no se envían a ningún servidor.</p></div>
+      <div><h3>Catálogo</h3><ul><li><a href="index.html#bayesiana">Todas las de Bayesiana</a></li><li><a href="index.html">Las 137 calculadoras</a></li></ul></div>
+    </aside>
+  </div>
+</div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script>
+<script src="../assets/calculadoras.js"></script>
+
+<footer class="gutter"><div class="wrap">
+  <span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span>
+  <span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span>
+</div></footer>
+</body>
+</html>

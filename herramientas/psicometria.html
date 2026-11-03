@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadoras de psicometría</title>
+<meta name="author" content="Nicolás Sánchez Álvarez">
+<meta name="description" content="Calculadoras de psicometría en español: alfa de Cronbach con análisis de ítems, omega de McDonald, Spearman-Brown, error típico de medida, baremos, índice de cambio fiable de Jacobson-Truax y comparación de alfas.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>:root{--bg:#f8fafb;--card:#ffffff;--ink:#1e2b34;--muted:#5e6d77;--line:#dfe6eb;--accent:#2b6c94;--accent-soft:#e7f0f6;--red:#b3412e;--red-soft:#f8e6e2;--tip:#fbf4e6;--tip-ink:#7a5214;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:28px 16px 60px}
+.navl{font-size:.88rem}.navl a{color:var(--accent);text-decoration:none}.navl span{color:var(--muted);margin:0 6px}
+h1{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:clamp(1.7rem,5vw,2.3rem);margin:8px 0 6px}
+.lead{margin:0 0 20px;color:var(--muted)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}
+.tabs button{font:inherit;font-size:.9rem;white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:99px;cursor:pointer}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px}
+h2{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.3rem;margin:0 0 6px}
+.desc{color:var(--muted);margin:0 0 16px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:6px}
+.grid .full{grid-column:1/-1}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:.84rem;color:var(--muted);font-weight:500}
+label.f small{font-weight:400;font-size:.76rem}
+input,select,textarea{font:inherit;font-size:.95rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+textarea{font-family:ui-monospace,Menlo,monospace;font-size:.85rem;min-height:150px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px}
+.res div{background:var(--bg);border-radius:8px;padding:9px 11px;font-size:.8rem;color:var(--muted)}
+.res b{display:block;color:var(--ink);font-size:1.08rem;font-weight:600}
+.res small{display:block;font-size:.74rem}
+.res .hl{background:var(--accent-soft)}.res .hl b{color:var(--accent)}
+.res .bad{background:var(--red-soft)}.res .bad b{color:var(--red)}
+table.t{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:12px}
+table.t th{text-align:left;font-weight:500;color:var(--muted);font-size:.8rem;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.t td{padding:8px;border-bottom:1px solid var(--line)}
+table.t tr.src td{background:var(--accent-soft)}
+.tw{overflow-x:auto}
+.say{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:1.04rem;line-height:1.65;background:var(--bg);border-left:3px solid var(--accent);padding:12px 14px;border-radius:0 8px 8px 0;margin-top:14px}
+.warn{background:var(--red-soft);color:var(--red);font-size:.88rem;border-radius:8px;padding:10px 12px;margin-top:12px}
+.tip{background:var(--tip);color:var(--tip-ink);border-radius:10px;padding:12px 14px;font-size:.88rem;margin-top:14px}
+.tip strong{display:block;margin-bottom:2px}
+canvas{width:100%;display:block;margin-top:12px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.top{display:flex;justify-content:flex-end;margin-bottom:10px}.top label{flex-direction:row;align-items:center;gap:8px}.top select{width:auto}
+.btn{font:inherit;font-size:.9rem;border:1px solid var(--accent);background:var(--accent);color:#fff;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:600}
+footer{margin-top:24px;font-size:.82rem;color:var(--muted)}
+
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.low td{color:var(--red)}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.seg button{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--card);color:var(--muted);padding:6px 12px;border-radius:8px;cursor:pointer}
+.seg button.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+.sh{background:#fff;border-bottom:1px solid #dfe6eb}.shw{max-width:1120px;margin:0 auto;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px}
+.sn{font:700 18px/1.2 "Bricolage Grotesque",system-ui,sans-serif;color:#1e2b34;text-decoration:none}.sn small{display:block;font:500 12px/1.3 "Public Sans",system-ui,sans-serif;color:#5e6d77}
+.snav{display:flex;flex-wrap:wrap;gap:4px}.snav a{padding:7px 12px;border-radius:6px;text-decoration:none;color:#1e2b34;font-size:15px}.snav a:hover{background:#f1f5f8}.snav a.cur{background:#e7f0f6;color:#2b6c94;font-weight:600}
+.tsub{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid #dfe6eb}.tsub a{font-size:13px;line-height:1.25;padding:7px 11px;border-radius:999px;background:#fff;border:1px solid #dfe6eb;color:#1e2b34;text-decoration:none}.tsub a:hover{border-color:#2b6c94;color:#2b6c94}.tsub a.cur{background:#2b6c94;border-color:#2b6c94;color:#fff;font-weight:600}
+.citebox{background:#fff;border:1px solid #dfe6eb;border-radius:8px;padding:12px 14px;font-size:13px;margin-top:10px;overflow-wrap:anywhere;color:#1e2b34}
+.sf{border-top:1px solid #dfe6eb;background:#fff;color:#5e6d77;font-size:13px;margin-top:20px}.sfw{max-width:1120px;margin:0 auto;padding:18px 16px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}.sf a{color:#2b6c94}
+</style>
+
+<link rel="canonical" href="https://nikotiniko.github.io/Myweb/herramientas/psicometria.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nicolás Sánchez Álvarez · Universidad de Málaga">
+<meta property="og:title" content="Calculadoras de psicometría">
+<meta property="og:url" content="https://nikotiniko.github.io/Myweb/herramientas/psicometria.html">
+<meta property="og:description" content="Calculadoras de psicometría en español: alfa de Cronbach con análisis de ítems, omega de McDonald, Spearman-Brown, error típico de medida, baremos, índice de cambio fiable de Jacobson-Truax y comparación de alfas.">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<header class="sh"><div class="shw"><a class="sn" href="../index.html">Nicolás Sánchez Álvarez<small>Profesor Titular · Universidad de Málaga</small></a><nav class="snav" aria-label="Principal"><a href="../index.html">Inicio</a><a href="../index.html#publicaciones">Publicaciones</a><a href="../index.html#libros">Libros</a><a href="../calculadoras/index.html">Calculadoras</a><a href="../herramientas/index.html" class="cur">Herramientas</a></nav></div></header>
+<div class="wrap">
+  <nav class="tsub" aria-label="Herramientas"><a href="que-prueba-uso.html">¿Qué prueba uso?</a><a href="redactor-apa.html">Redactor APA</a><a href="simuladores.html">Simuladores</a><a href="tamanos-efecto.html">Tamaños del efecto</a><a href="potencia.html">Potencia</a><a href="psicometria.html" class="cur">Psicometría</a><a href="bayes.html">Bayes</a><a href="metaanalisis.html">Metaanálisis</a></nav>
+  <h1>Calculadoras de psicometría</h1>
+  <p class="lead">Herramientas para analizar la fiabilidad de un test e interpretar puntuaciones individuales.</p>
+  <div class="top"><label class="f">Decimales <select id="dec"><option value=",">Coma</option><option value=".">Punto</option></select></label></div>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="alfa" class="on">Alfa y ω</button>
+    <button data-tab="sb">Spearman-Brown</button>
+    <button data-tab="ind">Puntuación individual</button>
+    <button data-tab="rci">Cambio fiable (RCI)</button>
+    <button data-tab="cmp">Comparar alfas</button>
+  </nav>
+
+  <!-- ALFA -->
+  <section class="panel on" id="p-alfa">
+    <div class="card">
+      <h2>Fiabilidad: α de Cronbach y ω de McDonald</h2>
+      <div class="seg" id="aseg"><button data-m="datos" class="on">Pegar datos</button><button data-m="resumen">Desde resumen</button><button data-m="omega">ω desde cargas</button></div>
+      <div id="a-datos">
+        <p class="desc">Pega tus datos desde Excel, SPSS o JASP: una fila por participante y una columna por ítem, sin encabezados. Se excluyen las filas con valores perdidos.</p>
+        <label class="f">Datos<textarea id="adata"></textarea></label>
+      </div>
+      <div id="a-resumen" style="display:none">
+        <p class="desc">Si no tienes los datos brutos, calcula α a partir de la correlación media entre ítems (α estandarizado) o de las varianzas.</p>
+        <div class="grid">
+          <label class="f">Número de ítems (k)<input id="ak" inputmode="numeric" value="10"></label>
+          <label class="f">Correlación media entre ítems<input id="ar" inputmode="decimal" value="0.30"></label>
+          <label class="f">n (para el IC, opcional)<input id="an" inputmode="numeric" value="200"></label>
+        </div>
+      </div>
+      <div id="a-omega" style="display:none">
+        <p class="desc">Introduce las cargas factoriales estandarizadas de un modelo unidimensional (obtenidas en JASP, R/lavaan, Mplus…), separadas por espacios, comas o saltos de línea.</p>
+        <label class="f">Cargas λ<textarea id="aload" style="min-height:90px">0.72 0.65 0.58 0.80 0.47 0.69</textarea></label>
+      </div>
+      <div class="res" id="ares"></div>
+      <div id="aitems"></div>
+      <div class="say" id="asay"></div>
+      <div class="tip"><strong>Para interpretar</strong>α subestima la fiabilidad cuando las cargas de los ítems son desiguales (falta de tau-equivalencia), y en ese caso es preferible ω. Como orientación, se suelen pedir valores ≥ ,70 para investigación y ≥ ,90 para decisiones individuales (Nunnally y Bernstein, 1994). Un α muy alto (> ,95) puede indicar ítems redundantes.</div>
+    </div>
+  </section>
+
+  <!-- SPEARMAN-BROWN -->
+  <section class="panel" id="p-sb">
+    <div class="card">
+      <h2>Fórmula de Spearman-Brown</h2>
+      <p class="desc">Predice cómo cambiaría la fiabilidad al alargar o acortar un test con ítems paralelos, o cuántos ítems harían falta para alcanzar una fiabilidad dada.</p>
+      <div class="grid">
+        <label class="f">Fiabilidad actual<input id="sr" inputmode="decimal" value="0.70"></label>
+        <label class="f">Ítems actuales<input id="sk" inputmode="numeric" value="10"></label>
+        <label class="f">Ítems en la nueva versión<input id="sk2" inputmode="numeric" value="20"></label>
+        <label class="f">Fiabilidad objetivo<input id="st" inputmode="decimal" value="0.85"></label>
+      </div>
+      <div class="res" id="sres"></div>
+      <div class="say" id="ssay"></div>
+    </div>
+  </section>
+
+  <!-- INDIVIDUAL -->
+  <section class="panel" id="p-ind">
+    <div class="card">
+      <h2>Puntuación individual: baremo y error de medida</h2>
+      <p class="desc">Transforma una puntuación directa en puntuaciones típicas y calcula su intervalo de confianza a partir de la media y la DT del grupo normativo y de la fiabilidad del test.</p>
+      <div class="grid">
+        <label class="f">Puntuación directa (X)<input id="ix" inputmode="decimal" value="34"></label>
+        <label class="f">Media normativa<input id="im" inputmode="decimal" value="28"></label>
+        <label class="f">DT normativa<input id="isd" inputmode="decimal" value="6"></label>
+        <label class="f">Fiabilidad (rxx)<input id="ir" inputmode="decimal" value="0.85"></label>
+        <label class="f">Nivel de confianza<select id="ic"><option value="0.90">90 %</option><option value="0.95" selected>95 %</option><option value="0.99">99 %</option></select></label>
+      </div>
+      <div class="res" id="ires"></div>
+      <div class="say" id="isay"></div>
+      <div class="tip"><strong>Sobre los percentiles</strong>Se obtienen suponiendo que la distribución normativa es normal. Si tu test tiene baremos empíricos publicados, utiliza esos.</div>
+    </div>
+  </section>
+
+  <!-- RCI -->
+  <section class="panel" id="p-rci">
+    <div class="card">
+      <h2>Índice de cambio fiable (Jacobson y Truax, 1991)</h2>
+      <p class="desc">Determina si la diferencia entre el pretest y el postest de una persona es mayor de lo que cabría esperar por el error de medida y, opcionalmente, si el cambio es clínicamente significativo.</p>
+      <div class="grid">
+        <label class="f">Pretest<input id="rpre" inputmode="decimal" value="32"></label>
+        <label class="f">Postest<input id="rpost" inputmode="decimal" value="18"></label>
+        <label class="f">DT (pretest o normativa)<input id="rsd" inputmode="decimal" value="7.5"></label>
+        <label class="f">Fiabilidad (rxx)<input id="rr" inputmode="decimal" value="0.88"></label>
+        <label class="f full">Dirección de la mejora<select id="rdir"><option value="down">Puntuaciones más bajas indican mejoría (p. ej., ansiedad)</option><option value="up">Puntuaciones más altas indican mejoría (p. ej., bienestar)</option></select></label>
+        <label class="f">Media población clínica<small>Opcional, para el punto de corte c</small><input id="rmc" inputmode="decimal" value="30"></label>
+        <label class="f">DT población clínica<input id="rsc" inputmode="decimal" value="7.5"></label>
+        <label class="f">Media población general<input id="rmn" inputmode="decimal" value="14"></label>
+        <label class="f">DT población general<input id="rsn" inputmode="decimal" value="6"></label>
+      </div>
+      <div class="res" id="rres"></div>
+      <div class="say" id="rsay"></div>
+    </div>
+  </section>
+
+  <!-- COMPARAR -->
+  <section class="panel" id="p-cmp">
+    <div class="card">
+      <h2>Comparar dos coeficientes α independientes (Feldt, 1969)</h2>
+      <p class="desc">Contrasta si la fiabilidad de un test difiere entre dos muestras independientes (por ejemplo, entre hombres y mujeres o entre dos países).</p>
+      <div class="grid">
+        <label class="f">α muestra 1<input id="c1" inputmode="decimal" value="0.88"></label>
+        <label class="f">n muestra 1<input id="cn1" inputmode="numeric" value="250"></label>
+        <label class="f">α muestra 2<input id="c2" inputmode="decimal" value="0.81"></label>
+        <label class="f">n muestra 2<input id="cn2" inputmode="numeric" value="230"></label>
+      </div>
+      <div class="res" id="cres"></div>
+      <div class="say" id="csay"></div>
+    </div>
+  </section>
+
+  <div class="citebox"><b>Cómo citar esta herramienta</b><br>Sánchez Álvarez, N. (2026). <i>Psicometría</i> [Herramienta en línea]. Universidad de Málaga. https://nikotiniko.github.io/Myweb/herramientas/psicometria.html</div>
+  <footer>Nicolás Sánchez Álvarez · Universidad de Málaga. IC de α según Feldt (1965). Referencias: Feldt, L. S. (1965, 1969), <i>Psychometrika</i>; Jacobson, N. S. y Truax, P. (1991), <i>Journal of Consulting and Clinical Psychology</i>; McDonald, R. P. (1999), <i>Test theory: A unified treatment</i>.</footer>
+</div>
+<script>
+/* ---------- Núcleo estadístico ---------- */
+const $=id=>document.getElementById(id);
+let DEC=",";
+const fmt=(x,d=2,lead=true)=>{if(!isFinite(x))return x===Infinity?"∞":x===-Infinity?"−∞":"—";let s=Math.abs(x).toFixed(d);if(!lead&&s[0]==="0")s=s.slice(1);const neg=x<0&&parseFloat(s)!==0;return(neg?"−":"")+s.replace(".",DEC)};
+const ci=(a,b,d=2,lead=true)=>`[${fmt(a,d,lead)}${DEC===","?";":","} ${fmt(b,d,lead)}]`;
+const N=x=>parseFloat(String(x??"").trim().replace(",","."));
+function lnG(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,.1208650973866179e-2,-.5395239384953e-5];let y=x,t=x+5.5;t-=(x+.5)*Math.log(t);let s=1.000000000190015;for(const ci of c)s+=ci/++y;return -t+Math.log(2.5066282746310005*s/x)}
+function betacf(a,b,x){const F=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<F)d=F;d=1/d;let h=d;for(let m=1;m<=500;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return h}
+function ibeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lnG(a+b)-lnG(a)-lnG(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b}
+function gser(a,x){let ap=a,sum=1/a,del=sum;for(let n=0;n<2000;n++){ap++;del*=x/ap;sum+=del;if(Math.abs(del)<Math.abs(sum)*3e-14)break}return sum*Math.exp(-x+a*Math.log(x)-lnG(a))}
+function gcf(a,x){const F=1e-300;let b=x+1-a,c=1/F,d=1/b,h=d;for(let i=1;i<2000;i++){const an=-i*(i-a);b+=2;d=an*d+b;if(Math.abs(d)<F)d=F;c=b+an/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break}return Math.exp(-x+a*Math.log(x)-lnG(a))*h}
+function gammaP(a,x){if(x<=0)return 0;return x<a+1?gser(a,x):1-gcf(a,x)}
+const gammaQ=(a,x)=>1-gammaP(a,x);
+const Phi=x=>x>=0?1-.5*gcfQ(x):.5*gcfQ(x);
+function gcfQ(x){const v=x*x/2;return v<1.5?1-gser(.5,v):gcf(.5,v)}
+function qnorm(p){let lo=-40,hi=40;for(let i=0;i<200;i++){const m=(lo+hi)/2;Phi(m)<p?lo=m:hi=m}return(lo+hi)/2}
+const pT2=(t,df)=>ibeta(df/(df+t*t),df/2,.5);
+const pF=(F,d1,d2)=>F<=0?1:ibeta(d2/(d2+d1*F),d2/2,d1/2);
+const pChi=(x,df)=>gammaQ(df/2,x/2);
+function tcrit(df,alpha=.05){let lo=0,hi=1e4;for(let i=0;i<200;i++){const m=(lo+hi)/2;pT2(m,df)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function fcrit(d1,d2,alpha=.05){let lo=0,hi=1e5;for(let i=0;i<200;i++){const m=(lo+hi)/2;pF(m,d1,d2)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function chicrit(df,alpha=.05){let lo=0,hi=1e5;for(let i=0;i<200;i++){const m=(lo+hi)/2;pChi(m,df)>alpha?lo=m:hi=m}return(lo+hi)/2}
+function setup(cv,h){const w=cv.clientWidth||cv.parentNode.clientWidth,dpr=window.devicePixelRatio||1;cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+"px";const ctx=cv.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.font="12px Inter, sans-serif";return{ctx,w,h}}
+const C={accent:"#2b6c94",red:"#b3412e",ink:"#1e2b34",muted:"#5e6d77",line:"#dfe6eb",grey:"#d5dde3"};
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const mag=(x,c,fem)=>{const l=x<c[0]?"muy pequeño":x<c[1]?"pequeño":x<c[2]?"mediano":"grande";return fem?l.replace(/o$/,"a"):l};
+
+const fq=(p,d1,d2)=>fcrit(d1,d2,1-p);            // cuantil p de F(d1,d2)
+const res=(id,items)=>{$(id).innerHTML=items.map(([l,v,c,s])=>`<div class="${c||""}">${l}<b>${v}</b>${s?`<small>${s}</small>`:""}</div>`).join("")};
+const lvl=a=>a>=.9?"excelente":a>=.8?"buena":a>=.7?"aceptable":a>=.6?"cuestionable":"insuficiente";
+function feldtCI(a,n,k){const d1=n-1,d2=(n-1)*(k-1);return[1-(1-a)*fq(.975,d1,d2),1-(1-a)*fq(.025,d1,d2)]}
+function alphaFromMatrix(X){const n=X.length,k=X[0].length,col=j=>X.map(r=>r[j]),mean=a=>a.reduce((s,x)=>s+x,0)/a.length,vr=a=>{const m=mean(a);return a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1)};
+ const tot=X.map(r=>r.reduce((s,x)=>s+x,0)),vi=[...Array(k)].map((_,j)=>vr(col(j))),vt=vr(tot),a=k/(k-1)*(1-vi.reduce((s,x)=>s+x,0)/vt);
+ const cor=(x,y)=>{const mx=mean(x),my=mean(y);let sxy=0,sx=0,sy=0;x.forEach((v,i)=>{sxy+=(v-mx)*(y[i]-my);sx+=(v-mx)**2;sy+=(y[i]-my)**2});return sxy/Math.sqrt(sx*sy)};
+ const items=[...Array(k)].map((_,j)=>{const c=col(j),rest=tot.map((t,i)=>t-c[i]),vRest=vr(rest),vOther=vi.reduce((s,x,i)=>i===j?s:s+x,0);return{m:mean(c),sd:Math.sqrt(vi[j]),rit:cor(c,rest),adel:k>2?(k-1)/(k-2)*(1-vOther/vRest):NaN}});
+ return{a,n,k,items,vi,vt}}
+function parse(txt){const lines=txt.trim().split(/\r?\n/).filter(l=>l.trim());if(!lines.length)return null;
+ const sep=lines[0].includes("\t")?"\t":lines[0].includes(";")?";":/\d,\d/.test(lines[0])&&!/\d\.\d/.test(lines[0])&&lines[0].split(",").length>2?",":/\s+/;
+ const decComma=sep!==","&&/\d,\d/.test(txt);
+ const rows=lines.map(l=>l.trim().split(sep).map(v=>{v=v.trim();if(decComma)v=v.replace(",",".");return v===""?NaN:Number(v)}));
+ const k=Math.max(...rows.map(r=>r.length));const ok=rows.filter(r=>r.length===k&&r.every(isFinite));return{X:ok,k,dropped:rows.length-ok.length}}
+let AM="datos";
+function runA(){
+ ["datos","resumen","omega"].forEach(m=>$("a-"+m).style.display=m===AM?"":"none");$("aitems").innerHTML="";
+ if(AM==="datos"){const P=parse($("adata").value);
+  if(!P||P.X.length<3||P.k<2){$("ares").innerHTML="";$("asay").innerHTML="Pega al menos 3 filas con 2 o más ítems.";return}
+  const R=alphaFromMatrix(P.X),[lo,hi]=feldtCI(R.a,R.n,R.k);
+  res("ares",[["α de Cronbach",fmt(R.a,3,false),"hl",lvl(R.a)],["IC 95 % (Feldt)",ci(lo,hi,3,false)],["Participantes válidos",R.n,"",P.dropped?`${P.dropped} filas excluidas`:""],["Ítems",R.k]]);
+  $("aitems").innerHTML=`<div class="tw"><table class="t"><thead><tr><th>Ítem</th><th class="num">Media</th><th class="num">DT</th><th class="num">r ítem-total corregida</th><th class="num">α si se elimina</th></tr></thead><tbody>${R.items.map((it,j)=>`<tr class="${it.rit<.3||it.adel>R.a?"low":""}"><td>${j+1}</td><td class="num">${fmt(it.m)}</td><td class="num">${fmt(it.sd)}</td><td class="num">${fmt(it.rit,3,false)}</td><td class="num">${fmt(it.adel,3,false)}</td></tr>`).join("")}</tbody></table></div><p style="font-size:.8rem;color:var(--muted);margin:6px 0 0">En rojo, los ítems con r ítem-total corregida < ,30 o cuya eliminación aumentaría α.</p>`;
+  $("asay").innerHTML=`La consistencia interna de la escala (${R.k} ítems) fue ${lvl(R.a)}, α = ${fmt(R.a,2,false)}, IC 95 % ${ci(lo,hi,2,false)}. Las correlaciones ítem-total corregidas oscilaron entre ${fmt(Math.min(...R.items.map(i=>i.rit)),2,false)} y ${fmt(Math.max(...R.items.map(i=>i.rit)),2,false)}.`}
+ else if(AM==="resumen"){const k=N($("ak").value),r=N($("ar").value),n=N($("an").value);
+  if(!(k>=2)||!(r>-1/(k-1)&&r<1)){$("ares").innerHTML="";$("asay").textContent="Revisa k y la correlación media.";return}
+  const a=k*r/(1+(k-1)*r),it=[["α estandarizado",fmt(a,3,false),"hl",lvl(a)]];let ics="";
+  if(n>=3){const[lo,hi]=feldtCI(a,n,k);it.push(["IC 95 % (Feldt)",ci(lo,hi,3,false)]);ics=`, IC 95 % ${ci(lo,hi,2,false)}`}
+  res("ares",it);$("asay").innerHTML=`Con ${k} ítems y una correlación media entre ítems de ${fmt(r,2,false)}, el α estandarizado es ${fmt(a,2,false)}${ics}.`}
+ else{const L=$("aload").value.trim().split(/[\s;]+/).flatMap(t=>/^-?\d+,\d+$/.test(t)?[t]:t.split(",")).map(v=>N(v)).filter(isFinite);
+  if(L.length<2||L.some(l=>Math.abs(l)>=1)){$("ares").innerHTML="";$("asay").textContent="Introduce al menos dos cargas estandarizadas (entre −1 y 1).";return}
+  const s=L.reduce((a,b)=>a+b,0),e=L.reduce((a,b)=>a+(1-b*b),0),w=s*s/(s*s+e),k=L.length,rbar=(s*s-L.reduce((a,b)=>a+b*b,0))/(k*(k-1)),aStd=k*rbar/(1+(k-1)*rbar);
+  res("ares",[["ω de McDonald",fmt(w,3,false),"hl",lvl(w)],["Ítems",k],["Carga media",fmt(s/k,3,false)],["α implícito (estandarizado)",fmt(aStd,3,false),"","bajo el mismo modelo"]]);
+  $("asay").innerHTML=`A partir de las cargas factoriales estandarizadas de un modelo unidimensional (${k} ítems), la fiabilidad fue ${lvl(w)}, ω = ${fmt(w,2,false)}.`}}
+document.querySelectorAll("#aseg button").forEach(b=>b.addEventListener("click",()=>{AM=b.dataset.m;document.querySelectorAll("#aseg button").forEach(x=>x.classList.toggle("on",x===b));runA()}));
+["adata","ak","ar","an","aload"].forEach(id=>$(id).addEventListener("input",runA));
+
+function runSB(){const r=N($("sr").value),k=N($("sk").value),k2=N($("sk2").value),t=N($("st").value);
+ if(!(r>0&&r<1&&k>0)){$("sres").innerHTML="";$("ssay").textContent="Revisa la fiabilidad (entre 0 y 1) y el número de ítems.";return}
+ const it=[],say=[];
+ if(k2>0){const m=k2/k,r2=m*r/(1+(m-1)*r);it.push([`Fiabilidad con ${k2} ítems`,fmt(r2,3,false),"hl",`factor de longitud ${fmt(m,2)}`]);say.push(`Si el test pasara de ${k} a ${k2} ítems paralelos, su fiabilidad pasaría de ${fmt(r,2,false)} a ${fmt(r2,2,false)}.`)}
+ if(t>0&&t<1){const m=t*(1-r)/(r*(1-t)),need=Math.ceil(k*m-1e-9);it.push([`Ítems para alcanzar ${fmt(t,2,false)}`,need,"hl",`factor de longitud ${fmt(m,2)}`]);say.push(`Para alcanzar una fiabilidad de ${fmt(t,2,false)} harían falta ${need} ítems (${need>=k?`${need-k} más`:`${k-need} menos`} que en la versión actual).`)}
+ res("sres",it);$("ssay").innerHTML=say.join(" ")+" La predicción supone que los ítems añadidos o eliminados son paralelos a los actuales."}
+["sr","sk","sk2","st"].forEach(id=>$(id).addEventListener("input",runSB));
+
+function runI(){const x=N($("ix").value),m=N($("im").value),sd=N($("isd").value),r=N($("ir").value),c=+$("ic").value,zc=qnorm(1-(1-c)/2);
+ if(!okAll(x,m,sd,r)||sd<=0||r<=0||r>=1){$("ires").innerHTML="";$("isay").textContent="Revisa los datos (DT > 0 y fiabilidad entre 0 y 1).";return}
+ const z=(x-m)/sd,T=50+10*z,pc=100*Phi(z),ene=Math.min(9,Math.max(1,Math.round(2*z+5))),etm=sd*Math.sqrt(1-r),vp=m+r*(x-m),ete=sd*Math.sqrt(r*(1-r));
+ res("ires",[["Puntuación z",fmt(z,2)],["Puntuación T",fmt(T,1)],["Percentil",fmt(pc,0),"hl"],["Eneatipo",ene],["Error típico de medida",fmt(etm,2),"","ETM = DT·√(1 − rxx)"],[`IC ${fmt(100*c,0)} % (directo)`,ci(x-zc*etm,x+zc*etm,1)],["Puntuación verdadera estimada",fmt(vp,1),"","regresión hacia la media"],[`IC ${fmt(100*c,0)} % (regresión)`,ci(vp-zc*ete,vp+zc*ete,1)]]);
+ $("isay").innerHTML=`Una puntuación directa de ${fmt(x,1)} corresponde a <i>z</i> = ${fmt(z,2)}, <i>T</i> = ${fmt(T,0)} y al percentil ${fmt(pc,0)}: la persona supera aproximadamente al ${fmt(pc,0)} % del grupo normativo. Con una fiabilidad de ${fmt(r,2,false)}, el error típico de medida es ${fmt(etm,2)} y la puntuación verdadera se sitúa, con un ${fmt(100*c,0)} % de confianza, entre ${fmt(x-zc*etm,1)} y ${fmt(x+zc*etm,1)} (entre los percentiles ${fmt(100*Phi((x-zc*etm-m)/sd),0)} y ${fmt(100*Phi((x+zc*etm-m)/sd),0)}).`}
+const okAll=(...a)=>a.every(isFinite);
+["ix","im","isd","ir","ic"].forEach(id=>$(id).addEventListener("input",runI));
+
+function runR(){const pre=N($("rpre").value),post=N($("rpost").value),sd=N($("rsd").value),r=N($("rr").value),up=$("rdir").value==="up";
+ if(!okAll(pre,post,sd,r)||sd<=0||r<=0||r>=1){$("rres").innerHTML="";$("rsay").textContent="Revisa los datos.";return}
+ const se=sd*Math.sqrt(1-r),sdiff=Math.sqrt(2)*se,rci=(post-pre)/sdiff,rel=Math.abs(rci)>1.96,better=up?post>pre:post<pre,minCh=1.96*sdiff;
+ const mc=N($("rmc").value),sc=N($("rsc").value),mn=N($("rmn").value),sn=N($("rsn").value);let cut=NaN;if(okAll(mc,sc,mn,sn)&&sc>0&&sn>0)cut=(sc*mn+sn*mc)/(sc+sn);
+ let cls;if(!rel)cls="Sin cambio fiable";else if(!better)cls="Empeoramiento fiable";else if(isFinite(cut)&&(up?post>cut:post<cut))cls="Recuperado (cambio fiable y clínicamente significativo)";else cls="Mejoría fiable";
+ const it=[["RCI",fmt(rci,2),rel?"hl":"",rel?"|RCI| > 1,96":"|RCI| ≤ 1,96"],["Diferencia",fmt(post-pre,1)],["Cambio mínimo fiable",fmt(minCh,1),"","1,96·S_dif"],["S_dif",fmt(sdiff,2)]];
+ if(isFinite(cut))it.push(["Punto de corte c",fmt(cut,1)]);it.push(["Clasificación",cls,!better&&rel?"bad":rel?"hl":""]);res("rres",it);
+ $("rsay").innerHTML=`La diferencia entre el pretest (${fmt(pre,1)}) y el postest (${fmt(post,1)}) fue de ${fmt(post-pre,1)} puntos, RCI = ${fmt(rci,2)}. ${rel?`Este cambio supera el umbral de 1,96, por lo que puede considerarse fiable (no atribuible al error de medida)`:`Este cambio no supera el umbral de 1,96, por lo que no puede descartarse que se deba al error de medida`}. Con estos datos, cualquier cambio menor de ${fmt(minCh,1)} puntos no sería fiable.${isFinite(cut)?` El punto de corte entre la población clínica y la general es c = ${fmt(cut,1)}; la puntuación en el postest ${(up?post>cut:post<cut)?"se sitúa en el rango de la población general":"sigue en el rango de la población clínica"}.`:""} Clasificación: ${cls.toLowerCase()}.`}
+["rpre","rpost","rsd","rr","rdir","rmc","rsc","rmn","rsn"].forEach(id=>$(id).addEventListener("input",runR));
+
+function runC(){const a1=N($("c1").value),n1=N($("cn1").value),a2=N($("c2").value),n2=N($("cn2").value);
+ if(!okAll(a1,a2,n1,n2)||a1>=1||a2>=1||n1<3||n2<3){$("cres").innerHTML="";$("csay").textContent="Revisa los datos.";return}
+ const W=(1-a2)/(1-a1),p1=pF(W,n2-1,n1-1),p=Math.min(1,2*Math.min(p1,1-p1));
+ res("cres",[["W de Feldt",fmt(W,3),"","(1 − α₂)/(1 − α₁)"],["gl",`${n2-1}, ${n1-1}`],["p (bilateral)",p<.001?("< "+fmt(.001,3,false)):fmt(p,3,false),p<.05?"hl":""]]);
+ $("csay").innerHTML=`La fiabilidad en la muestra 1 (α = ${fmt(a1,2,false)}, <i>n</i> = ${n1}) ${p<.05?"difirió significativamente de":"no difirió significativamente de"} la de la muestra 2 (α = ${fmt(a2,2,false)}, <i>n</i> = ${n2}), <i>W</i> = ${fmt(W,2)}, <i>p</i> ${p<.001?("< "+fmt(.001,3,false)):"= "+fmt(p,3,false)} (prueba de Feldt para muestras independientes).`}
+["c1","cn1","c2","cn2"].forEach(id=>$(id).addEventListener("input",runC));
+
+const ALL=()=>{runA();runSB();runI();runR();runC()};
+$("dec").addEventListener("change",e=>{DEC=e.target.value;ALL()});
+$("tabs").addEventListener("click",e=>{const t=e.target.dataset.tab;if(!t)return;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.id==="p-"+t))});
+/* datos de ejemplo: 5 ítems, 12 participantes */
+$("adata").value=`4\t5\t4\t3\t4
+3\t3\t2\t3\t3
+5\t5\t4\t4\t5
+2\t2\t3\t1\t2
+4\t4\t5\t4\t4
+3\t2\t3\t3\t2
+5\t4\t5\t5\t4
+1\t2\t1\t2\t3
+4\t3\t4\t4\t4
+2\t3\t2\t2\t1
+3\t4\t3\t3\t4
+5\t5\t5\t4\t5`;
+ALL();
+</script>
+<footer class="sf"><div class="sfw"><span>© 2026 Nicolás Sánchez Álvarez. Textos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>.</span><span>Departamento de Psicobiología y Metodología de las Ciencias del Comportamiento · Universidad de Málaga</span></div></footer>
+</body>
+</html>
